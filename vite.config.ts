@@ -1,7 +1,10 @@
-import { defineConfig } from 'vite';
-import vue from '@vitejs/plugin-vue';
-import eslint from 'vite-plugin-eslint';
-import { fileURLToPath, URL } from 'node:url';
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import eslint from 'vite-plugin-eslint'
+import { fileURLToPath, URL } from 'node:url'
+
+import tailwind from 'tailwindcss'
+import autoprefixer from 'autoprefixer'
 
 export default defineConfig({
 	base: '/DjConnect/',
@@ -15,6 +18,11 @@ export default defineConfig({
 			include: ['src/**/*.ts', 'src/**/*.tsx', 'src/**/*.vue'],
 		}),
 	],
+	css: {
+		postcss: {
+			plugins: [tailwind(), autoprefixer()],
+		},
+	},
 	resolve: {
 		alias: {
 			'@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -26,4 +34,4 @@ export default defineConfig({
 			shared: fileURLToPath(new URL('./src/shared', import.meta.url)),
 		},
 	},
-});
+})
