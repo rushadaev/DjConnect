@@ -6,7 +6,7 @@
 				alt="photo"
 				class=""
 			>
-			<div class="flex  flex-col justify-center">
+			<div class="flex flex-col justify-center">
 				<h3 class="text-white text-sm">
 					{{ title }}
 				</h3>
@@ -15,27 +15,18 @@
 				</p>
 			</div>
 		</div>
-		<div class="">
-			<VStatus
-				v-if="statusColor && statusText"
-				:color="`${statusColor}`"
-			>
-				{{ statusText }}
-			</VStatus>
+		<div>
+			<slot name="status" />
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { defineProps } from 'vue'
-import { VStatus } from 'shared/components/Status' // Adjust the path as necessary
-import { StatusVariable } from '../Status/config'
 
 defineProps<{
-    photo: string;
-    title: string;
-    text: string;
-    statusColor: StatusVariable;
-    statusText: string;
+	photo: string
+	title: string
+	text: string
 }>()
 </script>

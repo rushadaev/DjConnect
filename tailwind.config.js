@@ -30,6 +30,7 @@ module.exports = {
       },
       colors: {
         lightGrey:'#131313',
+        brightBlue:'#0085FF',
         bgMain: '#000000',
         greenYellow: '#ADFF00',
         transparent: 'transparent',

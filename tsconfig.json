@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "DjConnect",
     "target": "ES2020",
     "useDefineForClassFields": true,
     "module": "ESNext",
