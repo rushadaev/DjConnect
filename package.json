@@ -14,15 +14,19 @@
   "dependencies": {
     "@vueuse/core": "^10.11.0",
     "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "lucide-vue-next": "^0.407.0",
     "pinia": "^2.1.7",
-    "tailwind-merge": "^2.3.0",
+    "radix-vue": "^1.9.1",
+    "tailwind-merge": "^2.4.0",
+    "tailwindcss-animate": "^1.0.7",
     "vue": "^3.2.47",
     "vue-i18n": "^9.11.0",
     "vue-router": "^4.4.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.6.0",
-    "@types/node": "^20.14.8",
+    "@types/node": "^20.14.10",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "@vitejs/plugin-vue": "^4.1.0",
