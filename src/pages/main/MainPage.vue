@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import { MusicList } from '@/widgets/music-list'
-import { VButton, ButtonColors } from 'shared/components/Button'
+import { VButton, ButtonColors } from '@/shared/components/Button'
 </script>
 
 <style scoped></style>
