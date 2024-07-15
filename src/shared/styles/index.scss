@@ -19,7 +19,6 @@ body {
   display: flex;
   flex-direction: column;
   touch-action: pan-x pan-y;
-  padding:0 15px;
 }
 
 @media screen and (max-width: 400px) {

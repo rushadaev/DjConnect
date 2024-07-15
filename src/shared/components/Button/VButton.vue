@@ -2,7 +2,6 @@
 	<button
 		class="v-button"
 		:class="[colorClass]"
-		:size="size"
 		@click="onButtonClicked"
 	>
 		<slot />
@@ -19,13 +18,11 @@ const emit = defineEmits<{
 
 const props = withDefaults(defineProps<{
     color?: ButtonColors,
-    size?: 'large' | 'default' | 'small',
 }>(), {
     color: ButtonColors.Green,
-    size: 'default',
 })
 
-const { color, size } = toRefs(props)
+const { color } = toRefs(props)
 
 const colorClass = computed<string>(() => {
     if (color.value === ButtonColors.Green) return 'v-button--green'
@@ -44,7 +41,7 @@ const onButtonClicked = () => {
 <style lang="scss" scoped>
 .v-button {
     border: none;
-    @apply flex items-center justify-center text-base w-full h-[50px] border-solid py-0 px-[25px] rounded-[5px] cursor-pointer;
+    @apply flex items-center justify-center text-base w-full h-[50px] border-solid py-0 px-[16px] rounded-[5px] cursor-pointer border-none w-full;
 
     &--green {
         @apply bg-greenYellow text-lightGrey
@@ -63,7 +60,7 @@ const onButtonClicked = () => {
     }
 
     &--none {
-        @apply border-[#FFFFFF4D] text-[#FFFFFF]
+        @apply border-custom text-[#FFFFFF]
     }
 
     &--default {
