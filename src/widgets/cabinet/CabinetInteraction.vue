@@ -80,6 +80,7 @@
 						<span class="flex gap-[5px] items-center">
 							<IconStat icon-color="#131313" />
 							Смотреть статистику
+
 						</span>
 					</VButton>
 					<VButton
