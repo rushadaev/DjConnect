@@ -18,9 +18,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VCard } from '../../shared/components/Card'
-import { VStatus } from '../../shared/components/Status'
-import { StatusVariable } from '../../shared/components/Status/config'
+import { VCard } from '@/shared/components/Card'
+import { VStatus } from '@/shared/components/Status'
+import { StatusVariable } from '@/shared/components/Status/config'
 
 const items = ref([
     {
