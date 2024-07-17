@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { updateTrackPrice } from '../api/updateTrackPrice.api'
-import { useDJStore } from '@/entities/dj'
+import { useDJStore } from 'src/entities/Dj'
 
 export function useUpdateTrackPrice() {
     const djStore = useDJStore()
