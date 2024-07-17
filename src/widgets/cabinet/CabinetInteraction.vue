@@ -99,6 +99,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useSessionStore } from '@/entities/session/model/session.store'
 import { IconQr, IconGoogle, IconGmail, IconTelegram, IconStat, IconEdit, IconMusic } from 'shared/components/Icon'
 import { VButton, ButtonColors } from 'shared/components/Button'
 import { VCard } from 'shared/components/Card'
