@@ -100,6 +100,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useSessionStore } from '@/entities/session/model/session.store'
+import { storeToRefs } from 'pinia'
 import { IconQr, IconGoogle, IconGmail, IconTelegram, IconStat, IconEdit, IconMusic } from 'shared/components/Icon'
 import { VButton, ButtonColors } from 'shared/components/Button'
 import { VCard } from 'shared/components/Card'
@@ -131,7 +132,7 @@ const tracks = [
     }
 ]
 const sessionStore = useSessionStore()
-const { isLoading, error, user, isAuthenticated } = storeToRefs(sessionStore)
+const { user } = storeToRefs(sessionStore)
 const isActive = ref(true)
 
 const icons = [
