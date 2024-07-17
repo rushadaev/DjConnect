@@ -37,10 +37,10 @@ export type TWA = Pick<TelegramWebApp,
 >;
 
 // Используем преобразование типа с проверкой
-export const twa: TWA | null = WebApp && 'initDataUnsafe' in WebApp ? WebApp as TWA : null;
+export const twa: TWA | null = WebApp && 'initDataUnsafe' in WebApp ? WebApp as TWA : null
 
 if (!twa) {
-    console.warn('TWA is not available. Some features may not work correctly.');
+    console.warn('TWA is not available. Some features may not work correctly.')
 }
 
 export default twa
