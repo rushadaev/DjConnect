@@ -4,4 +4,3 @@ node_modules
 README.md
 index.html
 package-lock.json
-./src/lib/api/twa-mock.js
