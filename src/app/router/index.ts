@@ -2,8 +2,10 @@ import { createRouter, createWebHistory, RouteRecordRaw, NavigationGuardNext, Ro
 import routes from './routes'
 import { useSessionStore } from '@/entities/session/model/session.store'
 
+const BASE_URL = 'DjConnect'
+
 const router = createRouter({
-	history: createWebHistory(),
+	history: createWebHistory(BASE_URL),
 	routes: routes as RouteRecordRaw[]
 })
 
