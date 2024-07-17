@@ -1,0 +1,1 @@
+export { default as UpdateTrackPriceForm } from './ui/UpdateTrackPriceForm.vue'

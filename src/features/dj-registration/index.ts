@@ -1,0 +1,1 @@
+export { default as DJRegistrationForm } from './ui/DJRegistrationForm.vue'
