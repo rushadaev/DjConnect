@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { getDJProfile, getDJTracks } from '../api/dj.api'
 import type { DJ, Track } from './types'
 
-export const useDJStore = defineStore('Dj', {
+export const useDJStore = defineStore('dj', {
     state: () => ({
         currentDJ: null as DJ | null,
         tracks: [] as Track[],
