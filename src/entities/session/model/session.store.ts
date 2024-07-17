@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { getUserData, refreshToken } from '../api/session.api'
 import type { User } from './types'
 
-export const useSessionStore = defineStore('Session', {
+export const useSessionStore = defineStore('session', {
     state: () => ({
         user: null as User | null,
         isAuthenticated: false,

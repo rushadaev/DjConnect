@@ -1,4 +1,4 @@
-// entities/Session/api/Session.api.ts
+// entities/session/api/session.api.ts
 import useApi from '@/shared/lib/api/use-api'
 import type { User } from '../model/types'
 

@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { registerDJ } from '../api/registerDJ.api'
-import { useDJStore } from 'src/entities/Dj'
+import { useDJStore } from 'src/entities/dj'
 
 export function useDJRegistration() {
     const djStore = useDJStore()

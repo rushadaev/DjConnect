@@ -1,4 +1,4 @@
-name: Deploy Dj Connect to Pages
+name: Deploy dj Connect to Pages
 
 on:
   push:
