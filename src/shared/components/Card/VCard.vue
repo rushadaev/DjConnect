@@ -4,7 +4,7 @@
 			<img
 				:src="photo"
 				alt="photo"
-				class=""
+				class="w-[48px] h-[48px] rounded-[5px]"
 			>
 			<div class="flex flex-col justify-center">
 				<h3 class="text-white text-sm">

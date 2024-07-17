@@ -22,13 +22,17 @@ module.exports = {
         xs: ['12px', '16px'],
         lg: ['18px', '22px'],
         xl: ['20px', '24px'],
-        xxl: ['28px', '32px'],
+        xxl: ['24px', '24px'],
+        xxxl: ['28px', '32px'],
       },
       boxShadow: {
         DEFAULT: '0px 3px 2px rgba(237, 216, 194, 0.35)',
         custom: '0px 0px 34px 0px #00000014',
       },
       colors: {
+        routerLime:'#ADFF00',
+        blackContent: '#0A0A0A',
+        semiWhite:  '#FFFFFF4D',
         lightGrey:'#131313',
         brightBlue:'#0085FF',
         bgMain: '#000000',
@@ -64,7 +68,7 @@ module.exports = {
     function ({ addUtilities }) {
       addUtilities({
         '.border-custom': {
-          border: '1.5px solid #FFFFFF1A',
+          border: '1.5px solid #FFFFFF4D',
         },
         '.custom-border': {
           border: '1px solid #E1E1E1',

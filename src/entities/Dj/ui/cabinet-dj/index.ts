@@ -1,0 +1,1 @@
+export { default as CabinetDj } from './CabinetDj.vue'

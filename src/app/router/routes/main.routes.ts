@@ -7,7 +7,7 @@ export default [
 		component: () => import('pages/main/MainPage.vue'),
 		path: '/',
 		meta: {
-			title: 'Nutrition Time',
+			title: 'DjConnect',
 			layout: MainLayout
 		}
 	}

@@ -1,11 +1,11 @@
 <template>
-	<div>
-		<CabinetInteraction />
+	<div class="text-red">
+		orders
 	</div>
 </template>
 
 <script setup lang="ts">
-import { CabinetInteraction } from 'widgets/cabinet'
+
 </script>
 
 <style scoped>
