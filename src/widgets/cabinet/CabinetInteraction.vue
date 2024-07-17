@@ -28,7 +28,7 @@
 		<div class="bg-blackContent p-[25px]">
 			<div class="flex justify-between">
 				<div class="flex flex-col gap-[5px]">
-					<span class="text-white text-xxl">{{user?.is_dj ? 'DJ' : ''}} {{user?.name}}/span>
+					<span class="text-white text-xxl">{{user?.is_dj ? 'DJ' : ''}} {{user?.name}}</span>
 					<span class="text-semiWhite">Имя Фамилия</span>
 				</div>
 				<div class="flex gap-[10px]">
