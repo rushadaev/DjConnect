@@ -11,7 +11,7 @@ const api: AxiosInstance = axios.create({
 
 api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
     if (twa && config.headers) {
-        config.headers['Telegram-Init-Data'] = twa.initDataUnsafe
+        config.headers['Telegram-Init-Data'] = twa.initData
     }
     return config
 })

@@ -29,7 +29,7 @@ export const useSessionStore = defineStore('session', () => {
             }
 
             if (isNewUser()) {
-                const { data, error: apiError, execute } = useApi<User>('post', '/profile', {
+                const { data, error: apiError, execute } = useApi<User>('get', '/profile/me', {
                     telegram_id: twaUser.id.toString(),
                     name: twaUser.first_name,
                     phone_number: twaUser.username || '',
