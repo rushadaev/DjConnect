@@ -2,7 +2,15 @@ import WebApp from '@twa-dev/sdk'
 
 type TWA = typeof WebApp
 type PopupParams = Parameters<TWA['showPopup']>[0]
-
+type User = {
+	id: number
+	first_name: string
+	last_name: string
+	username: string
+	language_code: string
+	is_premium: boolean
+	allows_write_to_pm: boolean
+}
 type InitDataUnsafe = {
 	query_id: string
 	user: User
