@@ -4,6 +4,7 @@ import ordersRouter from './orders.router'
 import storyRouter from './story.router'
 import supportRouter from './support.router'
 import djRegistrationRouter from './dj-registration.router'
+import profile from './profile.routes'
 
 export default [
 	...mainRoutes,
@@ -12,4 +13,5 @@ export default [
 	...storyRouter,
 	...supportRouter,
 	...djRegistrationRouter,
+	...profile,
 ]

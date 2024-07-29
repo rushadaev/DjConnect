@@ -1,9 +1,9 @@
 <template>
-	<div class="dj-registration-page">
+	<div class="dj-profile-edit-page">
 		<h1 class="text-2xl font-bold mb-4">
-			Регистрация DJ
+			Редактирование профиля DJ
 		</h1>
-		<DJRegistrationForm />
+		<DJRegistrationForm :is-editing="true" />
 	</div>
 </template>
 

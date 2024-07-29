@@ -28,25 +28,16 @@ export const useSessionStore = defineStore('session', () => {
                 throw new Error('User data is not available from TWA')
             }
 
-            if (isNewUser()) {
-                const { data, error: apiError, execute } = useApi<User>('get', '/profile/me', {
-                    telegram_id: twaUser.id.toString(),
-                    name: twaUser.first_name,
-                    phone_number: twaUser.username || '',
-                    email: '', // Telegram не предоставляет email, оставляем пустым
-                })
-                await execute()
-                if (apiError.value) throw new Error(apiError.value)
-                if (!data.value) throw new Error('Failed to create user profile')
-                user.value = data.value
-                localStorage.setItem('userRegistered', 'true')
-            } else {
-                const { data, error: apiError, execute } = useApi<User>('get', '/profile/me')
-                await execute()
-                if (apiError.value) throw new Error(apiError.value)
-                if (!data.value) throw new Error('Failed to fetch user profile')
-                user.value = data.value
-            }
+            const { data, error: apiError, execute } = useApi<User>('get', '/profile/me', {
+                telegram_id: twaUser.id.toString(),
+                name: twaUser.first_name,
+                phone_number: twaUser.username || '',
+                email: '', // Telegram не предоставляет email, оставляем пустым
+            })
+            await execute()
+            if (apiError.value) throw new Error(apiError.value)
+            if (!data.value) throw new Error('Failed to fetch user profile')
+            user.value = data.value
         } catch (e) {
             error.value = e instanceof Error ? e.message : String(e)
             user.value = null
@@ -55,14 +46,8 @@ export const useSessionStore = defineStore('session', () => {
         }
     }
 
-    function isNewUser(): boolean {
-        return !localStorage.getItem('userRegistered')
-    }
-
     function logout() {
         user.value = null
-        localStorage.removeItem('userRegistered')
-        // Здесь можно добавить дополнительную логику выхода, если необходимо
     }
 
     return { user, isLoading, error, isAuthenticated, initSession, logout }
