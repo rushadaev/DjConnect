@@ -33,15 +33,14 @@
 				</div>
 				<div class="flex gap-[10px]">
 					<div
-						v-for="icon in icons"
-						:key="icon.name"
 						class="w-[48px] h-[48px] flex items-center justify-center rounded-full bg-lightGrey"
 					>
-						<component
-							:is="icon.component"
-							:icon-color="icon.color"
-							class="w-[18px] h-[18px]"
-						/>
+						<router-link to='/'>
+							<IconGoogle
+								:icon-color="'#28B447'"
+								class="w-[18px] h-[18px]"
+							/>
+						</router-link>
 					</div>
 				</div>
 			</div>
@@ -49,13 +48,6 @@
 				v-if="user?.is_dj"
 				class="mt-[12px] flex flex-col gap-[5px]"
 			>
-				<!-- <VCard
-					v-for="track in tracks"
-					:key="track.id"
-					:title="track.name"
-					:text="`Цена: ${track.price}`"
-					:photo="'/public/track_placeholder.png'"
-				/> -->
 				<VCard
 					v-for="track in tracks"
 					:key="track.id"
@@ -138,7 +130,7 @@ import { useRouter } from 'vue-router'
 import { useSessionStore } from '@/entities/session/model/session.store'
 import { useDJStore } from '@/entities/dj/model/dj.store'
 import { storeToRefs } from 'pinia'
-import { IconQr, IconGoogle, IconGmail, IconTelegram, IconStat, IconEdit, IconMusic } from 'shared/components/Icon'
+import { IconQr, IconGoogle, IconStat, IconEdit, IconMusic } from 'shared/components/Icon'
 import { VButton, ButtonColors } from 'shared/components/Button'
 import { VCard } from 'shared/components/Card'
 
@@ -148,7 +140,7 @@ const djStore = useDJStore()
 const { user } = storeToRefs(sessionStore)
 // const { tracks } = storeToRefs(djStore)
 
-// replace with API later
+// TODO: REPLACE WITH API
 const tracks = [
     {
         id: 1,
@@ -174,11 +166,6 @@ const tracks = [
         text: 'Песня 1',
         photo: '/public/cabinet_bg.png',
     }
-]
-const icons = [
-  { name: 'gmail', component: IconGmail, color: '#FFFFFF' },
-  { name: 'telegram', component: IconTelegram, color: '#0085FF' },
-  { name: 'google', component: IconGoogle, color: '#28B447' },
 ]
 
 onMounted(async () => {
