@@ -4,6 +4,11 @@ export interface DJ {
     stage_name: string;
     city: string;
     payment_details: string;
+    sex: string;
+    phone: string;
+    email: string;
+    website: string;
+    price: number;
     created_at: string;
     updated_at: string;
 }

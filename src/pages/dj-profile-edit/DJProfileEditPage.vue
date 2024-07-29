@@ -3,10 +3,10 @@
 		<h1 class="text-2xl font-bold mb-4">
 			Редактирование профиля DJ
 		</h1>
-		<DJRegistrationForm :is-editing="true" />
+		<DJProfileEditForm />
 	</div>
 </template>
 
 <script setup lang="ts">
-import DJRegistrationForm from '@/features/dj-registration/ui/DJRegistrationForm.vue'
+import DJProfileEditForm from '@/features/dj-profile-edit/ui/DJProfileEditForm.vue'
 </script>
