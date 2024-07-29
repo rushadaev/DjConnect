@@ -16,7 +16,8 @@ export interface DJ {
 export interface Track {
     id: number;
     name: string;
-    price?: number;
+    artist: string;
+    duration: string;
     created_at: string;
     updated_at: string;
 }

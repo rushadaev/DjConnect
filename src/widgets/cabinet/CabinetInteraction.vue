@@ -49,12 +49,19 @@
 				v-if="user?.is_dj"
 				class="mt-[12px] flex flex-col gap-[5px]"
 			>
-				<VCard
+				<!-- <VCard
 					v-for="track in tracks"
 					:key="track.id"
 					:title="track.name"
 					:text="`Цена: ${track.price}`"
 					:photo="'/public/track_placeholder.png'"
+				/> -->
+				<VCard
+					v-for="track in tracks"
+					:key="track.id"
+					:title="track.title"
+					:text="track.text"
+					:photo="track.photo"
 				/>
 			</div>
 			<div class="bg-black text-white rounded-lg mt-[20px]">
@@ -67,6 +74,24 @@
 				>
 					<p><strong>Город:</strong> {{ user.dj?.city }}</p>
 					<p><strong>Базовая цена:</strong> {{ user.dj?.price }}</p>
+				</div>
+
+				<h2 class="text-lg font-bold mb-5">
+					Базовые стоимости на трек
+				</h2>
+				<div class="space-y-4">
+					<div class="flex gap-4">
+						<input
+							type="text"
+							placeholder="Название"
+							class="p-3 border-custom rounded-lg border border-gray text-white w-[65%]"
+						>
+						<input
+							type="text"
+							placeholder="Цена"
+							class="p-3 border-custom rounded-lg border border-gray text-white w-[35%]"
+						>
+					</div>
 				</div>
 				<div v-if="user?.is_dj">
 					<VButton
@@ -121,8 +146,35 @@ const router = useRouter()
 const sessionStore = useSessionStore()
 const djStore = useDJStore()
 const { user } = storeToRefs(sessionStore)
-const { tracks } = storeToRefs(djStore)
+// const { tracks } = storeToRefs(djStore)
 
+// replace with API later
+const tracks = [
+    {
+        id: 1,
+        title: 'Песня 1',
+        text: 'Песня 1',
+        photo: '/public/cabinet_bg.png',
+    },
+    {
+        id: 2,
+        title: 'Песня 1',
+        text: 'Песня 1',
+        photo: '/public/cabinet_bg.png',
+    },
+    {
+        id: 3,
+        title: 'Песня 1',
+        text: 'Песня 1',
+        photo: '/public/cabinet_bg.png',
+    },
+    {
+        id: 4,
+        title: 'Песня 1',
+        text: 'Песня 1',
+        photo: '/public/cabinet_bg.png',
+    }
+]
 const icons = [
   { name: 'gmail', component: IconGmail, color: '#FFFFFF' },
   { name: 'telegram', component: IconTelegram, color: '#0085FF' },
