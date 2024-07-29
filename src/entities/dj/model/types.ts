@@ -4,16 +4,8 @@ export interface DJ {
     stage_name: string;
     city: string;
     payment_details: string;
-    track_price: number;
     created_at: string;
     updated_at: string;
-}
-
-export interface DJUpdateData {
-    stage_name: string;
-    city: string;
-    payment_details: string;
-    track_price: number;
 }
 
 export interface Track {

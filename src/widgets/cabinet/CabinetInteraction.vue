@@ -28,7 +28,7 @@
 		<div class="bg-blackContent p-[25px]">
 			<div class="flex justify-between">
 				<div class="flex flex-col gap-[5px]">
-					<span class="text-white text-xxl">Псевдоним</span>
+					<span class="text-white text-xxl">{{user?.is_dj ? 'DJ' : ''}} {{user?.name}}</span>
 					<span class="text-semiWhite">Имя Фамилия</span>
 				</div>
 				<div class="flex gap-[10px]">
@@ -100,6 +100,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useSessionStore } from '@/entities/session/model/session.store'
+import { storeToRefs } from 'pinia'
 import { IconQr, IconGoogle, IconGmail, IconTelegram, IconStat, IconEdit, IconMusic } from 'shared/components/Icon'
 import { VButton, ButtonColors } from 'shared/components/Button'
 import { VCard } from 'shared/components/Card'
@@ -130,7 +132,8 @@ const tracks = [
         photo: '/public/cabinet_bg.png',
     }
 ]
-
+const sessionStore = useSessionStore()
+const { user } = storeToRefs(sessionStore)
 const isActive = ref(true)
 
 const icons = [

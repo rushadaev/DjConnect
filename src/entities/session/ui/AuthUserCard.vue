@@ -24,7 +24,7 @@ const sessionStore = useSessionStore()
 const { user, isAuthenticated } = storeToRefs(sessionStore)
 
 const userAvatar = computed(() => {
-	// Здесь логика получения аватара пользователя
-	return 'path/to/default/avatar.png'
+  // Здесь логика получения аватара пользователя
+  return 'path/to/default/avatar.png'
 })
 </script>
