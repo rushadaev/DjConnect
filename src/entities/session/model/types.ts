@@ -1,3 +1,5 @@
+import { DJ } from '@/entities/dj/model/types'
+
 export interface User {
     id: number;
     telegram_id: string;
@@ -9,4 +11,5 @@ export interface User {
     updated_at: string;
     last_login: string | null;
     is_dj: boolean;
+    dj: DJ | null;
 }

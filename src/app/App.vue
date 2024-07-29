@@ -4,7 +4,7 @@
 		class="flex items-center justify-center h-screen"
 	>
 		<p class="text-xl">
-			Loading...
+			Загрузка...
 		</p>
 	</div>
 	<div
@@ -12,7 +12,7 @@
 		class="flex items-center justify-center h-screen"
 	>
 		<p class="text-xl text-red-500">
-			Error: {{ error }}
+			Ошибка: {{ error }}
 		</p>
 	</div>
 	<component
@@ -49,8 +49,8 @@ watch(() => route?.meta?.layout, (newLayoutComponent) => {
 onMounted(async () => {
   await sessionStore.initSession()
   if (isAuthenticated.value && user.value && !user.value.is_dj) {
-    // Если пользователь аутентифицирован, но не диджей, перенаправляем на страницу регистрации диджея
-    router.push({ name: 'dj-registration' })
+    // Если пользователь аутентифицирован, но не диджей, перенаправляем на главную страницу
+    router.push({ name: 'main' })
   } else if (!isAuthenticated.value) {
     // Если пользователь не аутентифицирован, перенаправляем на страницу входа или регистрации
     router.push({ name: 'login' })

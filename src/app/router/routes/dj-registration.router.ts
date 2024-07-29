@@ -11,4 +11,10 @@ export default [
             requiresAuth: true,
         },
     },
+    {
+        path: '/dj-profile-edit',
+        name: 'dj-profile-edit',
+        component: () => import('@/pages/dj-profile-edit/DJProfileEditPage.vue'),
+        meta: { requiresAuth: true, requiresDJ: true }
+    },
 ] as RouteRecordRaw[]

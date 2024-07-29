@@ -7,7 +7,7 @@
 				class="absolute inset-0 w-full h-full object-cover"
 			>
 			<div
-				v-if="isActive"
+				v-if="user?.is_dj"
 				class="absolute top-[24px] right-[24px] w-[175px]"
 			>
 				<VButton :color="ButtonColors.Green">
@@ -28,8 +28,8 @@
 		<div class="bg-blackContent p-[25px]">
 			<div class="flex justify-between">
 				<div class="flex flex-col gap-[5px]">
-					<span class="text-white text-xxl">{{user?.is_dj ? 'DJ' : ''}} {{user?.name}}</span>
-					<span class="text-semiWhite">Имя Фамилия</span>
+					<span class="text-white text-xxl">{{ user?.is_dj ? 'DJ' : '' }} {{ user?.name }}</span>
+					<span class="text-semiWhite">{{ user?.dj?.stage_name || 'Имя Фамилия' }}</span>
 				</div>
 				<div class="flex gap-[10px]">
 					<div
@@ -45,37 +45,34 @@
 					</div>
 				</div>
 			</div>
-			<div class="mt-[12px] flex flex-col gap-[5px]">
+			<div
+				v-if="user?.is_dj"
+				class="mt-[12px] flex flex-col gap-[5px]"
+			>
 				<VCard
 					v-for="track in tracks"
 					:key="track.id"
-					:title="track.title"
-					:text="track.text"
-					:photo="track.photo"
+					:title="track.name"
+					:text="`Цена: ${track.price}`"
+					:photo="'/public/track_placeholder.png'"
 				/>
 			</div>
 			<div class="bg-black text-white rounded-lg mt-[20px]">
 				<h2 class="text-lg font-bold mb-5">
-					Базовые стоимости на трек
+					{{ user?.is_dj ? 'Информация DJ' : 'Стать DJ' }}
 				</h2>
-				<div class="space-y-4">
-					<div class="flex gap-4">
-						<input
-							type="text"
-							placeholder="Название"
-							class="p-3 border-custom rounded-lg border border-gray text-white w-[65%]"
-						>
-						<input
-							type="text"
-							placeholder="Цена"
-							class="p-3 border-custom rounded-lg border border-gray text-white w-[35%]"
-						>
-					</div>
+				<div
+					v-if="user?.is_dj"
+					class="space-y-4"
+				>
+					<p><strong>Город:</strong> {{ user.dj?.city }}</p>
+					<p><strong>Базовая цена:</strong> {{ user.dj?.price }}</p>
 				</div>
-				<div v-if="isActive">
+				<div v-if="user?.is_dj">
 					<VButton
 						class="mt-[20px] m-[auto]"
 						:color="ButtonColors.Green"
+						@click="goToStatistics"
 					>
 						<span class="flex gap-[5px] items-center">
 							<IconStat icon-color="#131313" />
@@ -85,10 +82,23 @@
 					<VButton
 						:color="ButtonColors.None"
 						class="mt-[20px] m-[auto]"
+						@click="editDJProfile"
 					>
 						<span class="flex gap-[5px] items-center">
 							<IconEdit icon-color="#FFFFFFB2" />
 							Редактировать
+						</span>
+					</VButton>
+				</div>
+				<div v-else>
+					<VButton
+						:color="ButtonColors.Green"
+						class="mt-[20px] m-[auto]"
+						@click="becomeDJ"
+					>
+						<span class="flex gap-[5px] items-center">
+							<IconMusic icon-color="#131313" />
+							Стать DJ
 						</span>
 					</VButton>
 				</div>
@@ -98,48 +108,45 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useSessionStore } from '@/entities/session/model/session.store'
+import { useDJStore } from '@/entities/dj/model/dj.store'
 import { storeToRefs } from 'pinia'
 import { IconQr, IconGoogle, IconGmail, IconTelegram, IconStat, IconEdit, IconMusic } from 'shared/components/Icon'
 import { VButton, ButtonColors } from 'shared/components/Button'
 import { VCard } from 'shared/components/Card'
 
-const tracks = [
-    {
-        id: 1,
-        title: 'Песня 1',
-        text: 'Песня 1',
-        photo: '/public/cabinet_bg.png',
-    },
-    {
-        id: 2,
-        title: 'Песня 1',
-        text: 'Песня 1',
-        photo: '/public/cabinet_bg.png',
-    },
-    {
-        id: 3,
-        title: 'Песня 1',
-        text: 'Песня 1',
-        photo: '/public/cabinet_bg.png',
-    },
-    {
-        id: 4,
-        title: 'Песня 1',
-        text: 'Песня 1',
-        photo: '/public/cabinet_bg.png',
-    }
-]
+const router = useRouter()
 const sessionStore = useSessionStore()
+const djStore = useDJStore()
 const { user } = storeToRefs(sessionStore)
-const isActive = ref(true)
+const { tracks } = storeToRefs(djStore)
 
 const icons = [
-    { name: 'gmail', component: IconGmail, color: '#FFFFFF' },
-    { name: 'telegram', component: IconTelegram, color: '#0085FF' },
-    { name: 'google', component: IconGoogle, color: '#28B447' },
+  { name: 'gmail', component: IconGmail, color: '#FFFFFF' },
+  { name: 'telegram', component: IconTelegram, color: '#0085FF' },
+  { name: 'google', component: IconGoogle, color: '#28B447' },
 ]
+
+onMounted(async () => {
+  if (user.value?.is_dj && user.value.dj) {
+    await djStore.fetchTracks(user.value.dj.id)
+  }
+})
+
+const becomeDJ = () => {
+  router.push({ name: 'dj-registration' })
+}
+
+const editDJProfile = () => {
+  router.push({ name: 'dj-profile-edit' })
+}
+
+const goToStatistics = () => {
+  // Implement navigation to statistics page
+  console.log('Navigate to statistics page')
+}
 </script>
 
 <style scoped></style>

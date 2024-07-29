@@ -46,9 +46,9 @@
 
 		<VButton
 			type="submit"
-			:loading="isRegistering"
+			:loading="isUpdating"
 		>
-			{{ isRegistering ? 'Регистрация...' : 'Зарегистрироваться как DJ' }}
+			{{ isUpdating ? 'Обновление...' : 'Обновить профиль' }}
 		</VButton>
 
 		<p
@@ -61,12 +61,19 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { reactive, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useDJStore } from '@/entities/dj/model/dj.store'
+import { useSessionStore } from '@/entities/session/model/session.store'
 import { VInput } from '@/shared/components/Input'
 import { VButton } from '@/shared/components/Button'
-import { useDJRegistration } from '../model/use-dj-registration'
+import { useRouter } from 'vue-router'
 
-const { register, isRegistering, error } = useDJRegistration()
+const djStore = useDJStore()
+const sessionStore = useSessionStore()
+const { isLoading: isUpdating, error } = storeToRefs(djStore)
+const { user } = storeToRefs(sessionStore)
+const router = useRouter()
 
 const form = reactive({
   stage_name: '',
@@ -79,7 +86,18 @@ const form = reactive({
   price: 0
 })
 
+onMounted(() => {
+  if (user.value?.dj) {
+    Object.assign(form, user.value.dj)
+  }
+})
+
 const onSubmit = async () => {
-  await register(form)
+  try {
+    await djStore.updateDJProfile(form)
+    router.push({ name: 'profile' })
+  } catch (error) {
+    // Error is already handled in the store
+  }
 }
 </script>

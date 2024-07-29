@@ -1,26 +1,16 @@
 import { ref } from 'vue'
-import { updateTrackPrice } from '../api/updateTrackPrice.api'
-import { useDJStore } from 'src/entities/dj'
+import { useDJStore } from '@/entities/dj/model/dj.store'
 
 export function useUpdateTrackPrice() {
-    const djStore = useDJStore()
     const isUpdating = ref(false)
     const error = ref<string | null>(null)
+    const djStore = useDJStore()
 
-    const updatePrice = async (trackId: number, price: number) => {
-        if (!djStore.currentDJ) throw new Error('No DJ selected')
-
+    const updatePrice = async (trackId: number, newPrice: number) => {
         isUpdating.value = true
         error.value = null
         try {
-            const { data: updatedTrack, error: apiError, execute } = updateTrackPrice(djStore.currentDJ.id, trackId, price)
-            await execute()
-            if (apiError.value) throw new Error(apiError.value)
-
-            const index = djStore.tracks.findIndex(t => t.id === trackId)
-            if (index !== -1 && updatedTrack.value) {
-                djStore.tracks[index] = updatedTrack.value
-            }
+            await djStore.updateTrackPrice(trackId, newPrice)
         } catch (e) {
             error.value = e instanceof Error ? e.message : String(e)
         } finally {
