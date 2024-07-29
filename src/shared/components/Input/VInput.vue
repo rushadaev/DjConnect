@@ -14,14 +14,27 @@
 		>
 			<component
 				:is="icon"
+				v-if="isComponentIcon"
 				:icon-color="iconColor"
 				class="bg-[#131313] p-[5px] rounded-[5px] w-[34px] h-[34px]"
 			/>
+			<div
+				v-else-if="isTextIcon"
+				class="icon-text"
+			>
+				{{ icon }}
+			</div>
+			<slot
+				v-else
+				name="icon"
+			/>
 			<input
-				v-model="inputValue"
+				:value="modelValue"
+				:placeholder="inputText"
 				type="text"
 				class="input-field"
 				:class="{ 'ml-[15px]': !icon }"
+				@input="onInput"
 				@keydown.enter="validateInput"
 			>
 		</div>
@@ -29,43 +42,43 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
 
-const props = withDefaults(defineProps<{
-    icon?: ReturnType<typeof defineComponent>,
+const props = defineProps<{
+    modelValue?: string,
+    contentMessage?: string,
+    hasError?: boolean,
+    errorMessage?: string,
+    inputText?: string,
+    icon?: ReturnType<typeof defineComponent> | string | number,
     iconColor?: string,
-    inputValue: string,
-    contentMessage: string,
-    hasError: boolean,
-    errorMessage: string,
-}>(), {
-    icon: undefined,
-    iconColor: '#FFFFFF',
-    inputValue: '',
-    contentMessage: '',
-    hasError: false,
-    errorMessage: '',
-})
+}>()
 
-const { icon, contentMessage } = props
-const inputValue = ref(props.inputValue)
-const hasError = ref(props.hasError)
-const errorMessage = ref(props.errorMessage)
+const emit = defineEmits<{
+    (e: 'update:modelValue', value: string): void
+}>()
 
-watch(() => props.inputValue, (newValue) => {
-    inputValue.value = newValue
-})
+const isComponentIcon = computed(() => typeof props.icon === 'object' && props.icon !== null)
+const isTextIcon = computed(() => typeof props.icon === 'string' || typeof props.icon === 'number')
+
+const onInput = (event: Event) => {
+    const target = event.target as HTMLInputElement
+    emit('update:modelValue', target.value)
+}
 
 const validateInput = () => {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    hasError.value = !emailPattern.test(inputValue.value)
+    // Validation logic here
 }
 </script>
 
 <style scoped>
 .input-container {
     position: relative;
-    margin: 50px 40px;
+}
+
+.input-field::placeholder {
+    color: #ffffff;
+    /* Цвет для плейсхолдера */
 }
 
 .input-label {
@@ -80,6 +93,7 @@ const validateInput = () => {
 }
 
 .input-wrapper {
+    width: 100%;
     display: flex;
     align-items: center;
     border-radius: 6px;
@@ -96,13 +110,21 @@ const validateInput = () => {
     border: none;
     outline: none;
     width: 100%;
-    margin-left: 20px;
+    background: transparent;
+    color: #ffffff;
+    margin-left: 15px;
 }
 
-.input-icon {
-    width: 20px;
-    height: 20px;
-    margin-right: 5px;
+.icon-text {
+    background-color: #131313;
+    padding: 5px;
+    border-radius: 5px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
 }
 
 .error-message {
@@ -121,6 +143,6 @@ const validateInput = () => {
 }
 
 .error {
-    border-color: red;
+    border-color: #FF3535;
 }
 </style>

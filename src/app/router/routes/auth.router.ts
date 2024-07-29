@@ -1,14 +1,14 @@
 import { RouteRecordRaw } from 'vue-router'
-import { MainLayout } from 'app/layouts'
+import { AuthLayout } from 'app/layouts'
 
 export default [
     {
-        name: 'finance',
-        component: () => import('pages/finance/FinancePage.vue'),
-        path: '/finance',
+        name: 'auth',
+        component: () => import('pages/auth/AuthPage.vue'),
+        path: '/auth',
         meta: {
-            title: 'Finance',
-            layout: MainLayout
+            title: 'Auth',
+            layout: AuthLayout
         }
     }
 ] as RouteRecordRaw[]

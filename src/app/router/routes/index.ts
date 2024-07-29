@@ -1,3 +1,4 @@
+import authRouter from './auth.router'
 import financeRouter from './finance.router'
 import mainRoutes from './main.routes'
 import ordersRouter from './orders.router'
@@ -10,4 +11,5 @@ export default [
 	...ordersRouter,
 	...storyRouter,
 	...supportRouter,
+	...authRouter
 ]
