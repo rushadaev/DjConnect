@@ -1,8 +1,5 @@
 <template>
 	<div class="main-page">
-		<h1 class="text-2xl font-bold mb-4">
-			Добро пожаловать, {{ user?.name }}!
-		</h1>
 		<CabinetInteraction />
 	</div>
 </template>

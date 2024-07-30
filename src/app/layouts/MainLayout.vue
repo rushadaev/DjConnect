@@ -1,6 +1,6 @@
 <template>
 	<main
-		class="bg-red"
+		class="bg-blackContent"
 		:class="`layout`"
 	>
 		<slot />
