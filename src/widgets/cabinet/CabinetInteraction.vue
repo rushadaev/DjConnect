@@ -58,7 +58,7 @@
 			</div>
 			<div class="bg-black text-white rounded-lg mt-[20px]">
 				<h2 class="text-lg font-bold mb-5">
-					{{ user?.is_dj ? 'Информация DJ' : 'Стать DJ' }}
+					{{ user?.is_dj ? 'Информация о DJ' : 'Стать DJ' }}
 				</h2>
 				<div
 					v-if="user?.is_dj"
@@ -68,7 +68,7 @@
 					<p><strong>Базовая цена:</strong> {{ user.dj?.price }}</p>
 				</div>
 
-				<h2 class="text-lg font-bold mb-5">
+				<h2 class="text-lg font-bold mb-5 mt-5">
 					Базовые стоимости на трек
 				</h2>
 				<div class="space-y-4">
