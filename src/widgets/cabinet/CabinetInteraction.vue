@@ -73,15 +73,17 @@
 				</h2>
 				<div class="space-y-4">
 					<div class="flex gap-4">
-						<input
+						<!-- <input
 							type="text"
 							placeholder="Название"
 							class="p-3 border-custom rounded-lg border border-gray text-white w-[65%]"
-						>
+						> -->
 						<input
 							type="text"
+							disabled
 							placeholder="Цена"
 							class="p-3 border-custom rounded-lg border border-gray text-white w-[35%]"
+							:value="user?.dj?.price"
 						>
 					</div>
 				</div>
