@@ -45,8 +45,10 @@
 		/>
 
 		<VButton
+			class="button-space"
 			type="submit"
 			:loading="isUpdating"
+			:bottomSpace=true
 		>
 			{{ isUpdating ? 'Обновление...' : 'Обновить профиль' }}
 		</VButton>

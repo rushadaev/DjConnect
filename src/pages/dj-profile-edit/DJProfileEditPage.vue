@@ -1,5 +1,5 @@
 <template>
-	<div class="dj-profile-edit-page">
+	<div class="dj-profile-edit-page p-[25px] mt-5">
 		<DJProfileEditForm />
 	</div>
 </template>

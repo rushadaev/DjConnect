@@ -1,7 +1,7 @@
 <template>
 	<button
 		class="v-button"
-		:class="[colorClass, { 'opacity-50 cursor-not-allowed': loading }]"
+		:class="[colorClass, { 'opacity-50 cursor-not-allowed': loading }, {'button-space': bottomSpace}]"
 		:disabled="loading"
 		@click="onButtonClicked"
 	>
@@ -25,10 +25,12 @@ const emit = defineEmits<{
 
 const props = withDefaults(defineProps<{
   color?: ButtonColors,
-  loading?: boolean
+  loading?: boolean,
+  bottomSpace?: boolean
 }>(), {
   color: ButtonColors.Green,
-  loading: false
+  loading: false,
+  bottomSpace: false
 })
 
 const { color } = toRefs(props)
