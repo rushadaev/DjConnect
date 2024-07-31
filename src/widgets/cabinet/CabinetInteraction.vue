@@ -29,7 +29,7 @@
 			<div class="flex justify-between">
 				<div class="flex flex-col gap-[5px]">
 					<span class="text-white text-xxl">{{ user?.is_dj ? 'DJ' : '' }} {{ user?.name }}</span>
-					<span class="text-semiWhite">{{ user?.dj?.stage_name || 'Имя Фамилия' }}</span>
+					<span>{{ user?.dj?.stage_name || 'Псевдоним' }}</span>
 				</div>
 				<div class="flex gap-[10px]">
 					<div
