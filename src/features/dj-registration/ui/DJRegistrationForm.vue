@@ -31,7 +31,7 @@
 			<div class="flex flex-col gap-[20px]">
 				<VInput
 					v-model="form.stage_name"
-					label="Сценическое имя"
+					label="Псевдоним"
 					required
 				/>
 				<VInput
@@ -41,7 +41,7 @@
 				/>
 				<VInput
 					v-model="form.payment_details"
-					label="Платежные реквизиты"
+					label="Номер карты на выплату"
 					required
 				/>
 				<VInput
@@ -61,7 +61,7 @@
 				/>
 				<VInput
 					v-model="form.price"
-					label="Базовая цена"
+					label="Базовая стоймость"
 					type="number"
 					step="0.01"
 				/>
@@ -75,11 +75,10 @@
 			<VButton
 				type="submit"
 				:loading="isRegistering"
-				bottomSpace
+				bottom-space
 			>
 				{{ isRegistering ? 'Регистрация...' : 'Зарегистрироваться как DJ' }}
 			</VButton>
-
 		</form>
 	</div>
 </template>
@@ -97,7 +96,7 @@ const form = reactive({
   stage_name: '',
   city: '',
   payment_details: '',
-  sex: '',
+  sex: 'male',
   phone: '',
   email: '',
   website: '',
