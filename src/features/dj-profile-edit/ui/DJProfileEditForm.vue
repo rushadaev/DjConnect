@@ -3,6 +3,30 @@
 		class="space-y-4"
 		@submit.prevent="onSubmit"
 	>
+		<div>
+			<label class="block text-sm font-medium">Пол</label>
+			<TabsMain
+				v-model="form.sex"
+				default-value="male"
+				class="w-full mb-[25px]"
+			>
+				<TabsList class="grid w-full grid-cols-2">
+					<TabsTrigger
+						value="male"
+						class="data-[state=active]:bg-greenYellow data-[state=active]:text-black"
+					>
+						Мужской
+					</TabsTrigger>
+					<TabsTrigger
+						value="female"
+						class="data-[state=active]:bg-greenYellow data-[state=active]:text-black"
+					>
+						Женский
+					</TabsTrigger>
+				</TabsList>
+			</TabsMain>
+		</div>
+
 		<VInput
 			v-model="form.stage_name"
 			label="Сценическое имя"
@@ -18,10 +42,7 @@
 			label="Платежные реквизиты"
 			required
 		/>
-		<VInput
-			v-model="form.sex"
-			label="Пол"
-		/>
+
 		<VInput
 			v-model="form.phone"
 			label="Телефон"
@@ -45,8 +66,10 @@
 		/>
 
 		<VButton
+			class="button-space"
 			type="submit"
 			:loading="isUpdating"
+			:bottom-space="true"
 		>
 			{{ isUpdating ? 'Обновление...' : 'Обновить профиль' }}
 		</VButton>
@@ -66,6 +89,7 @@ import { storeToRefs } from 'pinia'
 import { useDJStore } from '@/entities/dj/model/dj.store'
 import { useSessionStore } from '@/entities/session/model/session.store'
 import { VInput } from '@/shared/components/Input'
+import { TabsMain, TabsList, TabsTrigger } from '@/shared/components/ui/tabs'
 import { VButton } from '@/shared/components/Button'
 import { useRouter } from 'vue-router'
 

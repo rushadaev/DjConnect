@@ -29,7 +29,7 @@
 			<div class="flex justify-between">
 				<div class="flex flex-col gap-[5px]">
 					<span class="text-white text-xxl">{{ user?.is_dj ? 'DJ' : '' }} {{ user?.name }}</span>
-					<span class="text-semiWhite">{{ user?.dj?.stage_name || 'Имя Фамилия' }}</span>
+					<span>{{ user?.dj?.stage_name || 'Псевдоним' }}</span>
 				</div>
 				<div class="flex gap-[10px]">
 					<div
@@ -65,7 +65,7 @@
 					class="space-y-4"
 				>
 					<p><strong>Город:</strong> {{ user.dj?.city }}</p>
-					<p><strong>Базовая цена:</strong> {{ user.dj?.price }}</p>
+					<!-- <p><strong>Базовая цена:</strong> {{ user.dj?.price }}</p> -->
 				</div>
 
 				<h2 class="text-lg font-bold mb-5 mt-5">
@@ -82,7 +82,7 @@
 							type="text"
 							disabled
 							placeholder="Цена"
-							class="p-3 border-custom rounded-lg border border-gray text-white w-[35%]"
+							class="p-3 border-custom rounded-lg border border-gray text-white w-[10%]"
 							:value="user?.dj?.price"
 						>
 					</div>
