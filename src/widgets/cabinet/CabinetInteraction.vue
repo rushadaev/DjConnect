@@ -15,15 +15,6 @@
 					Обновить QR
 				</VButton>
 			</div>
-			<!--			<div-->
-			<!--				v-else-->
-			<!--				class="absolute bottom-0 left-[50%] translate-x-[-50%] w-full p-[25px]"-->
-			<!--			>-->
-			<!--				<VButton class="flex gap-[10px] items-center">-->
-			<!--					<IconMusic icon-color="#131313" />-->
-			<!--					Заказать трек-->
-			<!--				</VButton>-->
-			<!--			</div>-->
 		</div>
 		<div class="bg-blackContent p-[25px]">
 			<div class="flex justify-between">
@@ -33,7 +24,6 @@
 						v-if="user?.is_dj"
 						class="space-y-2 mt-2"
 					>
-						{{ djStore.tracks }}
 						<p><strong>Псевдоним:</strong> {{ user?.dj?.stage_name }}</p>
 						<p><strong>Город:</strong> {{ user?.dj?.city }}</p>
 						<p><strong>Базовая стоймость:</strong> {{ user?.dj?.price }}</p>
@@ -41,14 +31,19 @@
 				</div>
 				<div class="flex gap-[10px]">
 					<div
+						v-if="user?.dj?.website"
 						class="w-[48px] h-[48px] flex items-center justify-center rounded-full bg-lightGrey"
 					>
-						<router-link to="/">
+						<a
+							:href="user.dj.website"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
 							<IconWorld
 								:icon-color="'white'"
 								class="w-[18px] h-[18px]"
 							/>
-						</router-link>
+						</a>
 					</div>
 				</div>
 			</div>
@@ -57,11 +52,11 @@
 				class="mt-[12px] flex flex-col gap-[5px]"
 			>
 				<VCard
-					v-for="track in tracks"
+					v-for="track in djStore.tracks"
 					:key="track.id"
-					:title="track.title"
-					:text="track.text"
-					:photo="track.photo"
+					:title="track.name"
+					:text="`Добавлен: ${new Date(track.created_at).toLocaleDateString()}`"
+					:photo="'/public/cabinet_bg.png'"
 				/>
 			</div>
 			<div
@@ -121,17 +116,7 @@ const router = useRouter()
 const sessionStore = useSessionStore()
 const djStore = useDJStore()
 const { user } = storeToRefs(sessionStore)
-// const { tracks } = storeToRefs(djStore)
-
-// TODO: REPLACE WITH API
-const tracks = [
-  {
-    id: 1,
-    title: 'Песня 1',
-    text: 'Песня 1',
-    photo: '/public/cabinet_bg.png',
-  },
-]
+const { tracks } = storeToRefs(djStore)
 
 onMounted(async () => {
   if (user.value?.is_dj && user.value.dj) {

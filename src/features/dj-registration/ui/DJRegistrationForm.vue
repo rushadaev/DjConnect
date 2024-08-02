@@ -61,11 +61,44 @@
 				/>
 				<VInput
 					v-model="form.price"
-					label="Базовая стоймость"
+					label="Базовая стоимость"
 					type="number"
 					step="0.01"
 				/>
 			</div>
+
+			<!-- Tracks section -->
+			<div class="mt-[20px]">
+				<label class="block text-sm font-medium mb-2">Треки</label>
+				<div
+					v-for="(track, index) in form.tracks"
+					:key="index"
+					class="flex items-center mb-2"
+				>
+					<VInput
+						v-model="track.name"
+						:label="`Трек ${index + 1}`"
+						class="flex-grow text-gray mr-2 w-[250px]"
+					/>
+					<VButton
+						type="button"
+						:color="ButtonColors.Red"
+						class="ml-2 w-1/3"
+						@click="removeTrack(index)"
+					>
+						Удалить
+					</VButton>
+				</div>
+				<VButton
+					type="button"
+					:color="ButtonColors.Green"
+					class="mt-2"
+					@click="addTrack"
+				>
+					Добавить трек
+				</VButton>
+			</div>
+
 			<p
 				v-if="error"
 				class="text-red-500 text-sm"
@@ -86,7 +119,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import { VInput } from '@/shared/components/Input'
-import { VButton } from '@/shared/components/Button'
+import { VButton, ButtonColors } from '@/shared/components/Button'
 import { useDJRegistration } from '../model/use-dj-registration'
 import { TabsMain, TabsList, TabsTrigger } from 'shared/components/ui/tabs'
 
@@ -100,10 +133,23 @@ const form = reactive({
   phone: '',
   email: '',
   website: '',
-  price: 0
+  price: 0,
+  tracks: [] as { name: string }[]
 })
 
+const addTrack = () => {
+  form.tracks.push({ name: '' })
+}
+
+const removeTrack = (index: number) => {
+  form.tracks.splice(index, 1)
+}
+
 const onSubmit = async () => {
-  await register(form)
+  const formData = {
+    ...form,
+    tracks: form.tracks.map(track => track.name).filter(name => name.trim() !== '')
+  }
+  await register(formData)
 }
 </script>
