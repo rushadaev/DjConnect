@@ -122,5 +122,21 @@ export const useDJStore = defineStore('dj', {
                 this.isLoading = false
             }
         },
+        async deleteTrack(djId: number, trackId: number) {
+            this.isLoading = true
+            this.error = null
+            try {
+                const { error: apiError, execute } = useApi<void>('delete', `/dj/${djId}/track/${trackId}`)
+                await execute()
+                if (apiError.value) throw new Error(apiError.value)
+                this.tracks = this.tracks.filter(t => t.id !== trackId)
+            } catch (error) {
+                this.error = 'Failed to delete track'
+                console.error(error)
+                throw error
+            } finally {
+                this.isLoading = false
+            }
+        },
     },
 })

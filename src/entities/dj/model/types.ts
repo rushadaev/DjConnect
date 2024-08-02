@@ -9,6 +9,7 @@ export interface DJ {
     email: string;
     website: string;
     price: number;
+    tracks?: string[]; // Добавьте это поле
     created_at: string;
     updated_at: string;
 }

@@ -116,7 +116,6 @@ const router = useRouter()
 const sessionStore = useSessionStore()
 const djStore = useDJStore()
 const { user } = storeToRefs(sessionStore)
-const { tracks } = storeToRefs(djStore)
 
 onMounted(async () => {
   if (user.value?.is_dj && user.value.dj) {
