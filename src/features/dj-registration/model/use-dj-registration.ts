@@ -11,11 +11,18 @@ export function useDJRegistration() {
     const sessionStore = useSessionStore()
     const router = useRouter()
 
-    const register = async (data: Omit<DJ, 'id' | 'user_id' | 'created_at' | 'updated_at'>) => {
+    const register = async (data: Omit<DJ, 'id' | 'user_id' | 'created_at' | 'updated_at'> & { tracks: string[] }) => {
         isRegistering.value = true
         error.value = null
         try {
-            await djStore.registerDJ(data)
+            const registeredDJ = await djStore.registerDJ(data)
+            if (registeredDJ && registeredDJ.id) {
+                for (const trackName of data.tracks) {
+                    if (trackName.trim()) {
+                        await djStore.addTrack(registeredDJ.id, trackName)
+                    }
+                }
+            }
             await sessionStore.initSession()
             router.push({ name: 'main' })
         } catch (e) {

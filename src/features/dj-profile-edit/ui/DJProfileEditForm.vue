@@ -42,7 +42,6 @@
 			label="Платежные реквизиты"
 			required
 		/>
-
 		<VInput
 			v-model="form.phone"
 			label="Телефон"
@@ -64,6 +63,38 @@
 			type="number"
 			step="0.01"
 		/>
+
+		<!-- Tracks section -->
+		<div class="mt-[20px]">
+			<label class="block text-sm font-medium mb-2">Треки</label>
+			<div
+				v-for="(track, index) in form.tracks"
+				:key="index"
+				class="flex items-center mb-2"
+			>
+				<VInput
+					v-model="track.name"
+					:label="`Трек ${index + 1}`"
+					class="flex-grow text-gray mr-2 w-[250px]"
+				/>
+				<VButton
+					type="button"
+					:color="ButtonColors.Red"
+					class="ml-2"
+					@click="removeTrack(index)"
+				>
+					Удалить
+				</VButton>
+			</div>
+			<VButton
+				type="button"
+				:color="ButtonColors.Green"
+				class="mt-2"
+				@click="addTrack"
+			>
+				Добавить трек
+			</VButton>
+		</div>
 
 		<VButton
 			class="button-space"
@@ -90,7 +121,7 @@ import { useDJStore } from '@/entities/dj/model/dj.store'
 import { useSessionStore } from '@/entities/session/model/session.store'
 import { VInput } from '@/shared/components/Input'
 import { TabsMain, TabsList, TabsTrigger } from '@/shared/components/ui/tabs'
-import { VButton } from '@/shared/components/Button'
+import { VButton, ButtonColors } from '@/shared/components/Button'
 import { useRouter } from 'vue-router'
 
 const djStore = useDJStore()
@@ -107,18 +138,55 @@ const form = reactive({
   phone: '',
   email: '',
   website: '',
-  price: 0
+  price: 0,
+  tracks: [] as { name: string; id?: number }[]
 })
 
-onMounted(() => {
+onMounted(async () => {
   if (user.value?.dj) {
     Object.assign(form, user.value.dj)
+    try {
+      const tracks = await djStore.fetchTracks(user.value.dj.id)
+      form.tracks = tracks.map(track => ({ name: track.name, id: track.id }))
+    } catch (error) {
+      console.error('Failed to fetch tracks:', error)
+    }
   }
 })
 
+const addTrack = () => {
+  form.tracks.push({ name: '' })
+}
+
+const removeTrack = (index: number) => {
+  form.tracks.splice(index, 1)
+}
+
 const onSubmit = async () => {
   try {
-    await djStore.updateDJProfile(form)
+    const updatedDJ = await djStore.updateDJProfile({
+      ...form,
+      tracks: form.tracks.map(track => track.name).filter(name => name.trim() !== '')
+    })
+
+    if (updatedDJ) {
+      // Update tracks
+      const currentTracks = form.tracks.filter(track => track.id)
+      const newTracks = form.tracks.filter(track => !track.id && track.name.trim() !== '')
+
+      // Remove tracks that are not in the form anymore
+      for (const track of currentTracks) {
+        if (!form.tracks.some(t => t.id === track.id)) {
+          await djStore.deleteTrack(updatedDJ.id, track.id!)
+        }
+      }
+
+      // Add new tracks
+      for (const track of newTracks) {
+        await djStore.addTrack(updatedDJ.id, track.name)
+      }
+    }
+
     router.push({ name: 'profile' })
   } catch (error) {
     // Error is already handled in the store

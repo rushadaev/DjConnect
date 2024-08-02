@@ -73,9 +73,32 @@ export const useDJStore = defineStore('dj', {
                 await execute()
                 if (apiError.value) throw new Error(apiError.value)
                 this.tracks = data.value || []
+                return this.tracks
             } catch (error) {
                 this.error = 'Failed to fetch tracks'
                 console.error(error)
+                throw error
+            } finally {
+                this.isLoading = false
+            }
+        },
+        async addTrack(djId: number, name: string) {
+            this.isLoading = true
+            this.error = null
+            try {
+                const { data, error: apiError, execute } = useApi<Track>('post', `/dj/${djId}/track`, { name })
+                await execute()
+                if (apiError.value) throw new Error(apiError.value)
+                if (data.value) {
+                    this.tracks.push(data.value)
+                    return data.value
+                } else {
+                    throw new Error('No data received from API')
+                }
+            } catch (error) {
+                this.error = 'Failed to add track'
+                console.error(error)
+                throw error
             } finally {
                 this.isLoading = false
             }
@@ -98,6 +121,22 @@ export const useDJStore = defineStore('dj', {
             } finally {
                 this.isLoading = false
             }
-        }
+        },
+        async deleteTrack(djId: number, trackId: number) {
+            this.isLoading = true
+            this.error = null
+            try {
+                const { error: apiError, execute } = useApi<void>('delete', `/dj/${djId}/track/${trackId}`)
+                await execute()
+                if (apiError.value) throw new Error(apiError.value)
+                this.tracks = this.tracks.filter(t => t.id !== trackId)
+            } catch (error) {
+                this.error = 'Failed to delete track'
+                console.error(error)
+                throw error
+            } finally {
+                this.isLoading = false
+            }
+        },
     },
 })
