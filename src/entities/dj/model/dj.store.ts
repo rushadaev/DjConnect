@@ -12,8 +12,8 @@ export const useDJStore = defineStore('dj', {
         error: null as string | null,
     }),
     actions: {
-        async selectTrack(id: number) {
-            this.selectedTrack = this.tracks.find(t => t.id === id) || null
+        async selectTrack(id: number | string) {
+            this.selectedTrack = this.tracks.find(t => t.id === +id) || null
         },
         async orderTrackRequest() {
             this.isLoading = true
