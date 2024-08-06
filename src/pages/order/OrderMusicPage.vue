@@ -122,8 +122,6 @@ import { useDJStore } from 'entities/dj'
 import { VButton, ButtonColors } from 'shared/components/Button'
 import {  IconMusic, IconHome, IconWallet } from 'shared/components/Icon'
 import VDropdown, { DropdownOption } from 'shared/components/Dropdown/VDropdown.vue'
-import { useSessionStore } from '@/entities/session/model/session.store'
-import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
 
 const djStore = useDJStore()

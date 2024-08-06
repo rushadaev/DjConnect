@@ -51,8 +51,8 @@ import { ref, watch } from 'vue'
 
 const toggleState = ref(false)
 
-const selectedValue = ref(null)
-const selectedTrackName = ref(null)
+const selectedValue = ref(undefined)
+const selectedTrackName = ref<string | null>(null)
 // add reactive selectedTrackName to watch selectedValue
 
 const emit = defineEmits<DropdownMenuCheckboxItemEmits>()
@@ -74,11 +74,7 @@ const props = withDefaults(
   },
 )
 
-const onChange = () => {
-  emit('change')
-}
-
 watch(selectedValue, (value) => {
-  selectedTrackName.value = props.options.find((option) => option.value === value)?.label
+  selectedTrackName.value = props.options.find((option) => option.value === value)?.label || null
 })
 </script>
