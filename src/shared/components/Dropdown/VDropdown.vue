@@ -76,7 +76,7 @@ watch(selectedValue, (value) => {
 
   console.log('selectedValue', value)
   console.log('props.onChange', props.onChange)
-	if(props.onChange) props.onChange(value)
+	if(props.onChange && value) props.onChange(value)
 })
 
 </script>
