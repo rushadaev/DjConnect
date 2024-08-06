@@ -2,7 +2,7 @@
 	<button
 		class="v-button"
 		:class="[colorClass, { 'opacity-50 cursor-not-allowed': loading }, {'button-space': bottomSpace}]"
-		:disabled="loading"
+		:disabled="loading || disabled"
 		@click="onButtonClicked"
 	>
 		<span
@@ -27,10 +27,12 @@ const props = withDefaults(defineProps<{
   color?: ButtonColors,
   loading?: boolean,
   bottomSpace?: boolean
+  disabled?: boolean
 }>(), {
   color: ButtonColors.Green,
   loading: false,
-  bottomSpace: false
+  bottomSpace: false,
+  disabled: false
 })
 
 const { color } = toRefs(props)

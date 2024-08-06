@@ -4,10 +4,10 @@ import { MainLayout } from 'app/layouts'
 export default [
     {
         name: 'story',
-        component: () => import('pages/story/StoryPage.vue'),
+        component: () => import('pages/history/HistoryPage.vue'),
         path: '/history',
         meta: {
-            title: 'Story',
+            title: 'History',
             layout: MainLayout
         }
     }
