@@ -1,9 +1,9 @@
 <template>
 	<div class="profile-page">
-		<CabinetInteraction />
+		<ExternalProfileInteraction />
 	</div>
 </template>
 
 <script setup lang="ts">
-import CabinetInteraction from '@/widgets/cabinet/CabinetInteraction.vue'
+import ExternalProfileInteraction from '@/widgets/profile/ExternalProfileInteraction.vue'
 </script>

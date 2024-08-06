@@ -98,13 +98,23 @@
 					</span>
 				</VButton>
 			</div>
+			<VButton
+				:color="ButtonColors.Green"
+				class="mt-[20px] m-[auto]"
+				@click="checkDJ"
+			>
+				<span class="flex gap-[5px] items-center">
+					<IconMusic icon-color="#131313" />
+					Пример страницы DJ
+				</span>
+			</VButton>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter,useRoute } from 'vue-router'
 import { useSessionStore } from '@/entities/session/model/session.store'
 import { useDJStore } from '@/entities/dj/model/dj.store'
 import { storeToRefs } from 'pinia'
@@ -113,15 +123,29 @@ import { VButton, ButtonColors } from 'shared/components/Button'
 import { VCard } from 'shared/components/Card'
 
 const router = useRouter()
+const route = useRoute()
 const sessionStore = useSessionStore()
 const djStore = useDJStore()
+
 const { user } = storeToRefs(sessionStore)
+// Fetch DJ tracks if query is DJ
 
 onMounted(async () => {
   if (user.value?.is_dj && user.value.dj) {
     await djStore.fetchTracks(user.value.dj.id)
-  }
+  } else {
+	const id =  route.params.id
+	console.log( { id: id } )
+	if (id) {
+		await djStore.fetchDJProfile(+id)
+		await djStore.fetchTracks(+id)
+	}
+}
 })
+
+const checkDJ = () => {
+  router.push({ name: 'dj-profile', params: { id: 1 } })
+}
 
 const becomeDJ = () => {
   router.push({ name: 'dj-registration' })

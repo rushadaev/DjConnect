@@ -25,7 +25,7 @@ import { StatusVariable } from '@/shared/components/Status/config'
 const items = ref([
     {
         id: 1,
-        photo: 'path/to/photo1.jpg',
+        photo: 'cabinet_bg.png',
         title: 'Title 1',
         text: 'Text 1',
         statusColor: 'green' as StatusVariable,
@@ -33,7 +33,7 @@ const items = ref([
     },
     {
         id: 2,
-        photo: 'path/to/photo2.jpg',
+        photo: 'cabinet_bg.png',
         title: 'Title 2',
         text: 'Text 2',
         statusColor: 'orange' as StatusVariable,
@@ -41,7 +41,7 @@ const items = ref([
     },
     {
         id: 2,
-        photo: 'path/to/photo2.jpg',
+        photo: 'cabinet_bg.png',
         title: 'Title 2',
         text: 'Text 2',
         statusColor: 'red' as StatusVariable,

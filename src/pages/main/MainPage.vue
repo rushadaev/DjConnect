@@ -1,9 +1,9 @@
 <template>
 	<div class="main-page">
-		<CabinetInteraction />
+		<SessionProfileInteraction />
 	</div>
 </template>
 
 <script setup lang="ts">
-import CabinetInteraction from '@/widgets/cabinet/CabinetInteraction.vue'
+import SessionProfileInteraction from '@/widgets/profile/SessionProfileInteraction.vue'
 </script>
