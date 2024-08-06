@@ -64,11 +64,10 @@
 					<VDropdown
 						class="flex-1 text-base text-white"
 						:options="djData.tracks"
-						@select="onSelect"
+						:on-change="onSelect"
 					/>
 					<VButton
 						:color="ButtonColors.Green"
-						:disabled="selectedTrackName === null"
 						class="mx-auto margin-button-dynamic"
 						@click="handleNextStep"
 					>
@@ -133,24 +132,23 @@ const djData = ref({
 
 const currentStep = ref(1)
 const stepSubmitted = ref(false)
-const selectedTrackName = ref(null)
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const onSelect = (e: any) => {
-	e.preventDefault()
-	selectedTrackName.value = e.explicitOriginalTarget.attributes.value
+const onSelect = (val: any) => {
+	djStore.selectTrack(val)
 }
 const router = useRouter()
 const route = useRoute()
 
 const handleNextStep = () => {
   stepSubmitted.value = true
-  console.log(currentStep.value)
+  console.log('currentStep.value', currentStep.value)
+  console.log('djStore.selectedTrack', djStore.selectedTrack)
+
     if (currentStep.value < 3) {
 		currentStep.value++
 		stepSubmitted.value = false
 		if(currentStep.value === 3) {
-			if(selectedTrackName.value) {
+			if(djStore.selectedTrack) {
 					djStore.orderTrackRequest().then(() => {
 						console.log('djStore.orderTrackRequest()')
 					}).catch((e)=>{
@@ -172,13 +170,13 @@ const buttonMarginRef = ref(`${djStore.tracks.length*30}px`)
 // const { user } = storeToRefs(sessionStore)
 
 onMounted(async () => {
-	const id =  route.params.id
-	console.log( { id: id } )
+	const id = route.params.id
+	console.log(  { id: id } )
 	if (id) {
 		await djStore.fetchDJProfile(+id)
 		const tracksList = await djStore.fetchTracks(+id)
 		console.log(tracksList)
-		buttonClass.value = `mt-[${tracksList.length*30}px] m-[auto]`
+		buttonClass.value = `mt-[${tracksList.length * 30}px] m-[auto]`
 	}
 }
 )

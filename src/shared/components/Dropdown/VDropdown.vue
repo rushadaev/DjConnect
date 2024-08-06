@@ -17,7 +17,6 @@
 						:key="option.value"
 						:value="option.value"
 						class="group text-[16px] leading-none rounded-[3px] flex items-center h-[25px] px-[5px] relative pl-[25px] select-none cursor-pointer"
-						@select="onSelect"
 					>
 						<DropdownMenuItemIndicator>
 							{{ props.indicator }}
@@ -44,7 +43,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuRoot,
   DropdownMenuTrigger,
-  type DropdownMenuCheckboxItemEmits
+  type DropdownMenuCheckboxItemEmits,
 } from 'radix-vue'
 export type DropdownOption = { value: string; label: string, additional?:string };
 import { ref, watch } from 'vue'
@@ -57,24 +56,27 @@ const selectedTrackName = ref<string | null>(null)
 
 const emit = defineEmits<DropdownMenuCheckboxItemEmits>()
 
-const onSelect = ( val: any ) => {
-  emit('select', val)
-}
-
 const props = withDefaults(
   defineProps<{
-    options: DropdownOption[];
-    placeholder?: string;
-    indicator?: string;
+	options: DropdownOption[];
+	placeholder?: string;
+	indicator?: string;
+	onChange?: (value: string) => void;
   }>(),
   {
-    options: () => [] as DropdownOption[],
-    placeholder: 'Выберите трек',
-    indicator: '💿'
+	options: () => [] as DropdownOption[],
+	placeholder: 'Выберите трек',
+	indicator: '💿',
+	onChange: undefined,
   },
 )
 
 watch(selectedValue, (value) => {
   selectedTrackName.value = props.options.find((option) => option.value === value)?.label || null
+
+  console.log('selectedValue', value)
+  console.log('props.onChange', props.onChange)
+	if(props.onChange) props.onChange(value)
 })
+
 </script>
