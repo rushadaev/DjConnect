@@ -73,9 +73,6 @@ const props = withDefaults(
 
 watch(selectedValue, (value) => {
   selectedTrackName.value = props.options.find((option) => option.value === value)?.label || null
-
-  console.log('selectedValue', value)
-  console.log('props.onChange', props.onChange)
 	if(props.onChange && value) props.onChange(value)
 })
 

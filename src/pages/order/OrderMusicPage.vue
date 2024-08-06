@@ -141,8 +141,6 @@ const route = useRoute()
 
 const handleNextStep = () => {
   stepSubmitted.value = true
-  console.log('currentStep.value', currentStep.value)
-  console.log('djStore.selectedTrack', djStore.selectedTrack)
 
     if (currentStep.value < 3) {
 		currentStep.value++
@@ -150,7 +148,7 @@ const handleNextStep = () => {
 		if(currentStep.value === 3) {
 			if(djStore.selectedTrack) {
 					djStore.orderTrackRequest().then(() => {
-						console.log('djStore.orderTrackRequest()')
+						console.log('djStore.orderTrackRequest() finished with success')
 					}).catch((e)=>{
 					console.log(e)
 				})
@@ -171,11 +169,9 @@ const buttonMarginRef = ref(`${djStore.tracks.length*30}px`)
 
 onMounted(async () => {
 	const id = route.params.id
-	console.log(  { id: id } )
 	if (id) {
 		await djStore.fetchDJProfile(+id)
 		const tracksList = await djStore.fetchTracks(+id)
-		console.log(tracksList)
 		buttonClass.value = `mt-[${tracksList.length * 30}px] m-[auto]`
 	}
 }
