@@ -3,12 +3,22 @@ import { MainLayout } from 'app/layouts'
 
 export default [
     {
-        name: 'orders',
-        component: () => import('pages/profile/ProfilePage.vue'),
-        path: '/orders',
+        name: 'order',
+        component: () => import('pages/order/OrderMusicPage.vue'),
+        path: '/order/:id',
         meta: {
-            title: 'Profile',
+            title: 'Заказать трек',
             layout: MainLayout
         }
-    }
+    },
+    // add dynamic route for each dj id profile
+	{
+		name: 'dj-profile',
+		component: () => import('pages/profile/ProfilePage.vue'),
+		path: '/dj/:id',
+		meta: {
+			title: 'DJ Profile',
+			layout: MainLayout,
+		}
+	}
 ] as RouteRecordRaw[]

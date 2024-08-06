@@ -11,5 +11,5 @@ export default [
 			layout: MainLayout,
 			meta: { requiresAuth: true }
 		}
-	}
+	},
 ] as RouteRecordRaw[]

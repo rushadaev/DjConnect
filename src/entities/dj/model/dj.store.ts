@@ -5,12 +5,36 @@ import { useSessionStore } from '@/entities/session/model/session.store'
 
 export const useDJStore = defineStore('dj', {
     state: () => ({
+        selectedTrack: null as Track | null,
         currentDJ: null as DJ | null,
         tracks: [] as Track[],
         isLoading: false,
         error: null as string | null,
     }),
     actions: {
+        async selectTrack(id: number) {
+            this.selectedTrack = this.tracks.find(t => t.id === id) || null
+        },
+        async orderTrackRequest() {
+            this.isLoading = true
+            this.error = null
+            try {
+                const { error: apiError, execute } = useApi<void>('post', '/order', {
+                    'dj_id': this.currentDJ?.id,
+                    'track_id': this.selectedTrack?.id,
+                    'price': this.currentDJ?.price,
+                    'message': 'Please play this track!'
+                })
+                await execute()
+                if (apiError.value) throw new Error(apiError.value)
+            } catch (error) {
+                this.error = 'Failed to send track request'
+                console.error(error)
+                throw error
+            } finally {
+                this.isLoading = false
+            }
+        },
         async registerDJ(djData: Omit<DJ, 'id' | 'user_id' | 'created_at' | 'updated_at'>) {
             this.isLoading = true
             this.error = null
@@ -26,6 +50,34 @@ export const useDJStore = defineStore('dj', {
                 }
             } catch (error) {
                 this.error = 'Failed to register DJ'
+                console.error(error)
+                throw error
+            } finally {
+                this.isLoading = false
+            }
+        },
+        async fetchDJProfile(id: string | number) {
+            this.isLoading = true
+            this.error = null
+
+            if (!id) {
+                this.error = 'DJ ID not found'
+                this.isLoading = false
+                throw new Error('DJ ID not found')
+            }
+
+            try {
+                const { data, error: apiError, execute } = useApi<DJ>('get', `/dj/profile/${id}`)
+                await execute()
+                if (apiError.value) throw new Error(apiError.value)
+                if (data.value) {
+                    this.currentDJ = data.value
+                    return data.value
+                } else {
+                    throw new Error('No data received from API')
+                }
+            } catch (error) {
+                this.error = 'Failed to fetch DJ profile'
                 console.error(error)
                 throw error
             } finally {
