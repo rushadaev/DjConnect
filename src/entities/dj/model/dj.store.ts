@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import useApi from '@/shared/lib/api/use-api'
 import type { DJ, Track } from './types'
 import { useSessionStore } from '@/entities/session/model/session.store'
+import type { Order } from '@/features/order-music/model/order'
 
 export const useDJStore = defineStore('dj', {
     state: () => ({
@@ -19,7 +20,7 @@ export const useDJStore = defineStore('dj', {
             this.isLoading = true
             this.error = null
             try {
-                const { error: apiError, execute } = useApi<void>('post', '/order', {
+                const { error: apiError, execute } = useApi<void>('post', '/orders', {
                     'dj_id': this.currentDJ?.id,
                     'track_id': this.selectedTrack?.id,
                     'price': this.currentDJ?.price,
@@ -111,6 +112,22 @@ export const useDJStore = defineStore('dj', {
                 }
             } catch (error) {
                 this.error = 'Failed to update DJ profile'
+                console.error(error)
+                throw error
+            } finally {
+                this.isLoading = false
+            }
+        },
+        async fetchDJOrders(djId: number): Promise<Order[]> {
+            this.isLoading = true
+            this.error = null
+            try {
+                const { data, error: apiError, execute } = useApi<Order[]>('get', `/dj/${djId}/orders`)
+                await execute()
+                if (apiError.value) throw new Error(apiError.value)
+                return data.value as Order[] || []
+            } catch (error) {
+                this.error = 'Failed to fetch DJ orders'
                 console.error(error)
                 throw error
             } finally {
