@@ -47,7 +47,7 @@
 					:key="track.id"
 					:title="track.name"
 					:text="`Добавлен: ${new Date(track.created_at).toLocaleDateString()}`"
-					:photo="'/public/cabinet_bg.png'"
+					:photo="'/cabinet_bg.png'"
 				/>
 			</div>
 			<div>
