@@ -5,7 +5,7 @@ export default [
     {
         name: 'order',
         component: () => import('pages/order/OrderMusicPage.vue'),
-        path: '/order/:id',
+        path: '/order-music/:id',
         meta: {
             title: 'Заказать трек',
             layout: MainLayout

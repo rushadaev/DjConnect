@@ -10,5 +10,14 @@ export default [
             title: 'Orders',
             layout: MainLayout
         }
+    },
+    {
+        name: 'review-order',
+        component: () => import('pages/review-order/DJOrderPage.vue'),
+        path: '/order-review/:id',
+        meta: {
+            title: 'Review Order',
+            layout: MainLayout
+        }
     }
 ] as RouteRecordRaw[]
