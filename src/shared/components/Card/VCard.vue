@@ -6,7 +6,7 @@
 	>
 		<div class="flex gap-[10px]">
 			<img
-				:src="photo"
+				:src="`${publicPath}${photo}`"
 				alt="photo"
 				class="w-[48px] h-[48px] rounded-[5px]"
 			>
@@ -38,7 +38,7 @@ const props = defineProps<{
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	routeParams?: any
 }>()
-
+const publicPath = process.env.BASE_URL || '/DjConnect'
 const goto = () => {
 	if(props.routeParams) router.push(props.routeParams)
 }
