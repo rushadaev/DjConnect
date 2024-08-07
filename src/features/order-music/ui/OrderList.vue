@@ -1,19 +1,22 @@
 <template>
-	<div>
-		<VCard
-			v-for="item in props.items"
-			:key="item.id"
-			:photo="item.photo"
-			:title="item.title"
-			:text="item.text"
+	<VCard
+		v-for="item in props.items"
+		:key="item.id"
+		:photo="item.photo"
+		:title="item.title"
+		:text="item.text"
+		:route-params="item.routeParams"
+		class="mb-[7px]"
+	>
+		<template
+			v-if="!!item.statusText"
+			#status
 		>
-			<template #status>
-				<VStatus :color="item.statusColor">
-					{{ item.statusText }}
-				</VStatus>
-			</template>
-		</VCard>
-	</div>
+			<VStatus :color="item.statusColor">
+				{{ item.statusText }}
+			</VStatus>
+		</template>
+	</VCard>
 </template>
 
 <script setup lang="ts">
@@ -27,8 +30,9 @@ const props = defineProps<{
         photo: string,
         title: string,
         text: string,
-        statusColor: StatusVariable,
-        statusText: string | 'Оплачено' | 'Ожидание' | 'Отменен'
+        statusColor?: StatusVariable,
+        statusText?: string | 'Оплачено' | 'Ожидание' | 'Отменен'
+		routeParams?: { name: string , params: { id: number } }
     }[]
 }>()
 // const items = ref([

@@ -1,29 +1,16 @@
 <template>
 	<div>
 		<svg
-			width="18"
-			height="18"
-			viewBox="0 0 18 18"
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
 		>
-			<rect
-				x="0.5"
-				y="0.5"
-				width="17"
-				height="17"
-				rx="3.5"
-				stroke="white"
-			/>
-			<rect
-				v-if="isActive"
-				x="4"
-				y="4"
-				width="10"
-				height="10"
-				rx="2"
-				fill="white"
-				class="inner-rect"
+			<path
+				d="M5 14L9 17L18 6"
+				stroke="#131313"
+				stroke-width="2"
 			/>
 		</svg>
 	</div>
