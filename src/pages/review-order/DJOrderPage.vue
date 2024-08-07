@@ -242,7 +242,7 @@ import { StatusVariable } from '@/shared/components/Status/config'
 				incorrectOrderState.value = order.status !== 'pending'
 				orders.value.push({
 					id: +route.params.id,
-					photo: '/cabinet_bg.png',
+					photo: '/cabinet_bg.png?url',
 					title: track?.name,
 					text: user.value.dj.stage_name,
 					// statusColor: order.is_paid? 'green' as StatusVariable : order.status === 'pending'? 'orange' as StatusVariable : 'red' as StatusVariable,
@@ -276,7 +276,7 @@ import { StatusVariable } from '@/shared/components/Status/config'
 					statusText.value = order.is_paid? 'Оплачено' : order.status === 'pending'? 'Ожидание' : 'Отменен'
 					orders.value.push({
 						id: +route.params.id,
-						photo: '/cabinet_bg.png',
+						photo: '/cabinet_bg.png?url',
 						title: track?.name,
 						text: dj.stage_name,
 						// statusColor: order.is_paid? 'green' as StatusVariable : order.status === 'pending'? 'orange' as StatusVariable : 'red' as StatusVariable,
