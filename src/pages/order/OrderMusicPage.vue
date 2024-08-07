@@ -50,7 +50,7 @@
 			class="flex flex-col justify-center items-center py-[170px]"
 		>
 			<span class="text-7xl">⌛</span>
-			<span class="text-base my-4">Ожидание</span>
+			<span class="text-base my-4">Выберите нужный трек</span>
 		</p>
 		<div
 			v-if="currentStep === 2"
@@ -67,8 +67,9 @@
 						:on-change="onSelect"
 					/>
 					<VButton
+						v-if="djStore.selectedTrack"
 						:color="ButtonColors.Green"
-						class="mx-auto margin-button-dynamic"
+						class="mx-auto mt-5"
 						@click="handleNextStep"
 					>
 						<span class="flex gap-[5px] items-center">
@@ -162,7 +163,7 @@ const handleNextStep = () => {
 }
 
 const buttonClass = ref(`mt-[${djStore.tracks.length*30}px] m-[auto]`)
-const buttonMarginRef = ref(`${djStore.tracks.length*30}px`)
+// const buttonMarginRef = ref(`${djStore.tracks.length*10}px`)
 
 // const sessionStore = useSessionStore()
 // const { user } = storeToRefs(sessionStore)
@@ -180,6 +181,6 @@ onMounted(async () => {
 
 <style scoped>
 .margin-button-dynamic {
-  margin-top: v-bind(buttonMarginRef);
+  /* margin-top: v-bind(buttonMarginRef); */
 }
 </style>
