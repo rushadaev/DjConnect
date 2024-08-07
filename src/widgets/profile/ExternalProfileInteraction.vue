@@ -2,7 +2,7 @@
 	<div class="mb-[80px]" >
 		<div class="relative h-[350px] overflow-hidden">
 			<img
-				src="/public/cabinet_bg.png"
+				:src="imageSrc"
 				alt=""
 				class="absolute inset-0 w-full h-full object-cover"
 			>
@@ -67,7 +67,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter,useRoute } from 'vue-router'
 // import { useSessionStore } from '@/entities/session/model/session.store'
 import { useDJStore } from '@/entities/dj/model/dj.store'
@@ -76,6 +76,7 @@ import {  IconWorld, IconMusic } from 'shared/components/Icon'
 import { VButton, ButtonColors } from 'shared/components/Button'
 import { VCard } from 'shared/components/Card'
 
+const imageSrc = ref('/DjConnect/cabinet_bg.png')
 const router = useRouter()
 const route = useRoute()
 const djStore = useDJStore()
