@@ -38,7 +38,7 @@
 				const track = tracks.find(track => +track.id === +order.track_id)
 				orders.value.push({
 					id: +order.id,
-					photo: '/cabinet_bg.png?url',
+					photo: '/public/cabinet_bg.png',
 					title: track?.name || '',
 					text: user.value.dj.stage_name,
 					statusColor: order.is_paid? 'green' as StatusVariable : order.status === 'pending'? 'orange' as StatusVariable : 'red' as StatusVariable,
@@ -55,7 +55,7 @@
 					const track = tracks.find(track => +track.id === +order.track_id)
 					orders.value.push({
 						id: +order.id,
-						photo: '/cabinet_bg.png?url',
+						photo: '/public/cabinet_bg.png',
 						title: track?.name || '',
 						text: dj?.stage_name,
 						statusColor: order.is_paid? 'green' as StatusVariable : order.status === 'pending'? 'orange' as StatusVariable : 'red' as StatusVariable,
