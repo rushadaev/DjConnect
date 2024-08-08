@@ -11,31 +11,41 @@
 			<div class="flex justify-between">
 				<div class="flex flex-col gap-[5px]">
 					<span class="text-white text-xxl">{{ djStore.currentDJ ? 'DJ' : '' }} {{ djStore.currentDJ?.stage_name }}</span>
-					<div
-						v-if="djStore.currentDJ"
-						class="space-y-2 mt-2"
-					>
-						<p><strong>Псевдоним:</strong> {{ djStore.currentDJ?.stage_name }}</p>
-						<p><strong>Город:</strong> {{ djStore.currentDJ?.city }}</p>
-						<p><strong>Базовая стоймость:</strong> {{ djStore.currentDJ?.price }}</p>
-					</div>
 				</div>
-				<div class="flex gap-[10px]">
-					<div
-						v-if="djStore.currentDJ?.website"
+				<div class="flex gap-[10px] justify-center items-center">
+					<a
+						:href="djStore.currentDJ?.website"
 						class="w-[48px] h-[48px] flex items-center justify-center rounded-full bg-lightGrey"
+						target="_blank"
+						rel="noopener noreferrer"
 					>
-						<a
-							:href="djStore.currentDJ.website"
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							<IconWorld
-								:icon-color="'white'"
-								class="w-[18px] h-[18px]"
-							/>
-						</a>
-					</div>
+						<IconWorld
+							:icon-color="'white'"
+							class="w-[18px] h-[18px]"
+						/>
+					</a>
+					<a
+						class="w-[48px] h-[48px] flex items-center justify-center rounded-full bg-lightGrey"
+						:href="djStore.currentDJ?.website"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						<IconGmail
+							icon-color="white"
+							class="w-[18px] h-[18px]"
+						/>
+					</a>
+					<a
+						class="w-[48px] h-[48px] flex items-center justify-center rounded-full bg-lightGrey"
+						:href="djStore.currentDJ?.website"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						<IconTelegram
+							class="w-[18px] h-[18px]"
+							icon-color="white"
+						/>
+					</a>
 				</div>
 			</div>
 			<div
