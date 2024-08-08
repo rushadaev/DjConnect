@@ -23,6 +23,8 @@ const colorClass = computed<string>(() => {
     if (color.value === StatusVariable.Green) return 'v-status--green'
     if (color.value === StatusVariable.Red) return 'v-status--red'
     if (color.value === StatusVariable.Orange) return 'v-status--orange'
+    if (color.value === StatusVariable.White) return 'v-status--white'
+
     return ''
 })
 </script>
@@ -30,6 +32,10 @@ const colorClass = computed<string>(() => {
 <style lang="scss" scoped>
 .v-status {
     @apply flex items-center justify-center text-red max-w-max h-[30px] py-0 px-[25px] rounded-[5px] cursor-pointer;
+
+    &--white {
+        @apply bg-[white] text-black
+    }
 
     &--green {
         @apply bg-[#ADFF0040] text-[#ADFF00]
