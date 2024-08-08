@@ -11,6 +11,7 @@ export const useDJStore = defineStore('dj', {
         tracks: [] as Track[],
         isLoading: false,
         error: null as string | null,
+        qrCode: null as string | null,
     }),
     actions: {
         async selectTrack(id: number | string) {
@@ -112,6 +113,25 @@ export const useDJStore = defineStore('dj', {
                 }
             } catch (error) {
                 this.error = 'Failed to update DJ profile'
+                console.error(error)
+                throw error
+            } finally {
+                this.isLoading = false
+            }
+        },
+        // /dj/{dj_id}/qr-code
+        // Generate QR code for DJ profile [web-server request]
+        async generateQRCode(djId: number) {
+            this.isLoading = true
+            this.error = null
+            try {
+                const { data, error: apiError, execute } = useApi<string>('get', `/dj/${djId}/qr-code`)
+                await execute()
+                if (apiError.value) throw new Error(apiError.value)
+                this.qrCode = data.value || ''
+                return data.value || ''
+            } catch (error) {
+                this.error = 'Failed to generate QR code'
                 console.error(error)
                 throw error
             } finally {

@@ -10,7 +10,10 @@
 				v-if="user?.is_dj"
 				class="absolute top-[24px] right-[24px] w-[175px]"
 			>
-				<VButton :color="ButtonColors.Green">
+				<VButton
+					:color="ButtonColors.Green"
+					@click="createQR"
+				>
 					<IconQr class="mr-[5px]" />
 					Обновить QR
 				</VButton>
@@ -19,32 +22,43 @@
 		<div class="bg-blackContent p-[25px]">
 			<div class="flex justify-between">
 				<div class="flex flex-col gap-[5px]">
-					<span class="text-white text-xxl">{{ user?.is_dj ? 'DJ' : '' }} {{ user?.name }}</span>
-					<div
-						v-if="user?.is_dj"
-						class="space-y-2 mt-2"
-					>
-						<p><strong>Псевдоним:</strong> {{ user?.dj?.stage_name }}</p>
-						<p><strong>Город:</strong> {{ user?.dj?.city }}</p>
-						<p><strong>Базовая стоймость:</strong> {{ user?.dj?.price }}</p>
-					</div>
+					<span class="text-white text-xxl">{{ user?.is_dj ? 'DJ' : '' }} {{ user?.dj?. stage_name }}</span>
+					<span class="text-[#FFFFFF4D] text-sm">{{ user?.name }}</span>
 				</div>
-				<div class="flex gap-[10px]">
-					<div
-						v-if="user?.dj?.website"
+				<div class="flex gap-[10px] justify-center items-center">
+					<a
+						:href="user.dj.website"
 						class="w-[48px] h-[48px] flex items-center justify-center rounded-full bg-lightGrey"
+						target="_blank"
+						rel="noopener noreferrer"
 					>
-						<a
-							:href="user.dj.website"
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							<IconWorld
-								:icon-color="'white'"
-								class="w-[18px] h-[18px]"
-							/>
-						</a>
-					</div>
+						<IconWorld
+							:icon-color="'white'"
+							class="w-[18px] h-[18px]"
+						/>
+					</a>
+					<a
+						class="w-[48px] h-[48px] flex items-center justify-center rounded-full bg-lightGrey"
+						:href="user.dj.website"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						<IconGmail
+							icon-color="white"
+							class="w-[18px] h-[18px]"
+						/>
+					</a>
+					<a
+						class="w-[48px] h-[48px] flex items-center justify-center rounded-full bg-lightGrey"
+						:href="user.dj.website"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						<IconTelegram
+							class="w-[18px] h-[18px]"
+							icon-color="white"
+						/>
+					</a>
 				</div>
 			</div>
 			<div
@@ -110,39 +124,71 @@
 			</VButton>
 		</div>
 	</div>
+	<DialogRoot v-model:open="qrCodeRef">
+		<DialogTrigger
+			class="text-grass11 font-semibold shadow-blackA7 hover:bg-mauve3 inline-flex h-[35px] items-center justify-center rounded-[4px] bg-white px-[15px] leading-none shadow-[0_2px_10px] focus:shadow-[0_0_0_2px] focus:shadow-black focus:outline-none"
+		>
+			QR code
+		</DialogTrigger>
+		<DialogPortal>
+			<DialogOverlay class="bg-blackA9 data-[state=open]:animate-overlayShow fixed inset-0 z-30" />
+			<DialogContent
+				class="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none z-[100]"
+			>
+				<DialogTitle class="text-mauve12 m-0 text-[17px] font-semibold">
+					QR
+				</DialogTitle>
+				<!-- qrCodeRef -->
+				<img
+					:src="qrCodeRef"
+					alt="QR code"
+					class="w-[100%] h-[auto] mt-[25px]"
+				>
+				<DialogClose
+					class="text-grass11 hover:bg-green4 focus:shadow-green7 absolute top-[10px] right-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
+					aria-label="Close"
+				>
+					<!-- <Icon icon="lucide:x" /> -->
+				</DialogClose>
+			</DialogContent>
+		</DialogPortal>
+	</DialogRoot>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter,useRoute } from 'vue-router'
 import { useSessionStore } from '@/entities/session/model/session.store'
 import { useDJStore } from '@/entities/dj/model/dj.store'
 import { storeToRefs } from 'pinia'
-import { IconQr, IconWorld, IconStat, IconEdit, IconMusic } from 'shared/components/Icon'
+import { IconQr, IconTelegram, IconGmail, IconWorld, IconStat, IconEdit, IconMusic } from 'shared/components/Icon'
 import { VButton, ButtonColors } from 'shared/components/Button'
 import { VCard } from 'shared/components/Card'
-
+import {
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogOverlay,
+  DialogPortal,
+  DialogRoot,
+  DialogTitle,
+  DialogTrigger,
+} from 'radix-vue'
 const router = useRouter()
 const route = useRoute()
 const sessionStore = useSessionStore()
 const djStore = useDJStore()
-
+const qrCodeRef = ref(null)
 const { user } = storeToRefs(sessionStore)
 // Fetch DJ tracks if query is DJ
 
-onMounted(async () => {
-  if (user.value?.is_dj && user.value.dj) {
-    await djStore.fetchTracks(user.value.dj.id)
-  } else {
-	const id =  route.params.id
-	console.log( { id: id } )
-	if (id) {
-		await djStore.fetchDJProfile(+id)
-		await djStore.fetchTracks(+id)
-	}
+const createQR = () => {
+  // Implement QR code generation
+  console.log('Generate QR code')
+  djStore.generateQRCode(user.value?.dj?.id).then((res) => {
+	qrCodeRef.value = res
+  })
 }
-})
-
 const checkDJ = () => {
   router.push({ name: 'dj-profile', params: { id: 1 } })
 }
@@ -159,6 +205,19 @@ const goToStatistics = () => {
   // Implement navigation to statistics page
   console.log('Navigate to statistics page')
 }
+
+onMounted(async () => {
+  if (user.value?.is_dj && user.value.dj) {
+    await djStore.fetchTracks(user.value.dj.id)
+  } else {
+	const id =  route.params.id
+	console.log( { id: id } )
+	if (id) {
+		await djStore.fetchDJProfile(+id)
+		await djStore.fetchTracks(+id)
+	}
+}
+})
 </script>
 
 <style scoped></style>
