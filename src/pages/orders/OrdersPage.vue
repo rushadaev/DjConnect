@@ -1,6 +1,5 @@
 <template>
 	<div
-		v-if="user?.is_dj"
 		class="px-6 pt-11 overflow-y-auto overflow-x-hidden"
 	>
 		<h1 class="text-2xl pb-4">
