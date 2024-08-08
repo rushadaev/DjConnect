@@ -1,6 +1,5 @@
 <template>
 	<div
-		v-if="user?.is_dj"
 		class="px-6 pt-11 overflow-y-auto overflow-x-hidden"
 	>
 		<h1 class="text-2xl pb-4">
@@ -62,14 +61,14 @@
 			const orderList = await ordersStore.fetchOrders()
 			if(orderList)
 				for (let order of orderList) {
-					const dj = await djStore.fetchDJProfile(+order.dj_id)
+					// const dj = await djStore.fetchDJProfile(+order.dj_id)
 					const tracks = await djStore.fetchTracks(+order.dj_id)
 					const track = tracks.find(track => +track.id === +order.track_id)
 					orders.value.push({
 						id: +order.id,
 						photo: '/public/cabinet_bg.png',
 						title: track?.name || '',
-						text: dj?.stage_name,
+						text: `Заказан ${Math.floor(Math.random()*100)} раз`,
 						statusColor: 'white' as StatusVariable,
 						statusText: '20300 ₽',
 					})
