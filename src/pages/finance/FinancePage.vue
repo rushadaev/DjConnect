@@ -14,7 +14,6 @@
 		<div class="flex justify-between mt-4 gap-2">
 			<button
 				class="w-1/3 h-[65px] bg-[#131313] rounded-md cursor-pointer"
-				@click="goToTopUp"
 			>
 				<div class="flex flex-col items-center gap-3">
 					<span
