@@ -8,22 +8,11 @@
 			>
 		</div>
 		<div class="bg-blackContent p-[25px]">
-			<div class="flex justify-between">
-				<div class="flex flex-col gap-[5px]">
-					<span class="text-white text-xxl">{{ djStore.currentDJ ? 'DJ' : '' }} {{ djStore.currentDJ?.stage_name }}</span>
+			<div class="flex justify-between gap-[10px]">
+				<div class="flex flex-col items-center justify-center">
+					<span class="text-white text-xxl">{{ 'DJ ' + djStore.currentDJ?.stage_name }}</span>
 				</div>
 				<div class="flex gap-[10px] justify-center items-center">
-					<a
-						:href="djStore.currentDJ?.website"
-						class="w-[48px] h-[48px] flex items-center justify-center rounded-full bg-lightGrey"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						<IconWorld
-							:icon-color="'white'"
-							class="w-[18px] h-[18px]"
-						/>
-					</a>
 					<a
 						class="w-[48px] h-[48px] flex items-center justify-center rounded-full bg-lightGrey"
 						:href="djStore.currentDJ?.website"
@@ -43,7 +32,18 @@
 					>
 						<IconTelegram
 							class="w-[18px] h-[18px]"
-							icon-color="white"
+							icon-color="#0085FF"
+						/>
+					</a>
+					<a
+						:href="djStore.currentDJ?.website"
+						class="w-[48px] h-[48px] flex items-center justify-center rounded-full bg-lightGrey"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						<IconGoogle
+							icon-color="#28B447"
+							class="w-[18px] h-[18px]"
 						/>
 					</a>
 				</div>
@@ -82,7 +82,7 @@ import { useRouter,useRoute } from 'vue-router'
 // import { useSessionStore } from '@/entities/session/model/session.store'
 import { useDJStore } from '@/entities/dj/model/dj.store'
 // import { storeToRefs } from 'pinia'
-import {  IconWorld, IconMusic } from 'shared/components/Icon'
+import {  IconGoogle, IconMusic, IconTelegram, IconGmail } from 'shared/components/Icon'
 import { VButton, ButtonColors } from 'shared/components/Button'
 import { VCard } from 'shared/components/Card'
 
