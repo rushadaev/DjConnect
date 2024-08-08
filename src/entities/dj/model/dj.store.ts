@@ -121,7 +121,7 @@ export const useDJStore = defineStore('dj', {
         },
         // /dj/{dj_id}/qr-code
         // Generate QR code for DJ profile [web-server request]
-        async generateQRCode(djId: number) {
+        async generateQRCode(djId: number) : Promise<string> {
             this.isLoading = true
             this.error = null
             try {

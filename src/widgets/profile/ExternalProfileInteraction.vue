@@ -14,7 +14,7 @@
 				</div>
 				<div class="flex gap-[10px] justify-center items-center">
 					<a
-						:href="djStore.currentDJ.website"
+						:href="djStore.currentDJ?.website"
 						class="w-[48px] h-[48px] flex items-center justify-center rounded-full bg-lightGrey"
 						target="_blank"
 						rel="noopener noreferrer"
@@ -26,7 +26,7 @@
 					</a>
 					<a
 						class="w-[48px] h-[48px] flex items-center justify-center rounded-full bg-lightGrey"
-						:href="djStore.currentDJ.website"
+						:href="djStore.currentDJ?.website"
 						target="_blank"
 						rel="noopener noreferrer"
 					>
@@ -37,7 +37,7 @@
 					</a>
 					<a
 						class="w-[48px] h-[48px] flex items-center justify-center rounded-full bg-lightGrey"
-						:href="djStore.currentDJ.website"
+						:href="djStore.currentDJ?.website"
 						target="_blank"
 						rel="noopener noreferrer"
 					>

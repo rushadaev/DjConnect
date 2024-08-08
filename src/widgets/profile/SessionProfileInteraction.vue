@@ -27,7 +27,7 @@
 				</div>
 				<div class="flex gap-[10px] justify-center items-center">
 					<a
-						:href="user.dj.website"
+						:href="user?.dj?.website"
 						class="w-[48px] h-[48px] flex items-center justify-center rounded-full bg-lightGrey"
 						target="_blank"
 						rel="noopener noreferrer"
@@ -39,7 +39,7 @@
 					</a>
 					<a
 						class="w-[48px] h-[48px] flex items-center justify-center rounded-full bg-lightGrey"
-						:href="user.dj.website"
+						:href="user?.dj?.website"
 						target="_blank"
 						rel="noopener noreferrer"
 					>
@@ -50,7 +50,7 @@
 					</a>
 					<a
 						class="w-[48px] h-[48px] flex items-center justify-center rounded-full bg-lightGrey"
-						:href="user.dj.website"
+						:href="user?.dj?.website"
 						target="_blank"
 						rel="noopener noreferrer"
 					>
@@ -124,7 +124,7 @@
 			</VButton>
 		</div>
 	</div>
-	<DialogRoot v-model:open="qrCodeRef">
+	<DialogRoot v-model:open="modalOpen">
 		<DialogTrigger
 			class="text-grass11 font-semibold shadow-blackA7 hover:bg-mauve3 inline-flex h-[35px] items-center justify-center rounded-[4px] bg-white px-[15px] leading-none shadow-[0_2px_10px] focus:shadow-[0_0_0_2px] focus:shadow-black focus:outline-none"
 		>
@@ -156,7 +156,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useRouter,useRoute } from 'vue-router'
 import { useSessionStore } from '@/entities/session/model/session.store'
 import { useDJStore } from '@/entities/dj/model/dj.store'
@@ -167,7 +167,7 @@ import { VCard } from 'shared/components/Card'
 import {
   DialogClose,
   DialogContent,
-  DialogDescription,
+//   DialogDescription,
   DialogOverlay,
   DialogPortal,
   DialogRoot,
@@ -178,16 +178,18 @@ const router = useRouter()
 const route = useRoute()
 const sessionStore = useSessionStore()
 const djStore = useDJStore()
-const qrCodeRef = ref(null)
+const qrCodeRef = ref<string | undefined>(undefined)
 const { user } = storeToRefs(sessionStore)
-// Fetch DJ tracks if query is DJ
-
+// compute modalOpen by qrCodeRef
+const modalOpen = computed(() => !!qrCodeRef.value)
 const createQR = () => {
   // Implement QR code generation
   console.log('Generate QR code')
-  djStore.generateQRCode(user.value?.dj?.id).then((res) => {
-	qrCodeRef.value = res
-  })
+  if(user?.value?.dj?.id){
+	djStore.generateQRCode(+user.value.dj.id).then((res) => {
+		qrCodeRef.value = res
+	})
+}
 }
 const checkDJ = () => {
   router.push({ name: 'dj-profile', params: { id: 1 } })
