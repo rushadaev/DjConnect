@@ -122,22 +122,9 @@ export const useDJStore = defineStore('dj', {
         },
         // /dj/{dj_id}/qr-code
         // Generate QR code for DJ profile [web-server request]
-        async generateQRCode(djId: number) : Promise<string> {
-            this.isLoading = true
-            this.error = null
-            try {
-                const { data, error: apiError, execute } = useApi<string>('get', `/dj/${djId}/qr-code`)
-                await execute()
-                if (apiError.value) throw new Error(apiError.value)
-                this.qrCode = data.value || ''
-                return data.value || ''
-            } catch (error) {
-                this.error = 'Failed to generate QR code'
-                console.error(error)
-                throw error
-            } finally {
-                this.isLoading = false
-            }
+        generateQRCode(djId: number): string {
+            this.qrCode = `https://dj-connect.xyz/dj/${djId}/qr-code`
+            return this.qrCode
         },
         //dj/{dj_id}/statistics Get statistics for a DJ
         async fetchDJStatistics(djId: number): Promise<Statistics> {

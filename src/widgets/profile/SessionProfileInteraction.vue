@@ -140,14 +140,8 @@
 				<img
 					:src="qrCodeRef"
 					alt="QR code"
-					class="w-[100%] h-[auto] mt-[25px]"
+					class="w-[100%] h-[auto] p-[10px]"
 				>
-				<!-- <DialogClose
-					class="text-grass11 hover:bg-green4 focus:shadow-green7 absolute top-[10px] right-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
-					aria-label="Close"
-				> -->
-				<!-- <Icon icon="lucide:x" /> -->
-				<!-- </DialogClose> -->
 			</DialogContent>
 		</DialogPortal>
 	</DialogRoot>
@@ -185,10 +179,8 @@ const createQR = () => {
   // Implement QR code generation
   console.log('Generate QR code')
   if(user?.value?.dj?.id){
+	qrCodeRef.value = djStore.generateQRCode(+user.value.dj.id)
 	modalOpen.value = true
-	djStore.generateQRCode(+user.value.dj.id).then((res) => {
-		qrCodeRef.value = res
-	})
 }
 }
 const checkDJ = () => {
