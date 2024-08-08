@@ -125,15 +125,10 @@
 		</div>
 	</div>
 	<DialogRoot v-model:open="modalOpen">
-		<DialogTrigger
-			class="text-grass11 font-semibold shadow-blackA7 hover:bg-mauve3 inline-flex h-[35px] items-center justify-center rounded-[4px] bg-white px-[15px] leading-none shadow-[0_2px_10px] focus:shadow-[0_0_0_2px] focus:shadow-black focus:outline-none"
-		>
-			QR code
-		</DialogTrigger>
 		<DialogPortal>
 			<DialogOverlay class="bg-blackA9 data-[state=open]:animate-overlayShow fixed inset-0 z-30" />
 			<DialogContent
-				class="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none z-[100]"
+				class="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] h-[50dvh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none z-[100]"
 			>
 				<DialogTitle class="text-mauve12 m-0 text-[17px] font-semibold">
 					QR
@@ -156,7 +151,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref  } from 'vue'
 import { useRouter,useRoute } from 'vue-router'
 import { useSessionStore } from '@/entities/session/model/session.store'
 import { useDJStore } from '@/entities/dj/model/dj.store'
@@ -172,7 +167,7 @@ import {
   DialogPortal,
   DialogRoot,
   DialogTitle,
-  DialogTrigger,
+//   DialogTrigger,
 } from 'radix-vue'
 const router = useRouter()
 const route = useRoute()
@@ -181,11 +176,13 @@ const djStore = useDJStore()
 const qrCodeRef = ref<string | undefined>(undefined)
 const { user } = storeToRefs(sessionStore)
 // compute modalOpen by qrCodeRef
-const modalOpen = computed(() => !!qrCodeRef.value)
+// const modalOpen = computed(() => !!qrCodeRef.value)
+const modalOpen = ref(false)
 const createQR = () => {
   // Implement QR code generation
   console.log('Generate QR code')
   if(user?.value?.dj?.id){
+	modalOpen.value = true
 	djStore.generateQRCode(+user.value.dj.id).then((res) => {
 		qrCodeRef.value = res
 	})
