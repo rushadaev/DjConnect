@@ -5,10 +5,19 @@
 @import "reset";
 @import "transitions";
 
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,600;1,600&display=swap');
+
 body {
   height: 100vh;
   overflow: hidden;
   color: #FFFFFF;
+}
+
+body * {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
 }
 
 .layout {
@@ -32,3 +41,4 @@ body {
 .button-space {
   margin-bottom: 75px!important;
 }
+

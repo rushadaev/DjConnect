@@ -1,5 +1,5 @@
 <template>
-	<VCard
+	<PaymentCard
 		v-for="item in props.items"
 		:key="item.id"
 		:photo="item.photo"
@@ -17,11 +17,11 @@
 				{{ item.statusText }}
 			</VStatus>
 		</template>
-	</VCard>
+	</PaymentCard>
 </template>
 
 <script setup lang="ts">
-import { VCard } from '@/shared/components/Card'
+import PaymentCard  from './PaymentCard.vue'
 import { VStatus } from '@/shared/components/Status'
 import { StatusVariable } from '@/shared/components/Status/config'
 

@@ -5,11 +5,11 @@
 		@click="goto"
 	>
 		<div class="flex gap-[10px]">
-			<img
-				src="/public/cabinet_bg.png"
-				alt="photo"
-				class="w-[48px] h-[48px] rounded-[5px]"
+			<div
+				class="w-[48px] h-[48px] rounded-[5px] flex flex-col justify-center items-center"
 			>
+				<span class="text-[27px]">📈</span>
+			</div>
 			<div class="flex flex-col justify-center">
 				<h3 class="text-white text-sm">
 					{{ title }}
