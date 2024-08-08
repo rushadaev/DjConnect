@@ -1,5 +1,5 @@
 <template>
-	<div class="mb-[80px]" >
+	<div class="mb-[80px]">
 		<div class="relative h-[350px] overflow-hidden">
 			<img
 				:src="imageSrc"

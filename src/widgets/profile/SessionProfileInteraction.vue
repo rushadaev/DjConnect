@@ -22,8 +22,11 @@
 		<div class="bg-blackContent p-[25px]">
 			<div class="flex justify-between">
 				<div class="flex flex-col gap-[5px]">
-					<span class="text-white text-xxl">{{ user?.is_dj ? 'DJ' : '' }} {{ user?.dj?. stage_name }}</span>
-					<span class="text-[#FFFFFF4D] text-sm">{{ user?.name }}</span>
+					<span class="text-white text-xxl">{{ user?.is_dj ? `DJ ${user?.dj?.stage_name}`: user?.name }}</span>
+					<span
+						v-if="user?.is_dj"
+						class="text-[#FFFFFF4D] text-sm"
+					>{{ user?.name }}</span>
 				</div>
 				<div class="flex gap-[10px] justify-center items-center">
 					<a
@@ -139,12 +142,12 @@
 					alt="QR code"
 					class="w-[100%] h-[auto] mt-[25px]"
 				>
-				<DialogClose
+				<!-- <DialogClose
 					class="text-grass11 hover:bg-green4 focus:shadow-green7 absolute top-[10px] right-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
 					aria-label="Close"
-				>
-					<!-- <Icon icon="lucide:x" /> -->
-				</DialogClose>
+				> -->
+				<!-- <Icon icon="lucide:x" /> -->
+				<!-- </DialogClose> -->
 			</DialogContent>
 		</DialogPortal>
 	</DialogRoot>
@@ -160,7 +163,7 @@ import { IconQr, IconTelegram, IconGmail, IconWorld, IconStat, IconEdit, IconMus
 import { VButton, ButtonColors } from 'shared/components/Button'
 import { VCard } from 'shared/components/Card'
 import {
-  DialogClose,
+//   DialogClose,
   DialogContent,
 //   DialogDescription,
   DialogOverlay,
