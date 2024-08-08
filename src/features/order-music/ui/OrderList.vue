@@ -6,6 +6,7 @@
 		:title="item.title"
 		:text="item.text"
 		:route-params="item.routeParams"
+		:text-color="props?.textColor"
 		class="mb-[7px]"
 	>
 		<template
@@ -25,6 +26,7 @@ import { VStatus } from '@/shared/components/Status'
 import { StatusVariable } from '@/shared/components/Status/config'
 
 const props = defineProps<{
+	textColor?: string,
     items: {
         id: number,
         photo: string,

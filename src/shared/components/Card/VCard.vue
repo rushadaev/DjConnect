@@ -14,7 +14,12 @@
 				<h3 class="text-white text-sm">
 					{{ title }}
 				</h3>
-				<p class="text-[#FFFFFF4D] text-xs">
+				<p
+					class="text-xs"
+					:class="{ 'text-[#ADFF00]': props?.textColor === 'green',
+						'text-[#FFFFFF4D]': !props?.textColor
+					}"
+				>
 					{{ text }}
 				</p>
 			</div>
@@ -35,6 +40,7 @@ const props = defineProps<{
 	photo: string
 	title: string
 	text: string
+	textColor?: string
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	routeParams?: any
 }>()

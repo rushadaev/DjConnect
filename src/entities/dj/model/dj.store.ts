@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import useApi from '@/shared/lib/api/use-api'
 import type { DJ, Track } from './types'
 import { useSessionStore } from '@/entities/session/model/session.store'
-import type { Order } from '@/features/order-music/model/order'
+import type { Order, Statistics } from '@/features/order-music/model'
 
 export const useDJStore = defineStore('dj', {
     state: () => ({
@@ -12,6 +12,7 @@ export const useDJStore = defineStore('dj', {
         isLoading: false,
         error: null as string | null,
         qrCode: null as string | null,
+        stats: {} as Statistics,
     }),
     actions: {
         async selectTrack(id: number | string) {
@@ -132,6 +133,24 @@ export const useDJStore = defineStore('dj', {
                 return data.value || ''
             } catch (error) {
                 this.error = 'Failed to generate QR code'
+                console.error(error)
+                throw error
+            } finally {
+                this.isLoading = false
+            }
+        },
+        //dj/{dj_id}/statistics Get statistics for a DJ
+        async fetchDJStatistics(djId: number): Promise<Statistics> {
+            this.isLoading = true
+            this.error = null
+            try {
+                const { data, error: apiError, execute } = useApi<Statistics>('get', `/dj/${djId}/statistics`)
+                await execute()
+                if (apiError.value) throw new Error(apiError.value)
+                this.stats = data.value as Statistics || {}
+                return data.value as Statistics || {}
+            } catch (error) {
+                this.error = 'Failed to fetch DJ statistics'
                 console.error(error)
                 throw error
             } finally {
