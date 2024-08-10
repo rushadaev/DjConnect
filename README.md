@@ -1,4 +1,4 @@
-### DJ Connect
+# DJ Connect
 
 Stack: Vue 3 + TypeScript + Vite
 
@@ -27,7 +27,7 @@ const startParam = TWA.initDataUnsafe.start_param
 this.$router.push({ name: 'DJProfile', params: { dj_id: startParam } });
 ```
 
-# Выплаты в приложении
+### Выплаты в приложении
 
 Выплаты можно делать тремя способами:
 
