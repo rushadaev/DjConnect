@@ -157,13 +157,12 @@ const route = useRoute()
 
 const handleNextStep = () => {
   stepSubmitted.value = true
-	console.log({ price: newPrice.value })
     if (currentStep.value < 3) {
 		currentStep.value++
 		stepSubmitted.value = false
 		if(currentStep.value === 3) {
-			if(djStore.selectedTrack) {
-					djStore.orderTrackRequest(newPrice.value).then(() => {
+			if(djStore.selectedTrack && newPrice.value) {
+					djStore.orderTrackRequest(+newPrice.value).then(() => {
 						console.log('djStore.orderTrackRequest() finished with success')
 					}).catch((e)=>{
 					console.log(e)
@@ -189,7 +188,7 @@ onMounted(async () => {
 		const dj = await djStore.fetchDJProfile(+id)
 		djData.value.name = dj.stage_name
 		djData.value.price = `${Math.floor(dj.price || 0)} ₽`
-		newPrice.value = dj.price
+		newPrice.value = `${dj.price}`
 		const tracksList = await djStore.fetchTracks(+id)
 		djData.value.tracks = tracksList.map(track => ({ label: track.name, value: `${track.id}`, additional: `${Math.floor(dj.price || 0)} ₽` } as DropdownOption))
 		buttonClass.value = `mt-[${tracksList.length * 30}px] m-[auto]`
