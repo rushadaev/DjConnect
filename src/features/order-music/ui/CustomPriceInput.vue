@@ -1,6 +1,6 @@
 <template>
 	<div class="flex flex-col w-full gap-1">
-		<label class="text-xl">{{ label }}:</label>
+		<label class="text-xl pb-4">{{ label }}:</label>
 		<!-- Add ₽ character -->
 		<input
 			v-bind="$attrs"

@@ -22,14 +22,14 @@ export const useDJStore = defineStore('dj', {
         async selectTrack(id: number | string) {
             this.selectedTrack = this.tracks.find(t => t.id === +id) || null
         },
-        async orderTrackRequest() {
+        async orderTrackRequest(price: number) {
             this.isLoading = true
             this.error = null
             try {
                 const { error: apiError, execute } = useApi<void>('post', '/orders', {
                     'dj_id': this.currentDJ?.id,
                     'track_id': this.selectedTrack?.id,
-                    'price': this.currentDJ?.price,
+                    'price': price,
                     'message': 'Please play this track!'
                 })
                 await execute()
