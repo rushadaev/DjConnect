@@ -171,14 +171,21 @@ const isLoading = computed(() => djStore.isLoading)
 
 const qrCodeRef = ref<string | undefined>(undefined)
 const { user } = storeToRefs(sessionStore)
-// compute modalOpen by qrCodeRef
-// const modalOpen = computed(() => !!qrCodeRef.value)
+
 const modalOpen = ref(false)
+
+// flag to send only once
+const qrCodeSent = ref(false)
+
 const createQR = () => {
   // Implement QR code generation
   console.log('Generate QR code')
   if(user?.value?.dj?.id){
 	qrCodeRef.value = djStore.generateQRCode(+user.value.dj.id)
+	if(!qrCodeSent.value){
+		djStore.sendQRCodeToDJ(+user.value.dj.id)
+		qrCodeSent.value = true
+	}
 	modalOpen.value = true
 }
 }
