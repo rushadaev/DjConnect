@@ -96,7 +96,7 @@
 					</span>
 				</VButton>
 			</div>
-			<VButton
+			<!-- <VButton
 				:color="ButtonColors.Green"
 				class="mt-[20px] m-[auto]"
 				@click="checkDJ"
@@ -105,7 +105,7 @@
 					<IconMusic icon-color="#131313" />
 					Пример страницы DJ
 				</span>
-			</VButton>
+			</VButton> -->
 		</div>
 	</div>
 	<div
@@ -189,9 +189,9 @@ const createQR = () => {
 	modalOpen.value = true
 }
 }
-const checkDJ = () => {
-  router.push({ name: 'dj-profile', params: { id: 1 } })
-}
+// const checkDJ = () => {
+//   router.push({ name: 'dj-profile', params: { id: 1 } })
+// }
 
 const becomeDJ = () => {
   router.push({ name: 'dj-registration' })
