@@ -273,6 +273,7 @@ import { StatusVariable } from '@/shared/components/Status/config'
 					const tracks = await djStore.fetchTracks(+order.dj_id)
 					const track = tracks.find(track => +track?.id === +order.track_id)
 					newMessage.value = order.message
+					newPrice.value = `${order?.price}`
 					statusColor.value =  order.is_paid? 'green' as StatusVariable : order.status === 'pending'? 'orange' as StatusVariable : 'red' as StatusVariable
 					statusText.value = order.is_paid? 'Оплачено' : order.status === 'pending'? 'Ожидание' : 'Отменен'
 					orders.value.push({
