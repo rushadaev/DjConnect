@@ -1,5 +1,6 @@
 <template>
 	<form
+		v-if="!isUpdating && !submitted"
 		class="space-y-4"
 		@submit.prevent="onSubmit"
 	>
@@ -66,11 +67,11 @@
 
 		<!-- Tracks section -->
 		<div class="mt-[20px]">
-			<label class="block text-sm font-medium mb-2">Треки</label>
+			<label class="block text-sm font-medium mb-6">Треки</label>
 			<div
 				v-for="(track, index) in form.tracks"
 				:key="index"
-				class="flex items-center mb-2"
+				class="flex items-end mb-8"
 			>
 				<VInput
 					v-model="track.name"
@@ -112,10 +113,40 @@
 			{{ error }}
 		</p>
 	</form>
+	<div
+		v-if="isUpdating && !submitted"
+		class="flex items-center justify-center h-[100vh]"
+	>
+		<div class="px-6 pt-11 pb-4">
+			<div
+				class="flex flex-col justify-center items-center py-[170px] text-7xl"
+			>
+				<span>💿</span>
+				<h1 class="text-2xl pt-4">
+					Ожидание
+				</h1>
+			</div>
+		</div>
+	</div>
+	<div
+		v-if="submitted"
+		class="flex items-center justify-center h-[100vh]"
+	>
+		<div class="px-6 pt-11 pb-4">
+			<div
+				class="flex flex-col justify-center items-center py-[170px] text-7xl"
+			>
+				<span>💿</span>
+				<h1 class="text-2xl pt-4">
+					Профиль обновлен!
+				</h1>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script setup lang="ts">
-import { reactive, onMounted } from 'vue'
+import { reactive, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useDJStore } from '@/entities/dj/model/dj.store'
 import { useSessionStore } from '@/entities/session/model/session.store'
@@ -127,6 +158,7 @@ import { useRouter } from 'vue-router'
 const djStore = useDJStore()
 const sessionStore = useSessionStore()
 const { isLoading: isUpdating, error } = storeToRefs(djStore)
+const submitted = ref(false)
 const { user } = storeToRefs(sessionStore)
 const router = useRouter()
 
@@ -169,6 +201,10 @@ const onSubmit = async () => {
       tracks: form.tracks.map(track => track.name).filter(name => name.trim() !== '')
     })
 
+	submitted.value = true
+	setTimeout(() => {
+		submitted.value = false
+	}, 2500)
     if (updatedDJ) {
       // Update tracks
       const currentTracks = form.tracks.filter(track => track.id)

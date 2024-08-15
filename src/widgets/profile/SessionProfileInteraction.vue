@@ -1,5 +1,8 @@
 <template>
-	<div class="mb-[80px]">
+	<div
+		v-if="!isLoading"
+		class="mb-[80px]"
+	>
 		<div class="relative h-[350px] overflow-hidden">
 			<img
 				src="/public/cabinet_bg.png"
@@ -105,6 +108,21 @@
 			</VButton>
 		</div>
 	</div>
+	<div
+		v-if="isLoading"
+		class="flex items-center justify-center h-[100vh]"
+	>
+		<div class="px-6 pt-11 pb-4">
+			<div
+				class="flex flex-col justify-center items-center py-[170px] text-7xl"
+			>
+				<span>💿</span>
+				<h1 class="text-2xl pt-4">
+					Ожидание
+				</h1>
+			</div>
+		</div>
+	</div>
 	<DialogRoot v-model:open="modalOpen">
 		<DialogPortal>
 			<DialogOverlay class="bg-blackA9 data-[state=open]:animate-overlayShow fixed inset-0 z-30" />
@@ -126,7 +144,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref  } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useRouter,useRoute } from 'vue-router'
 import { useSessionStore } from '@/entities/session/model/session.store'
 import { useDJStore } from '@/entities/dj/model/dj.store'
@@ -148,16 +166,26 @@ const router = useRouter()
 const route = useRoute()
 const sessionStore = useSessionStore()
 const djStore = useDJStore()
+
+const isLoading = computed(() => djStore.isLoading)
+
 const qrCodeRef = ref<string | undefined>(undefined)
 const { user } = storeToRefs(sessionStore)
-// compute modalOpen by qrCodeRef
-// const modalOpen = computed(() => !!qrCodeRef.value)
+
 const modalOpen = ref(false)
+
+// flag to send only once
+const qrCodeSent = ref(false)
+
 const createQR = () => {
   // Implement QR code generation
   console.log('Generate QR code')
   if(user?.value?.dj?.id){
 	qrCodeRef.value = djStore.generateQRCode(+user.value.dj.id)
+	if(!qrCodeSent.value){
+		djStore.sendQRCodeToDJ(+user.value.dj.id)
+		qrCodeSent.value = true
+	}
 	modalOpen.value = true
 }
 }

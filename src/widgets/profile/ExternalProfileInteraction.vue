@@ -1,5 +1,8 @@
 <template>
-	<div class="mb-[80px]">
+	<div
+		v-if="!isLoading"
+		class="mb-[80px]"
+	>
 		<div class="relative h-[350px] overflow-hidden">
 			<img
 				:src="imageSrc"
@@ -52,10 +55,25 @@
 			</div>
 		</div>
 	</div>
+	<div
+		v-if="isLoading"
+		class="flex items-center justify-center h-[100vh]"
+	>
+		<div class="px-6 pt-11 pb-4">
+			<div
+				class="flex flex-col justify-center items-center py-[170px] text-7xl"
+			>
+				<span>💿</span>
+				<h1 class="text-2xl pt-4">
+					Ожидание
+				</h1>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useRouter,useRoute } from 'vue-router'
 // import { useSessionStore } from '@/entities/session/model/session.store'
 import { useDJStore } from '@/entities/dj/model/dj.store'
@@ -68,7 +86,7 @@ const imageSrc = ref('/DjConnect/cabinet_bg.png')
 const router = useRouter()
 const route = useRoute()
 const djStore = useDJStore()
-
+const isLoading = computed(() => djStore.isLoading)
 // Fetch DJ tracks if query is DJ
 
 onMounted(async () => {

@@ -1,5 +1,5 @@
 <template>
-	<div class="fixed bottom-0 w-full bg-lightGrey text-white flex justify-between py-[10px] px-[20px]">
+	<div class="fixed bottom-0 w-full bg-lightGrey text-white flex justify-between py-[20px] px-[20px]">
 		<div class="flex justify-between w-full">
 			<router-link
 				v-for="route in filteredRoutes"

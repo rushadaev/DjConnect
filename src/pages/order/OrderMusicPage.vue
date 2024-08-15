@@ -1,16 +1,18 @@
 <template>
-	<div class="px-6 pt-11 pb-4">
+	<div
+		class="px-6 pt-11 pb-4"
+	>
 		<h1 class="text-2xl">
 			Заказать трек
 		</h1>
 		<p
-			v-if="currentStep === 1"
+			v-if="currentStep === 1 && !isLoading"
 			class="flex flex-col justify-center items-center py-[170px] text-7xl"
 		>
 			<span>💿</span>
 		</p>
 		<div
-			v-if="currentStep === 1"
+			v-if="currentStep === 1 && !isLoading"
 			class="flex-grow"
 		>
 			<div class="mb-4">
@@ -46,14 +48,14 @@
 
 		<!-- Step 2 -->
 		<p
-			v-if="currentStep === 2"
+			v-if="currentStep === 2 && !isLoading"
 			class="flex flex-col justify-center items-center py-[170px]"
 		>
 			<span class="text-7xl">⌛</span>
 			<span class="text-base my-4">Выберите нужный трек</span>
 		</p>
 		<div
-			v-if="currentStep === 2"
+			v-if="currentStep === 2 && !isLoading"
 			class="flex-grow"
 		>
 			<div class="mb-4">
@@ -83,14 +85,21 @@
 
 		<!-- Step 3 -->
 		<p
-			v-if="currentStep === 3"
+			v-if="isLoading"
 			class="flex flex-col justify-center items-center py-[170px]"
 		>
-			<span class="text-7xl">⌛</span>
-			<span class="text-base my-4">Ожидание</span>
+			<span class="text-7xl">💿</span>
+			<span class="text-lg mt-4">Загрузка</span>
+		</p>
+		<p
+			v-if="currentStep === 3 && !isLoading"
+			class="flex flex-col justify-center items-center py-[170px]"
+		>
+			<span class="text-7xl">💿</span>
+			<span class="text-lg mt-4">Ожидание ответа диджея</span>
 		</p>
 		<div
-			v-if="currentStep === 3"
+			v-if="currentStep === 3 && !isLoading"
 			class="flex-grow"
 		>
 			<div class="mb-4">
@@ -116,7 +125,7 @@
 
 <script setup lang="ts">
 
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { VInput } from 'shared/components/Input'
 import { useDJStore } from 'entities/dj'
 import { VButton, ButtonColors } from 'shared/components/Button'
@@ -125,12 +134,13 @@ import VDropdown, { DropdownOption } from 'shared/components/Dropdown/VDropdown.
 import { useRoute, useRouter } from 'vue-router'
 
 const djStore = useDJStore()
-const djData = ref({
+const djData = computed(()=>({
 	name: `${djStore.currentDJ?.stage_name}`,
 	price: `${Math.floor(djStore.currentDJ?.price || 0)} ₽`,
 	tracks: djStore.tracks.map(track => ({ label: track.name, value: `${track.id}`, additional: `${Math.floor(djStore.currentDJ?.price || 0)} ₽` } as DropdownOption))
-})
+}))
 
+const isLoading = computed(() => djStore.isLoading)
 const currentStep = ref(1)
 const stepSubmitted = ref(false)
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -171,8 +181,11 @@ const buttonClass = ref(`mt-[${djStore.tracks.length*30}px] m-[auto]`)
 onMounted(async () => {
 	const id = route.params.id
 	if (id) {
-		await djStore.fetchDJProfile(+id)
+		const dj = await djStore.fetchDJProfile(+id)
+		djData.value.name = dj.stage_name
+		djData.value.price = `${Math.floor(dj.price || 0)} ₽`
 		const tracksList = await djStore.fetchTracks(+id)
+		djData.value.tracks = tracksList.map(track => ({ label: track.name, value: `${track.id}`, additional: `${Math.floor(dj.price || 0)} ₽` } as DropdownOption))
 		buttonClass.value = `mt-[${tracksList.length * 30}px] m-[auto]`
 	}
 }
