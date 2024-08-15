@@ -16,7 +16,7 @@
 				</h3>
 				<p
 					class="text-xs"
-					:class="{ 'text-[#ADFF00]': props?.textColor === 'green',
+					:class="{ 'text-[#F5E02C]': props?.textColor === 'green',
 						'text-[#FFFFFF4D]': !props?.textColor
 					}"
 				>
