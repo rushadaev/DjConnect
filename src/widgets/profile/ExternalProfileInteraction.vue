@@ -19,30 +19,8 @@
 						target="_blank"
 						rel="noopener noreferrer"
 					>
-						<IconGmail
+						<IconWorld
 							icon-color="white"
-							class="w-[18px] h-[18px]"
-						/>
-					</a>
-					<a
-						class="w-[48px] h-[48px] flex items-center justify-center rounded-full bg-lightGrey"
-						:href="djStore.currentDJ?.website"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						<IconTelegram
-							class="w-[18px] h-[18px]"
-							icon-color="#0085FF"
-						/>
-					</a>
-					<a
-						:href="djStore.currentDJ?.website"
-						class="w-[48px] h-[48px] flex items-center justify-center rounded-full bg-lightGrey"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						<IconGoogle
-							icon-color="#28B447"
 							class="w-[18px] h-[18px]"
 						/>
 					</a>
@@ -82,7 +60,7 @@ import { useRouter,useRoute } from 'vue-router'
 // import { useSessionStore } from '@/entities/session/model/session.store'
 import { useDJStore } from '@/entities/dj/model/dj.store'
 // import { storeToRefs } from 'pinia'
-import {  IconGoogle, IconMusic, IconTelegram, IconGmail } from 'shared/components/Icon'
+import { IconMusic, IconWorld } from 'shared/components/Icon'
 import { VButton, ButtonColors } from 'shared/components/Button'
 import { VCard } from 'shared/components/Card'
 

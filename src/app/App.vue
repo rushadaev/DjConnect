@@ -30,12 +30,13 @@ import { MainLayout } from './layouts'
 import { useLocaleStore } from '@/shared/lib/i18n'
 import { useSessionStore } from '@/entities/session/model/session.store'
 import { storeToRefs } from 'pinia'
+import { twa } from '@/shared/lib/api/twa'
 
 const localeStore = useLocaleStore()
 localeStore.initializeLocale('ru')
 
 const sessionStore = useSessionStore()
-const { isLoading, error, user, isAuthenticated } = storeToRefs(sessionStore)
+const { isLoading, error } = storeToRefs(sessionStore)
 
 const route = useRoute()
 const router = useRouter()
@@ -48,13 +49,19 @@ watch(() => route?.meta?.layout, (newLayoutComponent) => {
 
 onMounted(async () => {
   await sessionStore.initSession()
-  if (isAuthenticated.value && user.value && !user.value.is_dj) {
-    // Если пользователь аутентифицирован, но не диджей, перенаправляем на главную страницу
-    router.push({ name: 'main' })
-  } else if (!isAuthenticated.value) {
-    // Если пользователь не аутентифицирован, перенаправляем на страницу входа или регистрации
-    router.push({ name: 'login' })
-  }
+  await twa?.ready()
+  if(twa?.initDataUnsafe.start_param){
+	const nextRoute = twa?.initDataUnsafe.start_param.split(':')[0] === 'dj' ? 'dj-profile' : 'review-order'
+	const id = twa?.initDataUnsafe.start_param.split(':')[1]
+	router.push({ name: nextRoute, params: { id } })
+	}
+// 	else if (isAuthenticated.value && user.value && !user.value.is_dj) {
+//     // Если пользователь аутентифицирован, но не диджей, перенаправляем на главную страницу
+// 	router.push({ name: 'main' })
+//   } else if (!isAuthenticated.value) {
+//     // Если пользователь не аутентифицирован, перенаправляем на страницу входа или регистрации
+//     router.push({ name: 'login' })
+//   }
 })
 </script>
 

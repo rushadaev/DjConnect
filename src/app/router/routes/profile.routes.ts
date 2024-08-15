@@ -11,6 +11,15 @@ export default [
             layout: MainLayout
         }
     },
+    {
+        name: 'edit-card',
+        component: () => import('pages/edit-card/EditCardPage.vue'),
+        path: '/edit-card',
+        meta: {
+            title: 'Редактировать карту',
+            layout: MainLayout
+        }
+    },
     // add dynamic route for each dj id profile
 	{
 		name: 'dj-profile',

@@ -9,40 +9,10 @@
 			<span class="text-5xl text-white">{{ 1500 }} ₽</span>
 			<span class="text-sm text-[#FFFFFF4D] pt-2">Баланс</span>
 		</div>
-		<!-- пополнить обменять отправить кнопки в горизонтальный ряд, 110px 65px -->
-		<div class="flex justify-between mt-4 gap-2">
-			<button
-				class="w-1/3 h-[65px] bg-[#131313] rounded-md cursor-pointer"
-			>
-				<div class="flex flex-col items-center gap-3">
-					<span
-						class="w-[24px] h-[24px] text-[24px]"
-					>📥</span>
-					<span class="text-white text-[10px]">Пополнить</span>
-				</div>
-			</button>
-			<button
-				class="w-1/3 h-[65px] bg-[#ADFF00] rounded-md cursor-pointer"
-			>
-				<div class="flex flex-col items-center gap-3">
-					<span
-						class="w-[24px] h-[24px] text-[24px]"
-					>💰</span>
-					<span class="text-[#131313] text-[10px]">Обменять</span>
-				</div>
-			</button>
-			<button
-				class="w-1/3 h-[65px] bg-[#131313] rounded-md cursor-pointer"
-			>
-				<div class="flex flex-col items-center gap-3">
-					<span
-						class="w-[24px] h-[24px] text-[24px]"
-					>📤</span>
-					<span class="text-white text-[10px]">Отправить</span>
-				</div>
-			</button>
-		</div>
-		<button class="w-full flex items-center justify-center gap-2 mt-3 bg-[#131313] h-[55px] cursor-pointer rounded-md">
+		<button
+			class="w-full flex items-center justify-center gap-2 mt-3 bg-[#131313] h-[55px] cursor-pointer rounded-md"
+			@click="changeCard"
+		>
 			<span class="text-[24px]">💳</span><span class="text-[15px]">Изменить карту вывода</span>
 		</button>
 		<h1 class="text-xl py-4">
@@ -67,14 +37,18 @@
 	import { useSessionStore } from 'entities/session'
 	import { useOrdersStore } from 'features/order-music/model/use-orders-store'
 	import { storeToRefs } from 'pinia'
+	import { useRouter } from 'vue-router'
 	const ordersStore = useOrdersStore()
 	const djStore = useDJStore()
 	const sessionStore = useSessionStore()
 	const { user } = storeToRefs(sessionStore)
-
+	const router = useRouter()
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const orders = ref<any>([])
 
+	const changeCard = () => {
+		router.push({ name: 'edit-card' })
+	}
 	onMounted(async () => {
 
 		if(user.value?.is_dj && user.value.dj) {

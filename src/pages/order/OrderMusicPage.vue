@@ -74,7 +74,7 @@
 					>
 						<span class="flex gap-[5px] items-center">
 							<IconWallet icon-color="#131313" />
-							Оплатить
+							Отправить диджею на согласование
 						</span>
 					</VButton>
 				</div>
@@ -87,7 +87,7 @@
 			class="flex flex-col justify-center items-center py-[170px]"
 		>
 			<span class="text-7xl">⌛</span>
-			<span class="text-base my-4">В течение 15 минут диджей поставит ваш трек. Благодарим за заказ.</span>
+			<span class="text-base my-4">Ожидание</span>
 		</p>
 		<div
 			v-if="currentStep === 3"

@@ -1,15 +1,18 @@
 import { createPinia } from 'pinia'
-import { createApp } from 'vue'
+import { createApp, h } from 'vue'
 import App from './App.vue'
 import Router from './router'
 import { i18n } from '@/shared/lib/i18n'
+import VuePaycard from 'vue-paycard'
 
-const app = createApp(App)
+const app = createApp({ render: () => h(App), })
+
 const pinia = createPinia()
 
 app
 	.use(i18n)
 	.use(pinia)
 	.use(Router)
+	.use(VuePaycard)
 
 app.mount('#app')
