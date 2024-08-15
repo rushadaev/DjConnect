@@ -7,7 +7,7 @@
 		</h1>
 		<p
 			v-if="currentStep === 1 && !isLoading"
-			class="flex flex-col justify-center items-center pt-[80px] pb-[80px] text-7xl"
+			class="flex flex-col justify-center items-center pt-[30px] pb-[20px] text-7xl"
 		>
 			<span>💿</span>
 		</p>
@@ -20,12 +20,6 @@
 				<div
 					class="flex-col gap-4 mb-2"
 				>
-					<VInput
-						v-model="djData.name"
-						:disabled="true"
-						class="flex-1 text-base"
-						label=""
-					/>
 					<CustomPriceInput
 						v-if="djStore?.currentDJ?.price"
 						v-model:modelValue="newPrice"
@@ -33,6 +27,12 @@
 						class="py-3"
 						:price-change-allowed="true"
 						:min-price="djStore.currentDJ.price"
+					/>
+					<VInput
+						v-model="djData.name"
+						:disabled="true"
+						class="flex-1 text-base"
+						label=""
 					/>
 					<VButton
 						:color="ButtonColors.Green"
