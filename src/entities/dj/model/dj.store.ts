@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import useApi from '@/shared/lib/api/use-api'
 import type { DJ, Track } from './types'
 import { useSessionStore } from '@/entities/session/model/session.store'
-import type { Order, Statistics } from '@/features/order-music/model'
+import type { Order, Statistics, PayoutRequest, PayoutStatus } from '@/features/order-music/model'
 
 export const useDJStore = defineStore('dj', {
     state: () => ({
@@ -13,6 +13,9 @@ export const useDJStore = defineStore('dj', {
         error: null as string | null,
         qrCode: null as string | null,
         stats: {} as Statistics,
+        payoutStatus: null as PayoutStatus | null,
+        payouts: [] as PayoutStatus[],
+        availableBalance: null as number | null,
     }),
     actions: {
         async selectTrack(id: number | string) {
@@ -211,6 +214,53 @@ export const useDJStore = defineStore('dj', {
                 }
             } catch (error) {
                 this.error = 'Failed to update track price'
+                console.error(error)
+                throw error
+            } finally {
+                this.isLoading = false
+            }
+        },
+        async createPayoutRequest(djId: number, amount: number, cardNumber: string) {
+            this.isLoading = true
+            this.error = null
+            try {
+                const { data, error: apiError, execute } = useApi<PayoutStatus>('post', '/payouts', {
+                    'dj_id': djId,
+                    'amount': amount,
+                    'payout_type': 'bank_card',
+                    'payout_details': {
+                        'card_number': cardNumber
+                    }
+                } as PayoutRequest)
+                await execute()
+                if (apiError.value) throw new Error(apiError.value)
+                if(data.value){
+                    this.payoutStatus = data.value
+                    return data.value
+                }
+            } catch (error) {
+                this.error = 'Failed to create payout request'
+                console.error(error)
+                throw error
+            } finally {
+                this.isLoading = false
+            }
+        },
+        async fetchDJPayouts(djId: number) {
+            // /payouts/{dj_id} Get all payouts and available balance for a specific DJ
+            this.isLoading = true
+            this.error = null
+            try {
+                const { data, error: apiError, execute } = useApi<{ available_balance: number; payouts: PayoutStatus[] }>('get', `/payouts/${djId}`)
+                await execute()
+                if (apiError.value) throw new Error(apiError.value)
+                if(data.value){
+                    this.payouts = data.value.payouts
+                    this.availableBalance = data.value.available_balance
+                    return data.value.payouts
+                }
+            } catch (error) {
+                this.error = 'Failed to create payout request'
                 console.error(error)
                 throw error
             } finally {

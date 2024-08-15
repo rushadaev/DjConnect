@@ -10,7 +10,7 @@
 			v-bind="$attrs"
 			ref="inputField"
 			v-model="internalValue"
-			class="relative border-solid border-[1px] border-[#FFFFFF1A] bg-[#0A0A0A] h-[120px] w-full appearance-none leading-5 px-[10px] text-[15px] text-white shadow-[0 0 0 1px] outline-none focus:shadow-[0 0 0 2px black] selection:color-white  text-xl focus:border-[#F5E02C] block rounded-md"
+			class="relative border-none bg-[#131313] h-[120px] w-full appearance-none leading-5 px-[10px] text-[15px] text-white shadow-[0 0 0 1px] outline-none focus:shadow-[0 0 0 2px black] selection:color-white  text-xl focus:border-[#F5E02C] block rounded-md"
 			:disabled="disabled"
 			@blur="formatText"
 			@input="updateValue"
