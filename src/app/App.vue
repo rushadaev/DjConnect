@@ -51,8 +51,8 @@ onMounted(async () => {
   await sessionStore.initSession()
   await twa?.ready()
   if(twa?.initDataUnsafe.start_param){
-	const nextRoute = twa?.initDataUnsafe.start_param.split(':')[0] === 'dj' ? 'dj-profile' : 'review-order'
-	const id = twa?.initDataUnsafe.start_param.split(':')[1]
+	const nextRoute = twa?.initDataUnsafe.start_param.split('_')[0] === 'dj' ? 'dj-profile' : 'review-order'
+	const id = twa?.initDataUnsafe.start_param.split('_')[1]
 	router.push({ name: nextRoute, params: { id } })
 	}
 // 	else if (isAuthenticated.value && user.value && !user.value.is_dj) {
