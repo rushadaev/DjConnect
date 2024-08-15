@@ -7,7 +7,7 @@
 		</h1>
 		<p
 			v-if="currentStep === 1 && !isLoading"
-			class="flex flex-col justify-center items-center py-[170px] text-7xl"
+			class="flex flex-col justify-center items-center pt-[80px] pb-[80px] text-7xl"
 		>
 			<span>💿</span>
 		</p>
