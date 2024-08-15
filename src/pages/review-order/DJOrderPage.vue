@@ -1,6 +1,6 @@
 <template>
 	<div
-		v-if="djStore?.currentDJ?.price && orders.length && !stepSubmitted"
+		v-if="djStore?.currentDJ?.price && orders.length && !stepSubmitted && !isLoading"
 		class="px-6 pt-11 pb-4 overflow-y-auto"
 	>
 		<div class="relative h-[350px] overflow-hidden">
@@ -119,7 +119,7 @@
 		</div>
 	</div>
 	<div
-		v-if="stepSubmitted"
+		v-if="stepSubmitted && !isLoading"
 		class="flex items-center justify-center h-[100vh]"
 	>
 		<div class="px-6 pt-11 pb-4">
@@ -134,7 +134,7 @@
 		</div>
 	</div>
 	<div
-		v-if="!(djStore?.currentDJ?.price && orders.length && !stepSubmitted)"
+		v-if="isLoading && !stepSubmitted"
 		class="flex items-center justify-center h-[100vh]"
 	>
 		<div class="px-6 pt-11 pb-4">
@@ -143,7 +143,7 @@
 			>
 				<span>💿</span>
 				<h1 class="text-2xl pt-4">
-					Загрузка...
+					Ожидание
 				</h1>
 			</div>
 		</div>
@@ -164,7 +164,7 @@ import { StatusVariable } from '@/shared/components/Status/config'
 	import CustomTextInput from '@/features/order-music/ui/CustomTextInput.vue'
 	import { useRoute } from 'vue-router'
 	import { useDJStore } from 'entities/dj'
-	import { ref, onMounted } from 'vue'
+	import { ref, onMounted, computed } from 'vue'
 	import { useSessionStore } from 'entities/session'
 	import { useOrdersStore } from 'features/order-music/model/use-orders-store'
 	import { storeToRefs } from 'pinia'
@@ -191,6 +191,7 @@ import { StatusVariable } from '@/shared/components/Status/config'
 	const orders = ref<any>([])
 	const stepSubmitted = ref(false)
 
+	const isLoading = computed(() => djStore.isLoading)
 	// watch(newMessage, (value) => {
 	// 	if(value!==orders.value[0]?.message){
 	// 		djWantsToChangeMessage.value = true
@@ -242,7 +243,7 @@ import { StatusVariable } from '@/shared/components/Status/config'
 				incorrectOrderState.value = order.status !== 'pending'
 				orders.value.push({
 					id: +route.params.id,
-					photo: '/public/cabinet_bg.png',
+					photo: '/cabinet_bg.png?url',
 					title: track?.name,
 					text: user.value.dj.stage_name,
 					// statusColor: order.is_paid? 'green' as StatusVariable : order.status === 'pending'? 'orange' as StatusVariable : 'red' as StatusVariable,
@@ -276,7 +277,7 @@ import { StatusVariable } from '@/shared/components/Status/config'
 					statusText.value = order.is_paid? 'Оплачено' : order.status === 'pending'? 'Ожидание' : 'Отменен'
 					orders.value.push({
 						id: +route.params.id,
-						photo: '/public/cabinet_bg.png',
+						photo: '/cabinet_bg.png?url',
 						title: track?.name,
 						text: dj.stage_name,
 						// statusColor: order.is_paid? 'green' as StatusVariable : order.status === 'pending'? 'orange' as StatusVariable : 'red' as StatusVariable,
