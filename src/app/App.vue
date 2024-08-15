@@ -51,8 +51,8 @@ onMounted(async () => {
   await sessionStore.initSession()
   await twa?.ready()
   // vibration to test
-  const tele = window.Telegram.WebApp
-  tele.HapticFeedback.impactOccurred('heavy')
+//   const tele = window.Telegram.WebApp
+//   tele.HapticFeedback.impactOccurred('heavy')
   if(twa?.initDataUnsafe.start_param){
 	const nextRoute = twa?.initDataUnsafe.start_param.split('_')[0] === 'dj' ? 'dj-profile' : 'review-order'
 	const id = twa?.initDataUnsafe.start_param.split('_')[1]
