@@ -26,11 +26,13 @@
 						class="flex-1 text-base"
 						label=""
 					/>
-					<VInput
-						v-model="djData.price"
-						:disabled="true"
-						class="flex-1 text-base"
-						label=""
+					<CustomPriceInput
+						v-if="djStore?.currentDJ?.price"
+						v-model:modelValue="newPrice"
+						label="Стоимость"
+						class="py-3"
+						:price-change-allowed="true"
+						:min-price="djStore.currentDJ.price"
 					/>
 					<VButton
 						:color="ButtonColors.Green"
@@ -132,6 +134,7 @@ import { VButton, ButtonColors } from 'shared/components/Button'
 import {  IconMusic, IconHome, IconWallet } from 'shared/components/Icon'
 import VDropdown, { DropdownOption } from 'shared/components/Dropdown/VDropdown.vue'
 import { useRoute, useRouter } from 'vue-router'
+import CustomPriceInput from '@/features/order-music/ui/CustomPriceInput.vue'
 
 const djStore = useDJStore()
 const djData = computed(()=>({
@@ -139,6 +142,8 @@ const djData = computed(()=>({
 	price: `${Math.floor(djStore.currentDJ?.price || 0)} ₽`,
 	tracks: djStore.tracks.map(track => ({ label: track.name, value: `${track.id}`, additional: `${Math.floor(djStore.currentDJ?.price || 0)} ₽` } as DropdownOption))
 }))
+
+const newPrice = ref(`${djStore?.currentDJ?.price}`)
 
 const isLoading = computed(() => djStore.isLoading)
 const currentStep = ref(1)
@@ -152,13 +157,13 @@ const route = useRoute()
 
 const handleNextStep = () => {
   stepSubmitted.value = true
-
+	console.log({ price: newPrice.value })
     if (currentStep.value < 3) {
 		currentStep.value++
 		stepSubmitted.value = false
 		if(currentStep.value === 3) {
 			if(djStore.selectedTrack) {
-					djStore.orderTrackRequest().then(() => {
+					djStore.orderTrackRequest(newPrice.value).then(() => {
 						console.log('djStore.orderTrackRequest() finished with success')
 					}).catch((e)=>{
 					console.log(e)
@@ -184,6 +189,7 @@ onMounted(async () => {
 		const dj = await djStore.fetchDJProfile(+id)
 		djData.value.name = dj.stage_name
 		djData.value.price = `${Math.floor(dj.price || 0)} ₽`
+		newPrice.value = dj.price
 		const tracksList = await djStore.fetchTracks(+id)
 		djData.value.tracks = tracksList.map(track => ({ label: track.name, value: `${track.id}`, additional: `${Math.floor(dj.price || 0)} ₽` } as DropdownOption))
 		buttonClass.value = `mt-[${tracksList.length * 30}px] m-[auto]`
