@@ -5,19 +5,19 @@
 		<h1 class="text-2xl pb-4">
 			Статистика 📈
 		</h1>
-		<div class="mb-4 w-full h-[118px] border-solid border-[1px] border-[#FFFFFF1A] bg-[#0A0A0A] rounded-md flex flex-col items-center justify-center">
+		<div class="mb-4 w-full h-[118px] border-none bg-[#131313] rounded-md flex flex-col items-center justify-center">
 			<span class="text-sm text-[#FFFFFF4D] pb-2">Заработано за все время</span>
 			<span class="text-5xl text-white">{{ djStore?.stats?.total_income || 0 }} ₽</span>
 		</div>
-		<div class="mb-4 w-full h-[118px] border-solid border-[1px] border-[#FFFFFF1A] bg-[#0A0A0A] rounded-md flex flex-col items-center justify-center">
+		<div class="mb-4 w-full h-[118px] border-none bg-[#131313] rounded-md flex flex-col items-center justify-center">
 			<span class="text-sm text-[#FFFFFF4D] pb-2">Заработано за месяц</span>
 			<span class="text-5xl text-white">{{ djStore?.stats?.income_current_month || 0 }} ₽</span>
 		</div>
-		<div class="mb-4 w-full h-[118px] border-solid border-[1px] border-[#FFFFFF1A] bg-[#0A0A0A] rounded-md flex flex-col items-center justify-center">
+		<div class="mb-4 w-full h-[118px] border-none bg-[#131313] rounded-md flex flex-col items-center justify-center">
 			<span class="text-sm text-[#FFFFFF4D] pb-2">Принято заказов</span>
 			<span class="text-5xl text-white">{{ djStore?.stats?.total_accepted_orders || 0 }}</span>
 		</div>
-		<div class="mb-4 w-full h-[118px] border-solid border-[1px] border-[#FFFFFF1A] bg-[#0A0A0A] rounded-md flex flex-col items-center justify-center">
+		<div class="mb-4 w-full h-[118px] border-none bg-[#131313] rounded-md flex flex-col items-center justify-center">
 			<span class="text-sm text-[#FFFFFF4D] pb-2">Отклонено заказов</span>
 			<span class="text-5xl text-white">{{ djStore?.stats?.total_rejected_orders || 0 }}</span>
 		</div>

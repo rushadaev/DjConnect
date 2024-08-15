@@ -12,6 +12,15 @@ export default [
         }
     },
     {
+        name: 'payout',
+        component: () => import('pages/payout/PayoutPage.vue'),
+        path: '/payout',
+        meta: {
+            title: 'Вывод средств',
+            layout: MainLayout
+        }
+    },
+    {
         name: 'edit-card',
         component: () => import('pages/edit-card/EditCardPage.vue'),
         path: '/edit-card',

@@ -6,7 +6,7 @@
 		background-image="/public/card.jpg"
 		:labels="labels"
 		:input-fields="inputFields"
-		is-card-number-masked="false"
+		:is-card-number-masked="true"
 	/>
 	<div class="card-input pt-5">
 		<label
