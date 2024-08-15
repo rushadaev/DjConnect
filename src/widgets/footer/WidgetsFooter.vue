@@ -11,6 +11,15 @@
 				<span class="w-[23px] h-[27px] mb-[6px]">{{ route.icon }}</span>
 				<span class="text-xs">{{ route.label }}</span>
 			</router-link>
+			<a
+				key="support"
+				href="https://t.me/dmitrynovikov21"
+				class="flex flex-col items-center flex-1"
+				active-class="text-routerLime"
+			>
+				<span class="w-[23px] h-[27px] mb-[6px]">🔊</span>
+				<span class="text-xs">Поддержка</span>
+			</a>
 		</div>
 	</div>
 </template>
@@ -27,7 +36,7 @@ const routes: Array<Partial<RouteRecordRaw> & { icon: string, label: string, pat
     { path: '/orders', icon: '📣', label: 'Заказы', onlyDJ: true },
     { path: '/history', icon: '⏳', label: 'История' },
     { path: '/finance', icon: '🛍️', label: 'Финансы', onlyDJ: true },
-    { path: '/support', icon: '🔊', label: 'Поддержка' }
+    // { path: '/support', icon: '🔊', label: 'Поддержка', beforeEnter() { window.location.href = 'https://t.me/dmitrynovikov21' } }
 ]
 
 const filteredRoutes = computed(() => {
