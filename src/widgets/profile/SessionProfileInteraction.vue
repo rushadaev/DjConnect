@@ -202,6 +202,7 @@ const editDJProfile = () => {
 }
 
 const goToStatistics = () => {
+	router.push({ name: 'orders' })
   // Implement navigation to statistics page
   console.log('Navigate to statistics page')
 }
