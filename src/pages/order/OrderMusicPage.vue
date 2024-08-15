@@ -26,12 +26,6 @@
 						class="flex-1 text-base"
 						label=""
 					/>
-					<!-- <VInput
-						v-model="djData.price"
-						:disabled="true"
-						class="flex-1 text-base"
-						label=""
-					/> -->
 					<CustomPriceInput
 						v-if="djStore?.currentDJ?.price"
 						v-model:modelValue="newPrice"
