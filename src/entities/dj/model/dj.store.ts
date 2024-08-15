@@ -91,6 +91,22 @@ export const useDJStore = defineStore('dj', {
                 this.isLoading = false
             }
         },
+        // send qr to dj tg POST::/dj/{dj_id}/qr-code
+        async sendQRCodeToDJ(djId: number) {
+            this.isLoading = true
+            this.error = null
+            try {
+                const { error: apiError, execute } = useApi<void>('post', `/dj/${djId}/qr-code`)
+                await execute()
+                if (apiError.value) throw new Error(apiError.value)
+            } catch (error) {
+                this.error = 'Failed to send QR code to DJ'
+                console.error(error)
+                throw error
+            } finally {
+                this.isLoading = false
+            }
+        },
         async updateDJProfile(djData: Partial<DJ>) {
             this.isLoading = true
             this.error = null
