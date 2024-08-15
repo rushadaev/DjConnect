@@ -1,5 +1,3 @@
-declare module 'vue-paycard';
-
 export type PayoutStatus = {
     id: number;
     dj_id: number;

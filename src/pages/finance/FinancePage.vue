@@ -57,22 +57,23 @@
 		router.push({ name: 'payout' })
 	}
 	onMounted(async () => {
-
 		if(user.value?.is_dj && user.value.dj) {
 			const payouts = await djStore.fetchDJPayouts(+user.value.dj.id)
 			// const tracks = await djStore.fetchTracks(+user.value.dj.id)
-			for(let payout of payouts.reverse()) {
-				// const track = tracks.find(track => +track.id === +order.track_id)
-				payoutList.value.push({
-					id: +payout.id,
-					photo: '/public/cabinet_bg.png',
-					title: `-${payout.amount}₽`,
-					// format payout.processed_at
-					text: new Date(payout.created_at).toLocaleDateString(),
-					statusColor: payout.status === 'pending'? 'orange' as StatusVariable : payout.status === 'processed' ? 'green' as StatusVariable : 'red' as StatusVariable,
-					statusText: payout.status === 'pending' ? 'Ожидание' : payout.status === 'processed' ? 'Успешно' : 'Отклонено',
-					// routeParams: { name: 'review-order', params: { id: +order.id } }
-				})
+			if(payouts) {
+				for(let payout of payouts.reverse()) {
+					// const track = tracks.find(track => +track.id === +order.track_id)
+					payoutList.value.push({
+						id: +payout.id,
+						photo: '/public/cabinet_bg.png',
+						title: `-${payout.amount}₽`,
+						// format payout.processed_at
+						text: new Date(payout.created_at).toLocaleDateString(),
+						statusColor: payout.status === 'pending'? 'orange' as StatusVariable : payout.status === 'processed' ? 'green' as StatusVariable : 'red' as StatusVariable,
+						statusText: payout.status === 'pending' ? 'Ожидание' : payout.status === 'processed' ? 'Успешно' : 'Отклонено',
+						// routeParams: { name: 'review-order', params: { id: +order.id } }
+					})
+				}
 			}
 		}
 	})

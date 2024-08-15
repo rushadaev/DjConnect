@@ -53,7 +53,7 @@
 			<div
 				class="w-full h-[42px] bg-[#0A0A0A] flex items-center justify-start rounded-md pl-4"
 			>
-				<span class="text-white text-sm">{{ user?.dj.payment_details }}</span>
+				<span class="text-white text-sm">{{ user?.dj?.payment_details }}</span>
 			</div>
 		</div>
 		<VButton
@@ -129,13 +129,14 @@ const setAmount = ( amount: number ) => ()=> {
 const predefinedAmounts = [{ value: 1000, click: setAmount(1000) }, { value: 5000, click: setAmount(5000) }, { value: 10000, click: setAmount(10000) }, { value: 15000, click: setAmount(15000) }]
 
 const onSubmit = async () => {
-  try {
-    const payout = await djStore.createPayoutRequest(user.value.dj.id, selectedAmount.value, user.value.dj.payment_details)
-	console.log(payout)
-	stepSubmitted.value = true
-  }catch (error) {
-	console.error('Failed to update DJ profile:', error)
-  }
+	if(user?.value?.dj && user?.value?.dj?.payment_details){
+		try {
+			await djStore.createPayoutRequest(user.value.dj.id, selectedAmount.value, user.value.dj.payment_details)
+			stepSubmitted.value = true
+		}catch (error) {
+			console.error('Failed to update DJ profile:', error)
+		}
+	}
 }
 
 </script>

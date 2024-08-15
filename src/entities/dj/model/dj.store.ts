@@ -2,7 +2,8 @@ import { defineStore } from 'pinia'
 import useApi from '@/shared/lib/api/use-api'
 import type { DJ, Track } from './types'
 import { useSessionStore } from '@/entities/session/model/session.store'
-import type { Order, Statistics, PayoutRequest, PayoutStatus } from '@/features/order-music/model'
+import type { Order, Statistics } from '@/features/order-music/model'
+import type { PayoutRequest, PayoutStatus } from '@/features/edit-card/model/types'
 
 export const useDJStore = defineStore('dj', {
     state: () => ({
