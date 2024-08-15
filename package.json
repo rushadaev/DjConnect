@@ -24,6 +24,7 @@
     "tailwindcss-animate": "^1.0.7",
     "vue": "^3.2.47",
     "vue-i18n": "^9.11.0",
+    "vue-paycard": "^0.7.0",
     "vue-router": "^4.4.0"
   },
   "devDependencies": {
