@@ -175,12 +175,7 @@ import { StatusVariable } from '@/shared/components/Status/config'
 
 	const incorrectOrderState = ref(true)
 
-	// const { orders } = storeToRefs(ordersStore)
 	const { user } = storeToRefs(sessionStore)
-	// console.log( { user : user?.value.dj?.id } )
-	// watch(user, () => {
-	// 	djStore.fetchDJProfile(user?.dj?.id)
-	// })
 	const newPrice = ref(`${djStore?.currentDJ?.price}`)
 	const newMessage = ref('')
 	const djWantsToChangeMessage = ref(false)
