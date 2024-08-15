@@ -2,7 +2,7 @@
 	<div class="fixed bottom-0 w-full bg-lightGrey text-white flex justify-between py-[10px] px-[20px]">
 		<div class="flex justify-between w-full">
 			<router-link
-				v-for="route in routes"
+				v-for="route in filteredRoutes"
 				:key="route.path"
 				:to="route.path"
 				class="flex flex-col items-center flex-1"
@@ -16,15 +16,23 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { RouteRecordRaw } from 'vue-router'
+import { useSessionStore } from '@/entities/session/model/session.store'
 
-const routes: Array<Partial<RouteRecordRaw> & { icon: string, label: string, path: string }> = [
+const { user } = useSessionStore()
+
+const routes: Array<Partial<RouteRecordRaw> & { icon: string, label: string, path: string, onlyDJ?: boolean }> = [
     { path: '/', icon: '⭐', label: 'Профиль' },
-    { path: '/orders', icon: '📣', label: 'Заказы' },
+    { path: '/orders', icon: '📣', label: 'Заказы', onlyDJ: true },
     { path: '/history', icon: '⏳', label: 'История' },
-    { path: '/finance', icon: '🛍️', label: 'Финансы' },
+    { path: '/finance', icon: '🛍️', label: 'Финансы', onlyDJ: true },
     { path: '/support', icon: '🔊', label: 'Поддержка' }
 ]
+
+const filteredRoutes = computed(() => {
+  return routes.filter(route => !route.onlyDJ || user?.is_dj)
+})
 </script>
 
 <style scoped>
