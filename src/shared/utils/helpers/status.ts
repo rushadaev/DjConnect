@@ -22,6 +22,10 @@ export function getStatusText(status: string, is_paid: boolean): { statusText: s
         case 'price_changed':
             statusText = 'Изменена цена'
             statusColor = 'orange' as StatusVariable
+            if(is_paid){
+                statusText = 'Оплачен'
+                statusColor = 'green' as StatusVariable
+            }
             break
         default:
             statusText = 'Отменен'

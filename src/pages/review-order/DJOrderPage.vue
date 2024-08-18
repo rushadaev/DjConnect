@@ -138,10 +138,9 @@
 			<div
 				class="flex flex-col justify-center items-center py-[170px] text-7xl"
 			>
-				<span>💿</span>
-				<h1 class="text-2xl pt-4">
-					Ожидание ответа...
-				</h1>
+				<span class="text-7xl">💿</span>
+				<span class="text-lg mt-4">🎉 Заказ отправлен</span>
+				<span class="text-lg mt-4 font-bold">Ожидайте ответа от пользователя</span>
 			</div>
 		</div>
 	</div>
