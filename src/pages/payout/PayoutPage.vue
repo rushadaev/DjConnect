@@ -49,7 +49,7 @@
 			</div>
 		</div>
 		<div class="mb-4 w-full h-[120px] border-none bg-[#131313] rounded-md flex flex-col items-start justify-start p-5">
-			<span class="text-lg text-[#FFFFFF4D] pb-5">Карта вывода</span>
+			<span class="text-lg text-[#FFFFFF4D] pb-5">Номер карты для вывода</span>
 			<div
 				class="w-full h-[42px] bg-[#0A0A0A] flex items-center justify-start rounded-md pl-4"
 			>
