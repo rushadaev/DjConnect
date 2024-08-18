@@ -74,7 +74,6 @@
 					break
 			}
 		}
-		//route.query.role
 	})
 
 	function goToNextRoute(nextRoute: string, id: string) {

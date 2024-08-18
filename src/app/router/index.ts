@@ -1,11 +1,11 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import routes from './routes'
 import { useSessionStore } from '@/entities/session/model/session.store'
 
-const BASE_URL = 'DjConnect'
+const BASE_URL = '/DjConnect/'
 
 const router = createRouter({
-	history: createWebHistory(BASE_URL),
+	history: createWebHashHistory(BASE_URL),
 	routes: routes as RouteRecordRaw[]
 })
 
