@@ -223,7 +223,7 @@ const onSubmit = async () => {
       }
     }
 
-    router.push({ name: 'profile' })
+    router.push({ name: 'profile', params: { flow: 'dj' } })
   } catch (error) {
     // Error is already handled in the store
   }

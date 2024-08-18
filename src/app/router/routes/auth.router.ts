@@ -3,7 +3,7 @@ import { MainLayout } from '@/app/layouts'
 
 export default [
     {
-        path: '/dj-registration',
+        path: '/:flow(user|dj)?/dj-registration',
         name: 'dj-registration',
         component: () => import('@/pages/dj-registration/DJRegistrationPage.vue'),
         meta: {

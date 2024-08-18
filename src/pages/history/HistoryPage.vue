@@ -1,85 +1,77 @@
 <template>
 	<div
-		v-if="!isLoading"
-		class="px-6 pt-11 overflow-y-auto overflow-x-hidden"
+
+		class="px-6 pt-11 h-full min-h-[100vh] overflow-y-auto overflow-x-hidden"
 	>
 		<h1 class="text-2xl pb-4">
 			Список заказов ✨
 		</h1>
 		<OrderList
-			class="px-6"
+
 			:items="orders"
 		/>
 	</div>
-	<div
-		v-if="isLoading"
-		class="flex items-center justify-center h-[100vh]"
-	>
-		<div class="px-6 pt-11 pb-4">
-			<div
-				class="flex flex-col justify-center items-center py-[170px] text-7xl"
-			>
-				<span>💿</span>
-				<h1 class="text-2xl pt-4">
-					Ожидание
-				</h1>
-			</div>
-		</div>
-	</div>
+	<VLoader :is-loading="isLoading" />
 </template>
 
 <script setup lang="ts">
 	import { StatusVariable } from '@/shared/components/Status/config'
-	// import MusicList from '@/widgets/music-list/MusicList.vue'
 	import OrderList from '@/features/order-music/ui/OrderList.vue'
+	import { VLoader } from '@/shared/components/Loader/'
 
-	// import { useRoute } from 'vue-router'
 	import { useDJStore } from 'entities/dj'
 	import { ref, onMounted, computed } from 'vue'
 	import { useSessionStore } from 'entities/session'
 	import { useOrdersStore } from 'features/order-music/model/use-orders-store'
 	import { storeToRefs } from 'pinia'
+	import { useRoute } from 'vue-router'
+import { getStatusText } from '@/shared/utils/helpers'
 	const ordersStore = useOrdersStore()
 	const djStore = useDJStore()
 	const sessionStore = useSessionStore()
 	const { user } = storeToRefs(sessionStore)
-
+	const route = useRoute()
+	const flow = route.params.flow ?? 'user' // Default to 'user' if flow is not set
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const orders = ref<any>([])
-	const isLoading = computed(() => djStore.isLoading)
+	const { isLoading }  = storeToRefs(ordersStore)
 
 	onMounted(async () => {
-		if(user.value?.is_dj && user.value.dj) {
+		if(user.value?.is_dj && user.value.dj && flow !== 'user') {
 			const orderList = await djStore.fetchDJOrders(+user.value.dj.id)
-			const tracks = await djStore.fetchTracks(+user.value.dj.id)
+			// const tracks = await djStore.fetchTracks(+user.value.dj.id)
 			for(let order of orderList) {
-				const track = tracks.find(track => +track.id === +order.track_id)
+				const track = order.track
+				const { statusText: statusText, statusColor: color } = getStatusText(order.status, order.is_paid)
 				orders.value.push({
 					id: +order.id,
 					photo: '/public/cabinet_bg.png',
 					title: track?.name || '',
 					text: user.value.dj.stage_name,
-					statusColor: order.is_paid? 'green' as StatusVariable : order.status === 'pending'? 'orange' as StatusVariable : 'red' as StatusVariable,
-					statusText: order.is_paid? 'Оплачено' : order.status === 'pending'? 'Ожидание' : 'Отменен',
-					routeParams: { name: 'review-order', params: { id: +order.id } }
+					statusColor: color,
+					statusText: statusText,
+					routeParams: { name: 'review-order', params: { id: +order.id, flow: 'dj' } }
 				})
 			}
 		} else {
 			const orderList = await ordersStore.fetchOrders()
 			if(orderList)
 				for (let order of orderList) {
-					const dj = await djStore.fetchDJProfile(+order.dj_id)
-					const tracks = await djStore.fetchTracks(+order.dj_id)
-					const track = tracks.find(track => +track.id === +order.track_id)
+					// const dj = await djStore.fetchDJProfile(+order.dj_id)
+					// const tracks = await djStore.fetchTracks(+order.dj_id)
+					// const track = tracks.find(track => +track.id === +order.track_id)
+					let track = order?.track
+					let dj = order?.dj
+					const { statusText: statusText, statusColor: color } = getStatusText(order.status, order.is_paid)
 					orders.value.push({
 						id: +order.id,
 						photo: '/public/cabinet_bg.png',
 						title: track?.name || '',
 						text: dj?.stage_name,
-						statusColor: order.is_paid? 'green' as StatusVariable : order.status === 'pending'? 'orange' as StatusVariable : 'red' as StatusVariable,
+						statusColor: color,
 						// 'Оплачено' | 'Ожидание' | 'Отменен'
-						statusText: order.is_paid? 'Оплачено' : order.status === 'pending'? 'Ожидание' : 'Отменен',
-						routeParams: { name: 'review-order', params: { id: +order.id } }
+						statusText: statusText,
+						routeParams: { name: 'review-order', params: { id: +order.id, flow: 'user' } }
 					})
 			}
 		}

@@ -16,15 +16,15 @@ export function useDJRegistration() {
         error.value = null
         try {
             const registeredDJ = await djStore.registerDJ(data)
-            if (registeredDJ && registeredDJ.id) {
-                for (const trackName of data.tracks) {
-                    if (trackName.trim()) {
-                        await djStore.addTrack(registeredDJ.id, trackName)
-                    }
-                }
-            }
+            // if (registeredDJ && registeredDJ.id) {
+            //     for (const trackName of data.tracks) {
+            //         if (trackName.trim()) {
+            //             await djStore.addTrack(registeredDJ.id, trackName)
+            //         }
+            //     }
+            // }
             await sessionStore.initSession()
-            router.push({ name: 'main' })
+            router.push({ name: 'main', params: { flow: 'dj' } })
         } catch (e) {
             error.value = e instanceof Error ? e.message : String(e)
         } finally {

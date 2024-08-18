@@ -5,7 +5,7 @@ export default [
     {
         name: 'support',
         component: () => import('pages/support/SupportPage.vue'),
-        path: '/support',
+        path: '/:flow(user|dj)?/support',
         meta: {
             title: 'Support',
             layout: MainLayout

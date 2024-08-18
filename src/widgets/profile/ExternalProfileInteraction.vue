@@ -29,23 +29,11 @@
 					</a>
 				</div>
 			</div>
-			<div
-				v-if="djStore.currentDJ"
-				class="mt-[12px] flex flex-col gap-[5px]"
-			>
-				<VCard
-					v-for="track in djStore.tracks"
-					:key="track.id"
-					:title="track.name"
-					:text="`Добавлен: ${new Date(track.created_at).toLocaleDateString()}`"
-					:photo="'/public/cabinet_bg.png'"
-				/>
-			</div>
 			<div>
 				<VButton
 					:color="ButtonColors.Green"
 					class="mt-[20px] m-[auto]"
-					@click="becomeDJ"
+					@click="orderTrack"
 				>
 					<span class="flex gap-[5px] items-center">
 						<IconMusic icon-color="#131313" />
@@ -53,23 +41,31 @@
 					</span>
 				</VButton>
 			</div>
-		</div>
-	</div>
-	<div
-		v-if="isLoading"
-		class="flex items-center justify-center h-[100vh]"
-	>
-		<div class="px-6 pt-11 pb-4">
 			<div
-				class="flex flex-col justify-center items-center py-[170px] text-7xl"
+				v-if="djStore.currentDJ"
+				class="mt-[12px] flex flex-col gap-[5px]"
 			>
-				<span>💿</span>
-				<h1 class="text-2xl pt-4">
-					Ожидание
-				</h1>
+				<div class="flex flex-col w-full gap-1">
+					<label
+						class="text-sm font-medium text-gray-700"
+					>Треки диджея</label>
+				</div>
+				<VCard
+					v-for="track in djStore.currentDJ?.tracks"
+					:key="track.id"
+					:title="track.name"
+					:text="`Добавлен: ${new Date(track.created_at).toLocaleDateString()}`"
+					:photo="'/public/cabinet_bg.png'"
+				/>
 			</div>
 		</div>
 	</div>
+	<VLoader
+		v-if="isLoading"
+		:is-loading="isLoading"
+		bg="bg-black"
+		text="DJ Connect"
+	/>
 </template>
 
 <script setup lang="ts">
@@ -81,6 +77,7 @@ import { useDJStore } from '@/entities/dj/model/dj.store'
 import { IconMusic, IconWorld } from 'shared/components/Icon'
 import { VButton, ButtonColors } from 'shared/components/Button'
 import { VCard } from 'shared/components/Card'
+import { VLoader } from 'shared/components/Loader'
 
 const imageSrc = ref('/DjConnect/cabinet_bg.png')
 const router = useRouter()
@@ -92,13 +89,12 @@ const isLoading = computed(() => djStore.isLoading)
 onMounted(async () => {
 
 	const id =  route.params.id
-	if (id) {
+	if ((id && !djStore.currentDJ) || djStore.currentDJ?.id !== +id) {
 		await djStore.fetchDJProfile(+id)
-		await djStore.fetchTracks(+id)
 	}
 })
 
-const becomeDJ = () => {
+const orderTrack = () => {
   router.push({ name: 'order', params: { id: route.params.id } })
 }
 

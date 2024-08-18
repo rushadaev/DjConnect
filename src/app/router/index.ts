@@ -9,15 +9,28 @@ const router = createRouter({
 	routes: routes as RouteRecordRaw[]
 })
 
-router.beforeEach((to: RouteLocationNormalized, _: RouteLocationNormalized, next: NavigationGuardNext) => {
-	const sessionStore = useSessionStore()
-	const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+router.beforeEach((to, from, next) => {
+  const sessionStore = useSessionStore()
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+  const appFlow = to.params.flow // Get the dynamic flow (user or dj) from the route
+  console.log('appFlow', appFlow)
+  console.log('to', to.params)
 
-	if (requiresAuth && !sessionStore.isAuthenticated) {
-		next({ name: 'login' })
-	} else {
-		next()
-	}
+  if (to.name === 'main'){
+	sessionStore.hideBackButton()
+  } else{
+	sessionStore.showBackButton()
+  }
+
+  // Save the dynamic flow to the store
+  // If route has /:flow, then appFlow will be 'user' or 'dj'
+  // It helps to determine the user role in the app and show the appropriate UI
+
+  if (requiresAuth && !sessionStore.isAuthenticated) {
+    next({ name: 'login' })
+  } else {
+    next()
+  }
 })
 
 export default router

@@ -5,7 +5,7 @@ export default [
     {
         name: 'story',
         component: () => import('pages/history/HistoryPage.vue'),
-        path: '/history',
+        path: '/:flow(user|dj)?/history',
         meta: {
             title: 'History',
             layout: MainLayout

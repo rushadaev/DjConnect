@@ -8,6 +8,7 @@ import type { PayoutRequest, PayoutStatus } from '@/features/edit-card/model/typ
 export const useDJStore = defineStore('dj', {
     state: () => ({
         selectedTrack: null as Track | null,
+        customTrack: '' as string,
         currentDJ: null as DJ | null,
         tracks: [] as Track[],
         isLoading: false,
@@ -19,19 +20,27 @@ export const useDJStore = defineStore('dj', {
         availableBalance: null as number | null,
     }),
     actions: {
+        clearCustomTrack() {
+            this.customTrack = ''
+        },
+        clearSelectedTrack() {
+            this.selectedTrack = null
+        },
         async selectTrack(id: number | string) {
             this.selectedTrack = this.tracks.find(t => t.id === +id) || null
         },
-        async orderTrackRequest(price: number) {
+        async orderTrackRequest(price: number, message: string) {
             this.isLoading = true
             this.error = null
             try {
                 const { error: apiError, execute } = useApi<void>('post', '/orders', {
                     'dj_id': this.currentDJ?.id,
                     'track_id': this.selectedTrack?.id,
+                    'custom_track': this.customTrack,
                     'price': price,
-                    'message': 'Please play this track!'
+                    'message': message ?? 'Please play this track!'
                 })
+
                 await execute()
                 if (apiError.value) throw new Error(apiError.value)
             } catch (error) {
@@ -79,6 +88,7 @@ export const useDJStore = defineStore('dj', {
                 if (apiError.value) throw new Error(apiError.value)
                 if (data.value) {
                     this.currentDJ = data.value
+                    this.tracks = data.value.tracks
                     return data.value
                 } else {
                     throw new Error('No data received from API')
@@ -180,6 +190,38 @@ export const useDJStore = defineStore('dj', {
                 this.isLoading = false
             }
         },
+        async fetchOrder(orderId: number): Promise<Order> {
+            this.isLoading = true
+            this.error = null
+            try {
+                const { data, error: apiError, execute } = useApi<Order>('get', `/orders/${orderId}`)
+                await execute()
+                if (apiError.value) throw new Error(apiError.value)
+                return data.value as Order
+            } catch (error) {
+                this.error = 'Failed to fetch order'
+                console.error(error)
+                throw error
+            } finally {
+                this.isLoading = false
+            }
+        },
+        async pollOrderStatus(orderId: number): Promise<Order> {
+            this.isLoading = true
+            this.error = null
+            try {
+                const { data, error: apiError, execute } = useApi<Order>('get', `/orders/${orderId}/status`)
+                await execute()
+                if (apiError.value) throw new Error(apiError.value)
+                return data.value as Order
+            } catch (error) {
+                this.error = 'Failed to poll order status'
+                console.error(error)
+                throw error
+            } finally {
+                this.isLoading = false
+            }
+        },
         async fetchTracks(djId: number) {
             this.isLoading = true
             this.error = null
@@ -188,6 +230,10 @@ export const useDJStore = defineStore('dj', {
                 await execute()
                 if (apiError.value) throw new Error(apiError.value)
                 this.tracks = data.value || []
+            console.log('this.tracks', this.tracks)
+                if(this.currentDJ)
+                    this.currentDJ.tracks = this.tracks ?? []
+                console.log('this.currentDJ', this.currentDJ)
                 return this.tracks
             } catch (error) {
                 this.error = 'Failed to fetch tracks'

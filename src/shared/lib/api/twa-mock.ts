@@ -40,7 +40,7 @@ const initDataUnsafe = {
 	user: mockUser,
 	auth_date: 1234567890,
 	hash: 'mock_hash',
-	start_param: 'test_start_param'
+	start_param: ''
 }
 
 const mockTWA: TWA = {

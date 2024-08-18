@@ -4,7 +4,7 @@
 			<router-link
 				v-for="route in filteredRoutes"
 				:key="route.path"
-				:to="route.path"
+				:to="{ name: route.name, params: {flow} }"
 				class="flex flex-col items-center flex-1"
 				active-class="text-routerLime"
 			>
@@ -26,21 +26,22 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { RouteRecordRaw } from 'vue-router'
+import { RouteRecordRaw, useRoute } from 'vue-router'
 import { useSessionStore } from '@/entities/session/model/session.store'
 
 const { user } = useSessionStore()
+const route = useRoute() // Access the current route
+const flow = route.params.flow ?? 'user' // Default to 'user' if flow is not set
 
-const routes: Array<Partial<RouteRecordRaw> & { icon: string, label: string, path: string, onlyDJ?: boolean }> = [
-    { path: '/', icon: '⭐', label: 'Профиль' },
-    { path: '/orders', icon: '📣', label: 'Заказы', onlyDJ: true },
-    { path: '/history', icon: '⏳', label: 'История' },
-    { path: '/finance', icon: '🛍️', label: 'Финансы', onlyDJ: true },
-    // { path: '/support', icon: '🔊', label: 'Поддержка', beforeEnter() { window.location.href = 'https://t.me/dmitrynovikov21' } }
+const routes: Array<Partial<RouteRecordRaw> & { icon: string, label: string, name: string, onlyDJ?: boolean }> = [
+    { name: 'main', icon: '⭐', label: 'Профиль' },
+    { name: 'orders', icon: '📣', label: 'Заказы', onlyDJ: true },
+    { name: 'story', icon: '⏳', label: 'История' },
+    { name: 'finance', icon: '🛍️', label: 'Финансы', onlyDJ: true },
 ]
 
 const filteredRoutes = computed(() => {
-  return routes.filter(route => !route.onlyDJ || user?.is_dj)
+  return routes.filter(route => !route.onlyDJ || (user?.is_dj && flow == 'dj'))
 })
 </script>
 

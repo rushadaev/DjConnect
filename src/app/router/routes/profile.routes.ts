@@ -5,7 +5,7 @@ export default [
     {
         name: 'order',
         component: () => import('pages/order/OrderMusicPage.vue'),
-        path: '/order-music/:id',
+        path: '/:flow(user|dj)?/order-music/:id',
         meta: {
             title: 'Заказать трек',
             layout: MainLayout
@@ -14,7 +14,7 @@ export default [
     {
         name: 'payout',
         component: () => import('pages/payout/PayoutPage.vue'),
-        path: '/payout',
+        path: '/:flow(user|dj)?/payout',
         meta: {
             title: 'Вывод средств',
             layout: MainLayout
@@ -23,7 +23,7 @@ export default [
     {
         name: 'edit-card',
         component: () => import('pages/edit-card/EditCardPage.vue'),
-        path: '/edit-card',
+        path: '/:flow(user|dj)?/edit-card',
         meta: {
             title: 'Редактировать карту',
             layout: MainLayout
@@ -33,7 +33,7 @@ export default [
 	{
 		name: 'dj-profile',
 		component: () => import('pages/profile/ProfilePage.vue'),
-		path: '/dj/:id',
+		path: '/:flow(user|dj)?/dj/:id',
 		meta: {
 			title: 'DJ Profile',
 			layout: MainLayout,

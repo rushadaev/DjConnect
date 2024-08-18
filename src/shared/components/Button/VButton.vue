@@ -1,6 +1,7 @@
 <template>
 	<button
 		class="v-button"
+		v-bind="$attrs"
 		:class="[colorClass, { 'opacity-50 cursor-not-allowed': loading }, {'button-space': bottomSpace}]"
 		:disabled="loading || disabled"
 		@click="onButtonClicked"

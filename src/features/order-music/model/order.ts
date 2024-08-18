@@ -1,4 +1,6 @@
 export type Order = {
+	dj: any
+	track: any
     'id': string,
     'user_id': string,
     'dj_id': string,

@@ -7,9 +7,9 @@ export interface DJ {
     sex: string;
     phone: string;
     email: string;
+    tracks: Track[]; // Измените это поле
     website: string;
     price: number;
-    tracks?: string[]; // Добавьте это поле
     created_at: string;
     updated_at: string;
 }
@@ -17,8 +17,6 @@ export interface DJ {
 export interface Track {
     id: number;
     name: string;
-    artist: string;
-    duration: string;
     created_at: string;
     updated_at: string;
 }

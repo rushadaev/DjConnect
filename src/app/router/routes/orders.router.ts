@@ -5,7 +5,7 @@ export default [
     {
         name: 'orders',
         component: () => import('pages/orders/OrdersPage.vue'),
-        path: '/orders',
+        path: '/:flow(user|dj)?/orders',
         meta: {
             title: 'Orders',
             layout: MainLayout
@@ -14,7 +14,7 @@ export default [
     {
         name: 'review-order',
         component: () => import('pages/review-order/DJOrderPage.vue'),
-        path: '/order-review/:id',
+        path: '/:flow(user|dj)?/order-review/:id',
         meta: {
             title: 'Review Order',
             layout: MainLayout

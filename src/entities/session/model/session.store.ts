@@ -3,12 +3,13 @@ import { ref, computed } from 'vue'
 import type { User } from './types'
 import { twa } from '@/shared/lib/api/twa'
 import useApi from '@/shared/lib/api/use-api'
+import { useRouter } from 'vue-router'
 
 export const useSessionStore = defineStore('session', () => {
     const user = ref<User | null>(null)
     const isLoading = ref(false)
     const error = ref<string | null>(null)
-
+    const router = useRouter()
     const isAuthenticated = computed(() => !!user.value)
 
     async function initSession() {
@@ -23,10 +24,13 @@ export const useSessionStore = defineStore('session', () => {
         try {
             await twa.ready()
             const twaUser = twa.initDataUnsafe.user
-
-            if (!twaUser) {
-                throw new Error('User data is not available from TWA')
-            }
+            //Setup init TWA settings
+            twa?.expand()
+            twa?.BackButton.onClick(originalBackButtonCallback)
+            twa?.disableVerticalSwipes()
+                if (!twaUser) {
+                    throw new Error('User data is not available from TWA')
+                }
 
             const { data, error: apiError, execute } = useApi<User>('get', '/profile/me', {
                 telegram_id: twaUser.id.toString(),
@@ -46,9 +50,28 @@ export const useSessionStore = defineStore('session', () => {
         }
     }
 
+    const originalBackButtonCallback = () => {
+        router.back()
+    }
+
+    function showBackButton() {
+        twa?.BackButton.show()
+    }
+    function hideBackButton() {
+        twa?.BackButton.hide()
+    }
+
+    function setNewBackButtonCallback(
+        callback: () => void = originalBackButtonCallback,
+        currentCallback: () => void = originalBackButtonCallback
+    ) {
+        twa?.BackButton.offClick(currentCallback)
+        twa?.BackButton.onClick(callback)
+    }
+
     function logout() {
         user.value = null
     }
 
-    return { user, isLoading, error, isAuthenticated, initSession, logout }
+    return { user, isLoading, error, isAuthenticated, initSession, showBackButton, hideBackButton, setNewBackButtonCallback, logout }
 })

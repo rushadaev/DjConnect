@@ -5,7 +5,7 @@ export default [
 	{
 		name: 'main',
 		component: () => import('pages/main/MainPage.vue'),
-		path: '/',
+		path: '/:flow(user|dj)?',
 		meta: {
 			title: 'DjConnect',
 			layout: MainLayout,

@@ -57,7 +57,6 @@
 				<VInput
 					v-model="form.website"
 					label="Веб-сайт"
-					type="url"
 				/>
 				<VInput
 					v-model="form.price"
@@ -73,7 +72,7 @@
 				<div
 					v-for="(track, index) in form.tracks"
 					:key="index"
-					class="flex items-center mb-2"
+					class="flex items-center justify-center mb-2"
 				>
 					<VInput
 						v-model="track.name"
@@ -83,7 +82,7 @@
 					<VButton
 						type="button"
 						:color="ButtonColors.Red"
-						class="ml-2 w-1/3"
+						class="ml-2"
 						@click="removeTrack(index)"
 					>
 						Удалить
@@ -150,6 +149,7 @@ const onSubmit = async () => {
     ...form,
     tracks: form.tracks.map(track => track.name).filter(name => name.trim() !== '')
   }
+  console.log('data', formData)
   await register(formData)
 }
 </script>

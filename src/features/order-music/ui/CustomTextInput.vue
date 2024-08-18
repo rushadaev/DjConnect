@@ -2,6 +2,7 @@
 	<div class="flex flex-col w-full gap-1 relative">
 		<!-- Add ₽ character -->
 		<Label
+			v-if="showLabel"
 			class="absolute left-3 font-light top-0 text-[10px] text-neutral-700 z-10 bg-[#0A0A0A]"
 			:for="props.id"
 		>{{ label }}</Label>
@@ -41,6 +42,10 @@
     disabled: {
       type: Boolean,
       default: false,
+    },
+    showLabel: {
+      type: Boolean,
+      default: true,
     },
   })
 

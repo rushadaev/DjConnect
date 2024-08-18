@@ -24,6 +24,7 @@
 import { VCard } from '@/shared/components/Card'
 import { VStatus } from '@/shared/components/Status'
 import { StatusVariable } from '@/shared/components/Status/config'
+import { useRoute } from 'vue-router'
 
 const props = defineProps<{
 	textColor?: string,
@@ -34,9 +35,10 @@ const props = defineProps<{
         text: string,
         statusColor?: StatusVariable,
         statusText?: string | 'Оплачено' | 'Ожидание' | 'Отменен'
-		routeParams?: { name: string , params: { id: number } }
+		routeParams?: { name: string , params: { id: number, flow: 'user'} }
     }[]
 }>()
+const route = useRoute()
 // const items = ref([
 //     {
 //         id: 1,
