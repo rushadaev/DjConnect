@@ -168,7 +168,6 @@ import { StatusVariable } from '@/shared/components/Status/config'
 	import { useSessionStore } from 'entities/session'
 	import { useOrdersStore } from 'features/order-music/model/use-orders-store'
 	import { storeToRefs } from 'pinia'
-import { stat } from 'fs'
 import { getStatusText } from '@/shared/utils/helpers'
 	const ordersStore = useOrdersStore()
 	const route = useRoute()

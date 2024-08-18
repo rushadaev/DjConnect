@@ -59,13 +59,14 @@ const props = defineProps({
 const internalValue = ref('')
 
 const closeKeyboard = () => {
-  inputField.value?.blur()
+  const input = inputField.value as HTMLInputElement
+  input?.blur()
 }
 
 onMounted(() => {
   document.addEventListener('touchend', function() {
-    const input = document.activeElement
-    if (input.tagName === 'INPUT' || input.tagName === 'TEXTAREA') {
+    const input = document.activeElement as HTMLInputElement
+    if (input?.tagName === 'INPUT' || input?.tagName === 'TEXTAREA') {
         input.blur()
     }
   })

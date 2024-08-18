@@ -161,9 +161,9 @@
 
 import { ref, onMounted, computed, onBeforeUnmount } from 'vue'
 import { VInput } from 'shared/components/Input'
-import { useDJStore } from 'entities/dj'
+import { Track, useDJStore } from 'entities/dj'
 import { VButton, ButtonColors } from 'shared/components/Button'
-import {  IconMusic, IconHome, IconWallet } from 'shared/components/Icon'
+import {  IconMusic, IconWallet } from 'shared/components/Icon'
 import VDropdown, { DropdownOption } from 'shared/components/Dropdown/VDropdown.vue'
 import { useRoute, useRouter } from 'vue-router'
 import CustomPriceInput from '@/features/order-music/ui/CustomPriceInput.vue'
@@ -258,7 +258,7 @@ const closeModal = () => {
 
 const updateTracks = async () => {
 	const id = route.params.id
-	const tracksList = await djStore.fetchTracks(id)
+	const tracksList = await djStore.fetchTracks(+id)
 	djData.value.tracks = tracksList.map(track => ({ label: track.name, value: `${track.id}`, additional: `${Math.floor(djStore.currentDJ?.price || 0)} ₽` } as DropdownOption))
 	buttonClass.value = `mt-[${tracksList.length * 30}px] m-[auto]`
 }
@@ -275,7 +275,7 @@ onMounted(async () => {
 		djData.value.name = dj.stage_name
 		djData.value.price = `${Math.floor(dj.price || 0)} ₽`
 		newPrice.value = `${Number(dj.price)}`
-		const tracksList = dj.tracks
+		const tracksList = dj.tracks as Track[]
 		djData.value.tracks = tracksList.map(track => ({ label: track.name, value: `${track.id}`, additional: `${Math.floor(dj.price || 0)} ₽` } as DropdownOption))
 		buttonClass.value = `mt-[${tracksList.length * 30}px] m-[auto]`
 	}

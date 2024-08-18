@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 
-const props = withDefaults(defineProps<{
+withDefaults(defineProps<{
   isLoading: boolean,
   text?: string
   bg?: string

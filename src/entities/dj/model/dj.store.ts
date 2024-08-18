@@ -88,7 +88,7 @@ export const useDJStore = defineStore('dj', {
                 if (apiError.value) throw new Error(apiError.value)
                 if (data.value) {
                     this.currentDJ = data.value
-                    this.tracks = data.value.tracks
+                    this.tracks = data.value.tracks as Track[]
                     return data.value
                 } else {
                     throw new Error('No data received from API')

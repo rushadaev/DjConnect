@@ -50,9 +50,9 @@ const closeKeyboard = () => {
 }
 onMounted(() => {
   document.addEventListener('touchend', function() {
-    const input = document.activeElement
-    if (input.tagName === 'INPUT' || input.tagName === 'TEXTAREA') {
-        input.blur()
+    const input = document.activeElement as HTMLInputElement
+    if (input?.tagName === 'INPUT' || input?.tagName === 'TEXTAREA') {
+		input.blur()
     }
   })
 })

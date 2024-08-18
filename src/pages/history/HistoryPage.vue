@@ -15,12 +15,11 @@
 </template>
 
 <script setup lang="ts">
-	import { StatusVariable } from '@/shared/components/Status/config'
 	import OrderList from '@/features/order-music/ui/OrderList.vue'
 	import { VLoader } from '@/shared/components/Loader/'
 
 	import { useDJStore } from 'entities/dj'
-	import { ref, onMounted, computed } from 'vue'
+	import { ref, onMounted } from 'vue'
 	import { useSessionStore } from 'entities/session'
 	import { useOrdersStore } from 'features/order-music/model/use-orders-store'
 	import { storeToRefs } from 'pinia'

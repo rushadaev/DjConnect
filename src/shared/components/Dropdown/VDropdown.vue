@@ -35,30 +35,29 @@
 	</div>
 </template>
 
-  <script setup lang="ts">
-  import { ref, watch } from 'vue'
-  import { IconMusic } from 'shared/components/Icon'
-import { Track } from '@/entities/dj'
+<script setup lang="ts">
+import { ref, watch } from 'vue'
+import { IconMusic } from 'shared/components/Icon'
 
-  export type DropdownOption = { value: string; label: string, additional?: string };
+export type DropdownOption = { value: string; id: number, label: string, additional?: string, name?: string };
 
-  const toggleState = ref(false)
-  const selectedValue = ref<string | undefined>(undefined)
+const toggleState = ref(false)
+const selectedValue = ref<string | undefined>(undefined)
 
 const selectOption = (value: string) => {
   selectedValue.value = value
   toggleState.value = false
-  selectedTrackName.value = props.options.find((option) => option.value === value)?.label || null
+  selectedTrackName.value = props.options.find((option) => option.value === value) || null
 
   if (props.onChange && value) props.onChange(value)
 }
 
-  const props = withDefaults(
+const props = withDefaults(
   defineProps<{
     options: DropdownOption[];
     placeholder?: string;
     indicator?: string;
-    modelValue?: Track | null;  // Use modelValue for v-model
+    modelValue?: DropdownOption | null;  // Use modelValue for v-model
     onChange?: (value: string) => void;
   }>(),
   {
@@ -70,14 +69,14 @@ const selectOption = (value: string) => {
   },
 )
 
-const selectedTrackName = ref(props.modelValue || null)
+const selectedTrackName = ref<DropdownOption | null>(props.modelValue || null)
 watch(
   () => props.modelValue,
   (newValue) => {
-    selectedTrackName.value = props.options.find((option) => option.value === newValue)?.label || null
+    selectedTrackName.value = props.options.find((option) => option.value === newValue?.id.toString()) || null as DropdownOption | null
   }
 )
-  </script>
+</script>
 
   <style scoped>
   .slide-fade-enter-active,

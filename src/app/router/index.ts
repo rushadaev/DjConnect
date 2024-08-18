@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, RouteRecordRaw, NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import routes from './routes'
 import { useSessionStore } from '@/entities/session/model/session.store'
 
@@ -15,7 +15,7 @@ router.beforeEach((to, from, next) => {
   const appFlow = to.params.flow // Get the dynamic flow (user or dj) from the route
   console.log('appFlow', appFlow)
   console.log('to', to.params)
-
+  console.log('from', from)
   if (to.name === 'main'){
 	sessionStore.hideBackButton()
   } else{

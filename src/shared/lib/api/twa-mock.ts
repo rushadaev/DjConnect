@@ -1,4 +1,5 @@
 import WebApp from '@twa-dev/sdk'
+import { BiometricManager, BiometricRequestAccessParams, BiometricAuthenticateParams, ShareStoryParams } from '@twa-dev/types'
 
 type TWA = typeof WebApp
 type PopupParams = Parameters<TWA['showPopup']>[0]
@@ -62,7 +63,8 @@ const mockTWA: TWA = {
 		section_bg_color: '#ffffff',
 		section_header_text_color: '#3a3a3a',
 		subtitle_text_color: '#999999',
-		destructive_text_color: '#ff0000'
+		destructive_text_color: '#ff0000',
+		section_separator_color: '#000000'
 	},
 	isExpanded: true,
 	viewportHeight: 600,
@@ -165,7 +167,7 @@ const mockTWA: TWA = {
 	switchInlineQuery: (query: string, choose_chat_types?: string[]) => {
 		console.log('Switching inline query:', query, choose_chat_types)
 	},
-	openLink: (url: string, options?: { try_instant_view?: boolean }) => {
+	openLink: (url: string, options?: { try_instant_view?: boolean} ) => {
 		console.log('Opening link:', url, options)
 	},
 	openTelegramLink: (url: string) => {
@@ -279,7 +281,7 @@ const mockTWA: TWA = {
 		return Promise.resolve(true)
 	},
 	showScanQrPopup: (
-		params: { text?: string },
+		params: { text?: string} ,
 		callback?: (text: string) => void
 	) => {
 		console.log('Showing scan QR popup:', params)
@@ -298,17 +300,52 @@ const mockTWA: TWA = {
 		console.log(`Checking if version is at least ${version}`)
 		const currentVersion = mockTWA.version.split('.').map(Number)
 		const targetVersion = version.split('.').map(Number)
-		for (
-			let i = 0;
-			i < Math.max(currentVersion.length, targetVersion.length);
-			i++
-		) {
+		for (let i = 0; i < Math.max(currentVersion.length, targetVersion.length); i++) {
 			const current = currentVersion[i] || 0
 			const target = targetVersion[i] || 0
 			if (current > target) return true
 			if (current < target) return false
 		}
 		return true
+	},
+	BiometricManager: {
+		isInited: false,
+		isBiometricAvailable: false,
+		biometricType: 'unknown',
+		isAccessRequested: false,
+		isAccessGranted: false,
+		isBiometricTokenSaved: false,
+		deviceId: '',
+		init: function (callback?: VoidFunction): BiometricManager {
+			console.log('Initializing BiometricManager', callback)
+			throw new Error('Function not implemented.')
+		},
+		requestAccess: function (params: BiometricRequestAccessParams, callback?: (isAccessGranted: boolean) => void): BiometricManager {
+			console.log('Requesting access to biometric', params, callback)
+			throw new Error('Function not implemented.')
+		},
+		authenticate: function (params: BiometricAuthenticateParams, callback?: (isAuthenticated: boolean) => void): BiometricManager {
+			console.log('Authenticating biometric', params, callback)
+			throw new Error('Function not implemented.')
+		},
+		updateBiometricToken: function (token: string, callback?: (isBiometricTokenUpdated: boolean) => void): BiometricManager {
+			console.log('Updating biometric token', token, callback)
+			throw new Error('Function not implemented.')
+		},
+		openSettings: function (): BiometricManager {
+			throw new Error('Function not implemented.')
+		}
+	},
+	isVerticalSwipesEnabled: false,
+	enableVerticalSwipes: () => {
+		console.log('Enabling vertical swipes')
+	},
+	disableVerticalSwipes: () => {
+		console.log('Disabling vertical swipes')
+	},
+	shareToStory: function (_mediaURL: string, params?: ShareStoryParams): void {
+		console.log('Sharing to story', _mediaURL, params)
+		throw new Error('Function not implemented.')
 	}
 }
 

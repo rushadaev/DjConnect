@@ -1,5 +1,4 @@
 import WebApp from '@twa-dev/sdk'
-import mockTWA from './twa-mock'
 
 // Определим тип, соответствующий реальной структуре WebApp
 type TelegramWebApp = typeof WebApp
@@ -40,7 +39,7 @@ export type TWA = Pick<TelegramWebApp,
     'disableClosingConfirmation'
 >
 
-const isLocal = process.env.NODE_ENV === 'development' && import.meta.env.VITE_USE_TWA_MOCK === 'true'
+// const isLocal = process.env.NODE_ENV === 'development' && import.meta.env.VITE_USE_TWA_MOCK === 'true'
 
 // Используем преобразование типа с проверкой
 // export const twa: TWA | null = isLocal

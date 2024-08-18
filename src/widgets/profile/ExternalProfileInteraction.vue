@@ -51,7 +51,7 @@
 					>Треки диджея</label>
 				</div>
 				<VCard
-					v-for="track in djStore.currentDJ?.tracks"
+					v-for="track in djStore.currentDJ?.tracks as Track[]"
 					:key="track.id"
 					:title="track.name"
 					:text="`Добавлен: ${new Date(track.created_at).toLocaleDateString()}`"
@@ -78,6 +78,7 @@ import { IconMusic, IconWorld } from 'shared/components/Icon'
 import { VButton, ButtonColors } from 'shared/components/Button'
 import { VCard } from 'shared/components/Card'
 import { VLoader } from 'shared/components/Loader'
+import { Track } from '@/entities/dj'
 
 const imageSrc = ref('/DjConnect/cabinet_bg.png')
 const router = useRouter()

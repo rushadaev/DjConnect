@@ -7,7 +7,7 @@ export interface DJ {
     sex: string;
     phone: string;
     email: string;
-    tracks: Track[]; // Измените это поле
+    tracks: Track[] | string[]; // Измените это поле
     website: string;
     price: number;
     created_at: string;
