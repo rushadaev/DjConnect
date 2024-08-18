@@ -53,6 +53,7 @@
 		/>
 
 		<VButton
+			v-if="!user?.is_dj"
 			type="button"
 			:color="ButtonColors.Green"
 			class="mt-4 mb-4"
