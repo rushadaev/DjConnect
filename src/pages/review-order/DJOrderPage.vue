@@ -73,7 +73,7 @@
 			</span>
 		</VButton>
 		<VButton
-			v-if="!djFlow && !orders[0].is_paid && orders[0]?.transactions?.length"
+			v-if="!djFlow && !orders[0].is_paid && (orders[0]?.transactions?.length || order?.transactions.length)"
 			type="button"
 			:color="ButtonColors.Blue"
 			class="mt-4 mb-4"
@@ -160,7 +160,7 @@
 			>
 				<span class="text-7xl">💿</span>
 				<span class="text-lg mt-4">🎉 Заказ отправлен</span>
-				<span class="text-lg mt-4 font-bold">Ожидайте ответа от пользователя</span>
+				<span class="text-lg mt-4 font-bold">Ожидайте оплаты</span>
 			</div>
 			<VButton
 				v-if="djFlow"

@@ -48,9 +48,9 @@ watchEffect(() => {
 	flow.value = routeFlow
 	if (routeFlow && user?.value) {
 		isReady.value = true
-		if (user.value.is_dj && routeFlow == 'user') {
-			flow.value = 'dj'
-		}
+		// if (user.value.is_dj && routeFlow == 'user') {
+		// 	flow.value = 'dj'
+		// }
 	}
 	})
 const filteredRoutes = computed(() => {
