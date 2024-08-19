@@ -9,11 +9,12 @@ export function getStatusText(status: string, is_paid: boolean): { statusText: s
             statusColor = 'orange' as StatusVariable
             break
         case 'accepted':
-            statusText = 'Принят*'
+            statusText = 'Ожидает оплаты'
+            statusColor = 'blue' as StatusVariable
             if(is_paid){
                 statusText = 'Оплачен'
+                statusColor = 'green' as StatusVariable
             }
-            statusColor = 'green' as StatusVariable
             break
         case 'declined':
             statusText = 'Отклонен'

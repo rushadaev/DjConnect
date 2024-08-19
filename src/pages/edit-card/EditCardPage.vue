@@ -10,7 +10,10 @@
 			v-if="!isUpdating"
 			class="ml-0"
 		>
-			<PaymentCard :on-input-card-number="onInputChange" />
+			<PaymentCard
+				:on-input-card-number="onInputChange"
+				@on-submit="onSubmit"
+			/>
 		</div>
 		<VButton
 			v-if="!isUpdating && touched"
@@ -25,21 +28,12 @@
 			</span>
 		</VButton>
 	</div>
-	<div
+	<VLoader
 		v-if="isUpdating"
-		class="flex items-center justify-center h-[100vh]"
-	>
-		<div class="px-6 pt-11 pb-4">
-			<div
-				class="flex flex-col justify-center items-center py-[170px] text-7xl"
-			>
-				<span>💿</span>
-				<h1 class="text-2xl pt-4">
-					Загрузка...
-				</h1>
-			</div>
-		</div>
-	</div>
+		:is-loading="isUpdating"
+		bg="backdrop-blur-[5px]"
+		text="🏦 Обновляем..."
+	/>
 </template>
 
 <script setup lang="ts">
@@ -53,6 +47,7 @@ import { useSessionStore } from '@/entities/session/model/session.store'
 import { VButton, ButtonColors } from '@/shared/components/Button'
 import { useRouter } from 'vue-router'
 import { IconWallet } from '@/shared/components/Icon'
+import VLoader from '@/shared/components/Loader/VLoader.vue'
 
 const djStore = useDJStore()
 const sessionStore = useSessionStore()
@@ -71,11 +66,10 @@ const onInputChange = ( val: string ) => {
 
 const onSubmit = async () => {
   try {
-    const updatedDJ = await djStore.updateDJProfile({
+    await djStore.updateDJProfile({
 		payment_details: lastInput.value
 	})
-	console.log(updatedDJ)
-	router.push({ name: 'finance' })
+	router.push({ name: 'finance', params: { flow: 'dj' } })
   }catch (error) {
 	console.error('Failed to update DJ profile:', error)
   }

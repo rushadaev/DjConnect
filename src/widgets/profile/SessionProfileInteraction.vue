@@ -1,11 +1,10 @@
 <template>
 	<div
-		v-if="!isLoading"
 		class="mb-[80px]"
 	>
 		<div class="relative h-[350px] overflow-hidden">
 			<img
-				src="/public/cabinet_bg.png"
+				src="/cabinet_bg.png"
 				alt=""
 				class="absolute inset-0 w-full h-full object-cover"
 			>
@@ -65,7 +64,7 @@
 					:key="track.id"
 					:title="track.name"
 					:text="`Добавлен: ${new Date(track.created_at).toLocaleDateString()}`"
-					:photo="'/public/cabinet_bg.png'"
+					:photo="'/cabinet_bg.png'"
 				/>
 			</div>
 			<div
@@ -121,21 +120,12 @@
 			</div>
 		</div>
 	</div>
-	<div
+	<VLoader
 		v-if="isLoading"
-		class="flex items-center justify-center h-[100vh]"
-	>
-		<div class="px-6 pt-11 pb-4">
-			<div
-				class="flex flex-col justify-center items-center py-[170px] text-7xl"
-			>
-				<span>💿</span>
-				<h1 class="text-2xl pt-4">
-					Ожидание
-				</h1>
-			</div>
-		</div>
-	</div>
+		:is-loading="isLoading"
+		bg="backdrop-blur-[5px]"
+		text="🎧 Загружаем треки"
+	/>
 	<DialogRoot v-model:open="modalOpen">
 		<DialogPortal>
 			<DialogOverlay
@@ -184,6 +174,7 @@
 		//   DialogTrigger,
 	} from 'radix-vue'
 import { twa } from '@/shared/lib/api'
+import VLoader from '@/shared/components/Loader/VLoader.vue'
 	const router = useRouter()
 	const route = useRoute()
 	const sessionStore = useSessionStore()
@@ -218,7 +209,7 @@ import { twa } from '@/shared/lib/api'
 	// }
 
 	const becomeDJ = () => {
-		router.push({ name: 'dj-registration' })
+		router.push({ name: 'dj-registration', params: { flow: 'dj' } })
 	}
 
 	const scanQr = () => {
@@ -230,7 +221,7 @@ import { twa } from '@/shared/lib/api'
 			const id = startParam.split('_')[1]
 			switch (getPrefix) {
 				case 'dj':
-					router.push({ name: 'dj-profile', params: { id } })
+					router.push({ name: 'dj-profile', params: { id, flow: 'user' } })
 					twa?.closeScanQrPopup()
 					break
 				default:
@@ -245,23 +236,15 @@ import { twa } from '@/shared/lib/api'
 
 	const goToStatistics = () => {
 		router.push({ name: 'orders', params: { flow: 'dj' } })
-		// Implement navigation to statistics page
-		console.log('Navigate to statistics page')
 	}
 
 	onMounted(async () => {
-		console.log('user', user.value)
 		if (user.value?.is_dj && user.value.dj && flow != 'user') {
-			console.log('YAJDJ', user.value.dj)
-			// await djStore.fetchTracks(user.value.dj.id)
+			console.log('DJ', user.value.dj)
+			await djStore.fetchTracks(user.value.dj.id)
 		} else {
-			console.log('yanedj', user.value)
-		// 	const id = route.params.id
-		// 	if (id) {
-		// 		await djStore.fetchDJProfile(+id)
-		// 		await djStore.fetchTracks(+id)
-			}
-		// }
+			console.log('noDj', user.value)
+		}
 
 	})
 </script>

@@ -1,11 +1,11 @@
 <template>
-	<vue-paycard
-		:ref="cardRef"
+	<VPaycard
 		required="false"
 		:value-fields="valueFields"
-		background-image="/public/card.jpg"
+		:has-random-backgrounds="true"
 		:labels="labels"
 		:input-fields="inputFields"
+		:placeholder="placeholder"
 		:is-card-number-masked="true"
 	/>
 	<div class="card-input pt-5">
@@ -15,7 +15,9 @@
 		>Измените номер карты</label>
 		<input
 			:id="inputFields.cardNumber"
-			type="tel"
+			ref="inputRef"
+			type="cardNumber"
+			inputmode="numeric"
 			title="Number"
 			class="card-input__input mt-4 text-xl p-2"
 			:value="valueFields.cardNumber"
@@ -23,27 +25,74 @@
 			autocomplete="off"
 			:maxlength="cardNumberMaxLength"
 			@input="changeNumber"
+			@keydown.enter="closeKeyboard"
 		>
 	</div>
 </template>
 
   <script setup lang="ts">
   // import { ref } from 'vue'
-  import { reactive, ref } from 'vue'
-
-  const cardRef = ref(null)
+  import { useSessionStore } from '@/entities/session'
+import VPaycard from '@/shared/components/CreditCard/VPaycard.vue'
+import { storeToRefs } from 'pinia'
+  import { computed, onBeforeUnmount, onMounted, reactive, ref } from 'vue'
+  const session = useSessionStore()
+  const { user } = storeToRefs(session)
+  const inputRef = ref<HTMLInputElement | null>(null)
   const props = defineProps<{
       onInputCardNumber: (val:string) => void
   }>()
-    // const { user } = useSessionStore()
-    let labels = {
-  'cardName': 'Полное имя',
-  'cardHolder': 'Имя владельца',
-  'cardMonth': 'ММ ',
-  'cardYear': ' ГГ',
-  'cardExpires': 'Работает до',
-  'cardCvv': 'CVV'
+
+  const emit = defineEmits<{
+      (e: 'onSubmit', value: string): void
+  }>()
+const placeholder = computed(() => {
+  return user?.value?.dj?.payment_details || '0000 0000 0000 0000'
+})
+
+const djName = computed(() => {
+  return user?.value?.dj?.stage_name || ''
+})
+
+let labels = {
+  'cardName': djName.value,
+  'cardHolder': '',
+  'cardMonth': '00 ',
+  'cardYear': '00',
+  'cardExpires': '',
+  'cardCvv': ''
 }
+
+const closeKeyboard = () => {
+  if (inputRef.value) {
+	inputRef.value.blur()
+  }
+}
+const hideMainButton = () => {
+  session.offMainButton(mainButtonCallback)
+  session.hideMainButton()
+}
+
+const mainButtonCallback = () => {
+  hideMainButton()
+  if (inputRef.value) {
+	inputRef.value.blur()
+  }
+  emit('onSubmit', valueFields.cardNumber)
+}
+
+onMounted(() => {
+  document.addEventListener('touchend', function() {
+    const input = document.activeElement as HTMLInputElement
+    if (input?.tagName === 'INPUT' || input?.tagName === 'TEXTAREA') {
+		input.blur()
+    }
+  })
+})
+
+onBeforeUnmount(() => {
+  hideMainButton()
+})
 let inputFields = {
   'cardNumber': 'v-card-number',
   'cardName': 'v-card-name',
@@ -106,6 +155,14 @@ let inputFields = {
       }
       if(props?.onInputCardNumber) props.onInputCardNumber(valueFields.cardNumber)
     }
+
+  // watch(() => valueFields.cardNumber, () => {
+  //   if (+valueFields.cardNumber.length == 19) {
+  //     onFocus()
+  //   } else {
+  //     hideMainButton()
+  //   }
+  // })
   </script>
 
   <style>

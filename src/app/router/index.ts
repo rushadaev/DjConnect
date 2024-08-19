@@ -14,7 +14,7 @@ router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
   const appFlow = to.params.flow // Get the dynamic flow (user or dj) from the route
   console.log('appFlow', appFlow)
-  console.log('to', to.params)
+  console.log('to', to)
   console.log('from', from)
   if (to.name === 'main'){
 	sessionStore.hideBackButton()

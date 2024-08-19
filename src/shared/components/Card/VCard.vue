@@ -6,13 +6,19 @@
 	>
 		<div class="flex gap-[10px]">
 			<img
-				src="/public/cabinet_bg.png"
+				src="/cabinet_bg.png"
 				alt="photo"
 				class="w-[48px] h-[48px] rounded-[5px]"
 			>
 			<div class="flex flex-col justify-center">
-				<h3 class="text-white text-sm">
-					{{ title }}
+				<h3
+					:class="!props?.titleFull ? 'max-w-[100px]' : ''"
+					class="text-white  text-sm"
+				>
+					<span v-if="props?.titleFull">{{ title }}</span>
+					<span v-else>
+						{{ title.substring(0, 10) }}{{ title?.length > 10 ? '...' : '' }}
+					</span>
 				</h3>
 				<p
 					class="text-xs"
@@ -41,6 +47,7 @@ const props = defineProps<{
 	title: string
 	text: string
 	textColor?: string
+	titleFull?: boolean
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	routeParams?: any
 }>()

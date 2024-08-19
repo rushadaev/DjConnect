@@ -2,5 +2,6 @@ export enum StatusVariable {
     Green = 'green',
     Red = 'red',
     Orange = 'orange',
-    White = 'white'
+    White = 'white',
+    Blue = 'blue'
 }

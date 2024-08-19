@@ -1,13 +1,14 @@
 <template>
 	<div
-		v-if="user?.is_dj && !isUpdating && !stepSubmitted"
+		v-if="user?.is_dj && !stepSubmitted"
 		class="px-6 pt-11 pb-4"
 	>
 		<h1 class="text-2xl pb-7">
 			Вывод
 		</h1>
-		<div class="mb-4 w-full h-[180px] border-none bg-[#131313] rounded-md flex flex-col items-start justify-start p-5">
+		<div class="mb-4 w-full h-[180px] border-none bg-[#131313] relative rounded-md flex flex-col items-start justify-start p-5">
 			<span class="text-lg text-[#FFFFFF4D] pb-5">Сумма вывода</span>
+			<span class="text-sm absolute right-[10px] font-sans text-yellow pb-5">{{ availableBalance }}₽</span>
 			<div class="flex flex-start justify-between items-center w-full pb-5">
 				<span class="text-5xl text-white">{{ selectedAmount }}</span>
 				<div class="w-[72px] flex flex-start justify-between items-center">
@@ -69,28 +70,41 @@
 			</span>
 		</VButton>
 	</div>
-	<div
+	<VLoader
 		v-if="isUpdating && !stepSubmitted"
-		class="flex items-center justify-center h-[100vh]"
-	>
-		<div class="px-6 pt-11 pb-4">
-			<div
-				class="flex flex-col justify-center items-center py-[170px] text-7xl"
-			>
-				<span>💿</span>
-				<h1 class="text-2xl pt-4">
-					Загрузка...
-				</h1>
+		:is-loading="isUpdating"
+		bg="backdrop-blur-[2px]"
+		text="🏦 Связываемся с банком"
+	/>
+	<div v-if="stepSubmitted">
+		<p
+			class="flex flex-col justify-center items-center py-[170px]"
+		>
+			<span class="text-7xl">⌛</span>
+			<span class="text-lg mt-4">Запрос на выплату отправлен</span>
+			<span class="text-xs mt-4">Обработка может занять до 24 часов</span>
+		</p>
+		<div
+			class="flex-grow"
+		>
+			<div class="mb-4">
+				<!-- <label class="block text-sm font-medium mb-2 text-[#FFFFFF4D]">Базовые стоимости на трек</label> -->
+				<div
+					class="flex-col gap-4 mb-2"
+				>
+					<VButton
+						:color="ButtonColors.Green"
+						class="mx-auto mt-5"
+						@click="hideStepSubmitted"
+					>
+						<span class="flex gap-[5px] items-center">
+							Сделать еще одну выплату
+						</span>
+					</VButton>
+				</div>
 			</div>
 		</div>
 	</div>
-	<p
-		v-if="stepSubmitted"
-		class="flex flex-col justify-center items-center py-[170px]"
-	>
-		<span class="text-7xl">⌛</span>
-		<span class="text-base my-4">Ожидание</span>
-	</p>
 </template>
 
 <script setup lang="ts">
@@ -103,10 +117,12 @@ import { VButton, ButtonColors } from '@/shared/components/Button'
 // import { useRouter } from 'vue-router'
 import { IconWallet } from '@/shared/components/Icon'
 import { IconAdd, IconMinus } from '@/shared/components/Icon'
+import VLoader from '@/shared/components/Loader/VLoader.vue'
 const djStore = useDJStore()
 const sessionStore = useSessionStore()
 const { isLoading: isUpdating } = storeToRefs(djStore)
 const { user } = storeToRefs(sessionStore)
+const { availableBalance } = storeToRefs(djStore)
 // const router = useRouter()
 
 const stepSubmitted = ref( false )
@@ -125,6 +141,11 @@ const setAmount = ( amount: number ) => ()=> {
 	selectedAmount.value = amount
 }
 // const predefinedAmounts = [{ value: 1000, click: setAmount(amount)}, 5000, 10000, 15000]
+
+const hideStepSubmitted = () => {
+	stepSubmitted.value = false
+	selectedAmount.value = 1500
+}
 
 const predefinedAmounts = [{ value: 1000, click: setAmount(1000) }, { value: 5000, click: setAmount(5000) }, { value: 10000, click: setAmount(10000) }, { value: 15000, click: setAmount(15000) }]
 

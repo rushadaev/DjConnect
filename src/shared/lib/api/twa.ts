@@ -18,6 +18,7 @@ export type TWA = Pick<TelegramWebApp,
     'headerColor' |
     'backgroundColor' |
     'BackButton' |
+    'SettingsButton' |
     'MainButton' |
     'HapticFeedback' |
     'close' |

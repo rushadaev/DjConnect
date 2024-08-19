@@ -1,6 +1,5 @@
 <template>
 	<div
-		v-if="!isLoading"
 		class="px-6 pt-11 overflow-y-auto overflow-x-hidden"
 	>
 		<h1 class="text-2xl pb-4">
@@ -26,25 +25,14 @@
 			Выплаты
 		</h1>
 		<PaymentsList
-			class="px-6"
 			:items="payoutList"
 		/>
 	</div>
-	<div
-		v-if="isLoading"
-		class="flex items-center justify-center h-[100vh]"
-	>
-		<div class="px-6 pt-11 pb-4">
-			<div
-				class="flex flex-col justify-center items-center py-[170px] text-7xl"
-			>
-				<span>💿</span>
-				<h1 class="text-2xl pt-4">
-					Ожидание
-				</h1>
-			</div>
-		</div>
-	</div>
+	<VLoader
+		bg="backdrop-blur-[2px]"
+		text="💸 Считаем деньги"
+		:is-loading="isLoading"
+	/>
 </template>
 
 <script setup lang="ts">
@@ -59,6 +47,7 @@
 	import { useSessionStore } from 'entities/session'
 	import { storeToRefs } from 'pinia'
 	import { useRouter } from 'vue-router'
+	import VLoader from '@/shared/components/Loader/VLoader.vue'
 	const djStore = useDJStore()
 	const sessionStore = useSessionStore()
 	const { user } = storeToRefs(sessionStore)
@@ -67,10 +56,10 @@
 	const payoutList = ref<any>([])
 
 	const changeCard = () => {
-		router.push({ name: 'edit-card' })
+		router.push({ name: 'edit-card', params: { flow: 'dj' } })
 	}
 	const payout = () => {
-		router.push({ name: 'payout' })
+		router.push({ name: 'payout', params: { flow: 'dj' } })
 	}
 	const isLoading = computed(() => djStore.isLoading)
 
@@ -83,13 +72,12 @@
 					// const track = tracks.find(track => +track.id === +order.track_id)
 					payoutList.value.push({
 						id: +payout.id,
-						photo: '/public/cabinet_bg.png',
+						photo: '/cabinet_bg.png',
 						title: `-${payout.amount}₽`,
 						// format payout.processed_at
 						text: new Date(payout.created_at).toLocaleDateString(),
 						statusColor: payout.status === 'pending'? 'orange' as StatusVariable : payout.status === 'processed' ? 'green' as StatusVariable : 'red' as StatusVariable,
 						statusText: payout.status === 'pending' ? 'Ожидание' : payout.status === 'processed' ? 'Успешно' : 'Отклонено',
-						// routeParams: { name: 'review-order', params: { id: +order.id } }
 					})
 				}
 			}

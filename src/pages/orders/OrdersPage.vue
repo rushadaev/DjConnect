@@ -1,6 +1,6 @@
 <template>
 	<div
-		v-if="!isLoading"
+
 		class="px-6 pt-11 overflow-y-auto overflow-x-hidden"
 	>
 		<h1 class="text-2xl pb-4">
@@ -26,26 +26,15 @@
 			Больше всего заказывают
 		</h1>
 		<OrderList
-			class="px-6"
 			:items="orders"
 			text-color="green"
 		/>
 	</div>
-	<div
-		v-if="isLoading"
-		class="flex items-center justify-center h-[100vh]"
-	>
-		<div class="px-6 pt-11 pb-4">
-			<div
-				class="flex flex-col justify-center items-center py-[170px] text-7xl"
-			>
-				<span>💿</span>
-				<h1 class="text-2xl pt-4">
-					Ожидание
-				</h1>
-			</div>
-		</div>
-	</div>
+	<VLoader
+		:is-loading="isLoading"
+		text="💸 Считаем деньги"
+		bg="backdrop-blur-[2px]"
+	/>
 </template>
 
 <script setup lang="ts">
@@ -56,6 +45,7 @@
 	import { ref, onMounted, computed } from 'vue'
 	import { useSessionStore } from 'entities/session'
 	import { storeToRefs } from 'pinia'
+	import VLoader from '@/shared/components/Loader/VLoader.vue'
 	const djStore = useDJStore()
 	const sessionStore = useSessionStore()
 	const { user } = storeToRefs(sessionStore)
@@ -72,7 +62,7 @@
 				for(let track of stats.most_popular_tracks) {
 					orders.value.push({
 						id: +track.track_id,
-						photo: '/public/cabinet_bg.png',
+						photo: '/cabinet_bg.png',
 						title: track?.track_name || '',
 						text: user?.value?.dj?.stage_name || '',
 						statusColor: 'white' as StatusVariable,

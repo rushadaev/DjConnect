@@ -55,7 +55,7 @@
 					:key="track.id"
 					:title="track.name"
 					:text="`Добавлен: ${new Date(track.created_at).toLocaleDateString()}`"
-					:photo="'/public/cabinet_bg.png'"
+					:photo="'/cabinet_bg.png'"
 				/>
 			</div>
 		</div>
@@ -96,7 +96,7 @@ onMounted(async () => {
 })
 
 const orderTrack = () => {
-  router.push({ name: 'order', params: { id: route.params.id } })
+  router.push({ name: 'order', params: { id: route.params.id, flow: 'user' } })
 }
 
 </script>

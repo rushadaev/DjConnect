@@ -56,7 +56,7 @@ const onButtonClicked = () => {
 
 <style lang="scss" scoped>
 .v-button {
-  @apply flex items-center justify-center text-base w-full h-[50px] py-0 px-[16px] rounded-[5px] cursor-pointer border-none;
+  @apply flex items-center justify-center text-base w-full h-[50px] py-0 px-[16px] rounded-[5px] cursor-pointer border-none hover:opacity-70;
 
   &--green {
     @apply bg-greenYellow text-lightGrey;

@@ -25,14 +25,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 import { RouteRecordRaw, useRoute } from 'vue-router'
 import { useSessionStore } from '@/entities/session/model/session.store'
+import { storeToRefs } from 'pinia'
 
-const { user } = useSessionStore()
+const session = useSessionStore()
+const { user } = storeToRefs(session)
 const route = useRoute() // Access the current route
-const flow = route.params.flow ?? 'user' // Default to 'user' if flow is not set
-
+// const flow = route.params.flow ?? 'user' // Default to 'user' if flow is not set
+const flow = ref(route.params.flow ?? 'user') // Default to 'user' if flow is not set
+const isReady = ref(false)
 const routes: Array<Partial<RouteRecordRaw> & { icon: string, label: string, name: string, onlyDJ?: boolean }> = [
     { name: 'main', icon: '⭐', label: 'Профиль' },
     { name: 'orders', icon: '📣', label: 'Заказы', onlyDJ: true },
@@ -40,8 +43,18 @@ const routes: Array<Partial<RouteRecordRaw> & { icon: string, label: string, nam
     { name: 'finance', icon: '🛍️', label: 'Финансы', onlyDJ: true },
 ]
 
+watchEffect(() => {
+	const routeFlow = route.params.flow
+	flow.value = routeFlow
+	if (routeFlow && user?.value) {
+		isReady.value = true
+		if (user.value.is_dj && routeFlow == 'user') {
+			flow.value = 'dj'
+		}
+	}
+	})
 const filteredRoutes = computed(() => {
-  return routes.filter(route => !route.onlyDJ || (user?.is_dj && flow == 'dj'))
+  return routes.filter(route => !route.onlyDJ || (user.value?.is_dj && flow.value == 'dj'))
 })
 </script>
 

@@ -145,10 +145,10 @@
 					<VButton
 						:color="ButtonColors.Green"
 						class="mx-auto mt-5"
-						@click="closeModal"
+						@click="goToOrder"
 					>
 						<span class="flex gap-[5px] items-center">
-							Закрыть окно
+							Перейти к заказу
 						</span>
 					</VButton>
 				</div>
@@ -252,8 +252,8 @@ const orderMore = () => {
 	currentStep.value = 1
 }
 
-const closeModal = () => {
-	twa?.close()
+const goToOrder = () => {
+	router.push({ name: 'review-order', params: { id: route.params.id, flow: 'user' } })
 }
 
 const updateTracks = async () => {

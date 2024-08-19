@@ -56,7 +56,7 @@
 		<VInput
 			v-model="form.website"
 			label="Веб-сайт"
-			type="url"
+			type="text"
 		/>
 		<VInput
 			v-model="form.price"
@@ -113,36 +113,18 @@
 			{{ error }}
 		</p>
 	</form>
-	<div
+	<VLoader
 		v-if="isUpdating && !submitted"
-		class="flex items-center justify-center h-[100vh]"
-	>
-		<div class="px-6 pt-11 pb-4">
-			<div
-				class="flex flex-col justify-center items-center py-[170px] text-7xl"
-			>
-				<span>💿</span>
-				<h1 class="text-2xl pt-4">
-					Ожидание
-				</h1>
-			</div>
-		</div>
-	</div>
-	<div
+		:is-loading="isUpdating"
+		bg="bg-black"
+		text="Ожидание"
+	/>
+	<VLoader
 		v-if="submitted"
-		class="flex items-center justify-center h-[100vh]"
-	>
-		<div class="px-6 pt-11 pb-4">
-			<div
-				class="flex flex-col justify-center items-center py-[170px] text-7xl"
-			>
-				<span>💿</span>
-				<h1 class="text-2xl pt-4">
-					Профиль обновлен!
-				</h1>
-			</div>
-		</div>
-	</div>
+		:is-loading="submitted"
+		bg="bg-black"
+		text="Профиль обновлен!"
+	/>
 </template>
 
 <script setup lang="ts">
@@ -154,6 +136,7 @@ import { VInput } from '@/shared/components/Input'
 import { TabsMain, TabsList, TabsTrigger } from '@/shared/components/ui/tabs'
 import { VButton, ButtonColors } from '@/shared/components/Button'
 import { useRouter } from 'vue-router'
+import VLoader from '@/shared/components/Loader/VLoader.vue'
 
 const djStore = useDJStore()
 const sessionStore = useSessionStore()

@@ -2,6 +2,7 @@
 	<VCard
 		v-for="item in props.items"
 		:key="item.id"
+		:title-full="props.titleFull"
 		:photo="item.photo"
 		:title="item.title"
 		:text="item.text"
@@ -27,6 +28,7 @@ import { StatusVariable } from '@/shared/components/Status/config'
 
 const props = defineProps<{
 	textColor?: string,
+	titleFull?: boolean,
     items: {
         id: number,
         photo: string,

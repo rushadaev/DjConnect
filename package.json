@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@twa-dev/sdk": "^7.8.0",
+    "@types/socket.io-client": "^3.0.0",
     "@vueuse/core": "^10.11.0",
     "axios": "^1.7.2",
     "class-variance-authority": "^0.7.0",
@@ -20,11 +21,11 @@
     "lucide-vue-next": "^0.407.0",
     "pinia": "^2.1.7",
     "radix-vue": "^1.9.1",
+    "socket.io-client": "^4.7.5",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "vue": "^3.2.47",
     "vue-i18n": "^9.11.0",
-    "vue-paycard": "^0.7.0",
     "vue-router": "^4.4.0"
   },
   "devDependencies": {

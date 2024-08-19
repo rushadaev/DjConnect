@@ -7,6 +7,7 @@ import { useRouter } from 'vue-router'
 
 export const useSessionStore = defineStore('session', () => {
     const user = ref<User | null>(null)
+    const isMainButtonVisible = ref(false)
     const isLoading = ref(false)
     const error = ref<string | null>(null)
     const router = useRouter()
@@ -28,10 +29,10 @@ export const useSessionStore = defineStore('session', () => {
             twa?.expand()
             twa?.BackButton.onClick(originalBackButtonCallback)
             twa?.disableVerticalSwipes()
-                if (!twaUser) {
-                    throw new Error('User data is not available from TWA')
-                }
 
+            if (!twaUser) {
+                throw new Error('User data is not available from TWA')
+            }
             const { data, error: apiError, execute } = useApi<User>('get', '/profile/me', {
                 telegram_id: twaUser.id.toString(),
                 name: twaUser.first_name,
@@ -61,6 +62,28 @@ export const useSessionStore = defineStore('session', () => {
         twa?.BackButton.hide()
     }
 
+    function hideMainButton() {
+        twa?.MainButton.hide()
+        isMainButtonVisible.value = false
+    }
+    function offMainButton(callback:VoidFunction) {
+        twa?.MainButton.offClick(callback)
+    }
+    function setMainButtonSettings(
+        text: string,
+        callback: () => void,
+        color = '#0a0a0a',
+        text_color = '#ffffff',
+        is_active = true,
+        is_visible = true
+    ) {
+        twa?.MainButton.setText(text)
+        twa?.MainButton.setParams({ color, text_color, is_active, is_visible })
+
+        twa?.MainButton.onClick(callback)
+        isMainButtonVisible.value = is_visible
+    }
+
     function setNewBackButtonCallback(
         callback: () => void = originalBackButtonCallback,
         currentCallback: () => void = originalBackButtonCallback
@@ -73,5 +96,5 @@ export const useSessionStore = defineStore('session', () => {
         user.value = null
     }
 
-    return { user, isLoading, error, isAuthenticated, initSession, showBackButton, hideBackButton, setNewBackButtonCallback, logout }
+    return { user, isLoading, error, isAuthenticated, initSession, showBackButton, hideBackButton, setNewBackButtonCallback, isMainButtonVisible, offMainButton, hideMainButton, setMainButtonSettings, logout }
 })

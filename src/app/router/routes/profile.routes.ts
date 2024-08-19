@@ -33,7 +33,7 @@ export default [
 	{
 		name: 'dj-profile',
 		component: () => import('pages/profile/ProfilePage.vue'),
-		path: '/:flow(user|dj)?/dj/:id',
+		path: '/:flow(user|dj)?/dj-profile/:id',
 		meta: {
 			title: 'DJ Profile',
 			layout: MainLayout,

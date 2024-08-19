@@ -23,9 +23,9 @@ body * {
 .layout {
   min-width: 100%;
   min-height: 100%;
-  height: calc(100dvh - 69px);
+  // height: calc(100dvh - 69px);
   width: 100vw;
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
