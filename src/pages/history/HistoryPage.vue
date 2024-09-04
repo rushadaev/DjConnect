@@ -51,6 +51,7 @@ const fetchOrdersForDJ = async () => {
 	orders.value = orderList.map(order => {
 		return formatOrder(order, 'dj')
 	})
+	window.scrollTo(0, 0)
 }
 
 const fetchOrdersForUser = async () => {
@@ -59,6 +60,7 @@ const fetchOrdersForUser = async () => {
   orders.value = orderList.map(order => {
     return formatOrder(order, 'user')
   })
+  window.scrollTo(0, 0)
 }
 
 // Handle order updates from the WebSocket
@@ -137,6 +139,7 @@ const formatOrder = (order: any, flow: string) => {
 
 // On mounted
 onMounted(async () => {
+
   if (user.value?.is_dj && flow !== 'user') {
     await fetchOrdersForDJ()
 	if (user.value.dj)

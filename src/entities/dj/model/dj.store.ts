@@ -38,6 +38,7 @@ export const useDJStore = defineStore('dj', {
                     'track_id': this.selectedTrack?.id,
                     'custom_track': this.customTrack,
                     'price': price,
+                    'timezone': Intl.DateTimeFormat().resolvedOptions().timeZone,
                     'message': message ?? 'Please play this track!'
                 })
 

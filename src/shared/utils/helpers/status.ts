@@ -1,3 +1,4 @@
+import { stat } from 'fs'
 import { type StatusVariable } from '../../components/Status'
 
 export function getStatusText(status: string, is_paid: boolean): { statusText: string, statusColor: StatusVariable } {
@@ -27,6 +28,10 @@ export function getStatusText(status: string, is_paid: boolean): { statusText: s
                 statusText = 'Оплачен'
                 statusColor = 'green' as StatusVariable
             }
+            break
+        case 'completed':
+            statusText = 'Завершен'
+            statusColor = 'green' as StatusVariable
             break
         default:
             statusText = 'Отменен'

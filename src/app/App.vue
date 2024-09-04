@@ -10,9 +10,14 @@
 			v-else-if="error"
 			class="flex items-center justify-center h-screen"
 		>
-			<p class="text-xl text-red-500"> Ошибка: {{ error }} </p>
+			<p class="text-xl text-red-500">
+				Ошибка: {{ error }}
+			</p>
 		</div>
-		<component :is="layout" v-else>
+		<component
+			:is="layout"
+			v-else
+		>
 			<router-view />
 		</component>
 	</div>
@@ -95,6 +100,11 @@
 			initApp()
 		}
 	})
+	export type PopupButton = {
+        id?: string;
+        type: 'default' | 'destructive';
+        text: string;
+    };
 
 	const subscribeToSocket = () => {
 		if (flow.value === 'dj' && user.value?.dj) {
@@ -183,7 +193,7 @@
 			watch(data, newData => {
 				if (newData) {
 					const order = newData.data.order
-					if (order.is_paid) {
+					if (order.is_paid && !order.time_slot) {
 						twa?.showPopup(
 							{
 								title: '🎉 Заказ оплачен',
@@ -203,22 +213,36 @@
 							}
 						)
 					} else {
+						let isCurrentRouteIsOrder = router.currentRoute.value.name === 'review-order'
+						let buttons = []
+						if (isCurrentRouteIsOrder) {
+							buttons = [
+								{
+									id: 'success',
+									text: 'Супер!',
+									type: 'default'
+								}
+							]
+						} else {
+							buttons = [
+								{
+									id: 'cancel',
+									text: 'Позже',
+									type: 'destructive'
+								},
+								{
+									id: 'success',
+									text: 'Перейти к заказу',
+									type: 'default'
+								}
+							]
+						}
+
 						twa?.showPopup(
 							{
 								title: 'Заказ обновлен',
 								message: `Ваш заказ на трек ${order.track.name} за ${order.price}₽ обновлен!`,
-								buttons: [
-									{
-										id: 'cancel',
-										text: 'Позже',
-										type: 'destructive'
-									},
-									{
-										id: 'success',
-										text: 'Перейти к заказу',
-										type: 'default'
-									}
-								]
+								buttons: buttons as PopupButton[]
 							},
 							buttonId => {
 								if (buttonId === 'success') {

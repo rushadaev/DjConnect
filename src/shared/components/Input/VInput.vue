@@ -12,7 +12,7 @@
 				:value="modelValue"
 				inputmode="text"
 				class="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-3 border-custom"
-				:class="{ 'border-red-300': error }"
+				:class="[{ 'border-red-300': error }, customHeight]"
 				@keydown.enter="closeKeyboard"
 				@input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
 				@change="$emit('change', ($event.target as HTMLInputElement).value)"
@@ -36,6 +36,7 @@ defineProps<{
   label: string
   error?: string
   id?: string
+  customHeight?: string
 }>()
 
 defineEmits<{

@@ -41,6 +41,7 @@
 				/>
 				<VInput
 					v-model="form.payment_details"
+					maxlength="16"
 					label="Номер карты на выплату"
 					required
 				/>
@@ -48,15 +49,18 @@
 					v-model="form.phone"
 					label="Телефон"
 					type="tel"
+					inputmode="phone"
 				/>
 				<VInput
 					v-model="form.email"
 					label="Email"
 					type="email"
+					inputmode="email"
 				/>
 				<VInput
 					v-model="form.website"
 					label="Веб-сайт"
+					inputmode="url"
 				/>
 				<VInput
 					v-model="form.price"

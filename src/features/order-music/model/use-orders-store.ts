@@ -44,6 +44,7 @@ const useOrdersStore = defineStore('orders', () => {
         try {
             const { data, error: apiError, execute } = useApi<Order>('patch', `/orders/${orderId}/accept`,{
   'price': price,
+  'timezone': Intl.DateTimeFormat().resolvedOptions().timeZone,
   'message': message
 })
             await execute()
@@ -63,6 +64,33 @@ const useOrdersStore = defineStore('orders', () => {
             isLoading.value = false
         }
     }
+
+    async function updateTime(orderId: number, time: string) {
+        isLoading.value = true
+        error.value = null
+
+        try {
+            const { data, error: apiError, execute } = useApi<Order>('patch', `/orders/${orderId}/time`,{
+    'time_slot': time
+})
+            await execute()
+            if (apiError.value) throw new Error(apiError.value)
+            if (!data.value) throw new Error('Failed to update time')
+            orders.value = orders.value.map(order => {
+                if (order.id === data?.value?.id) {
+                    return data.value
+                }
+                return order
+            })
+            return data.value
+        }
+        catch (e) {
+            error.value = e instanceof Error ? e.message : String(e)
+        } finally {
+            isLoading.value = false
+        }
+    }
+
     async function declineOrder(orderId: number) {
         isLoading.value = true
         error.value = null
@@ -118,7 +146,7 @@ const useOrdersStore = defineStore('orders', () => {
     // /orders/{order_id}/decline Reject an order
     // /orders/{order_id}/cancel cancel an order
 
-    return { orders, isLoading, error, fetchOrders, acceptOrder, cancelOrder, declineOrder, setMessage, setPrice }
+    return { orders, isLoading, error, fetchOrders, acceptOrder, cancelOrder, declineOrder, setMessage, setPrice, updateTime }
 })
 
 export { useOrdersStore }

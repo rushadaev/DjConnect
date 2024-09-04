@@ -45,6 +45,29 @@
 		>
 			📨 {{ orders[0]?.message }}
 		</div>
+		<!--Timezone-->
+		<VInput
+			v-if="orders.length && orders[0].is_paid"
+			v-model:modelValue="timeslot"
+			type="datetime-local"
+			custom-height="h-[50px]"
+			placeholer="Выберите время"
+			label="Когда поставить трек"
+			:disabled="orders[0].time_slot"
+			class="py-3"
+		/>
+		<VButton
+			v-if="orders.length && !djFlow && !orders[0].time_slot && orders[0].is_paid"
+			type="button"
+			:color="ButtonColors.Blue"
+			class="mt-4 mb-4"
+			@click="updateTime"
+		>
+			<span class="flex gap-[5px] items-center">
+				Обновить время
+			</span>
+		</VButton>
+
 		<CustomPriceInput
 			v-if="orders.length && djStore?.currentDJ?.price"
 			v-model:modelValue="newPrice"
@@ -202,6 +225,7 @@ import { StatusVariable } from '@/shared/components/Status/config'
 import { getStatusText } from '@/shared/utils/helpers'
 import { Order } from '@/features/order-music/model'
 import { useSocket } from '@/shared/lib/sockets/useSocket'
+import VInput from '@/shared/components/Input/VInput.vue'
 	const ordersStore = useOrdersStore()
 	const route = useRoute()
 	const router = useRouter()
@@ -212,6 +236,7 @@ import { useSocket } from '@/shared/lib/sockets/useSocket'
 
 	const { user } = storeToRefs(sessionStore)
 	const newPrice = ref(`${Number(djStore?.currentDJ?.price)}`)
+	const timeslot = ref('')
 	const newMessage = ref('')
 	const djWantsToChangeMessage = ref(false)
 	const startWritingMessage = () => {
@@ -266,6 +291,10 @@ import { useSocket } from '@/shared/lib/sockets/useSocket'
 		router.push({ name: 'order', params: { id: order.value?.id, flow: flow } })
 	}
 
+	const updateTime = async () => {
+		await ordersStore.updateTime(+route.params.id, timeslot.value)
+	}
+
 	const payForOrder = () => {
 		let link = order.value?.transactions[0]?.payment_url
 		if(link){
@@ -276,11 +305,14 @@ import { useSocket } from '@/shared/lib/sockets/useSocket'
 	const order = ref(ordersStore.orders.find(order => +order.id === +route.params.id))
 	onMounted(async () => {
 		const order = await djStore.fetchOrder(+route.params.id)
+		//convert date to time
+		timeslot.value = order?.time_slot
 		const channelName = `order_update_${route.params.id}`
 		const { data } = useSocket(channelName)
 		watch(data, (newValue) => {
 			if (newValue) {
 				updateOrder(newValue.data.order)
+
 			}
 		})
 		console.log('subscribed toALARM', channelName)
