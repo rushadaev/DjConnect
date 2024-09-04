@@ -11,6 +11,7 @@ export type Order = {
     'created_at': string,
     'updated_at': string,
     'is_paid': boolean,
+    'time_slot': string,
     'transactions': [
       {
         'id': string,

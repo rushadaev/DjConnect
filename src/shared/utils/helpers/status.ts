@@ -1,4 +1,3 @@
-import { stat } from 'fs'
 import { type StatusVariable } from '../../components/Status'
 
 export function getStatusText(status: string, is_paid: boolean): { statusText: string, statusColor: StatusVariable } {
