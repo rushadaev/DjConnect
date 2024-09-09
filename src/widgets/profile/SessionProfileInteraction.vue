@@ -159,7 +159,6 @@
 	import { storeToRefs } from 'pinia'
 	import {
 		IconQr,
-		IconWorld,
 		IconStat,
 		IconEdit,
 		IconMusic
