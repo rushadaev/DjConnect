@@ -1,122 +1,125 @@
 <template>
-	<div
-		class="mb-[80px]"
-	>
-		<div class="relative h-[350px] overflow-hidden">
+	<div class="relative">
+		<!-- Fixed background image -->
+		<div class="fixed top-0 left-0 w-full h-[350px] z-0">
 			<img
 				src="/cabinet_bg.png"
 				alt=""
-				class="absolute inset-0 w-full h-full object-cover"
+				class="w-full h-full object-cover"
 			>
-
+			<!-- Gradient overlay -->
 			<div
-				v-if="user?.is_dj && flow !== 'user'"
-				class="absolute top-[24px] right-[24px] w-[175px]"
-			>
-				<VButton
-					:color="ButtonColors.Green"
-					@click="createQR"
-				>
-					<IconQr class="mr-[5px]" />
-					QR-код
-				</VButton>
-			</div>
+				class="absolute inset-0 bg-gradient-to-b from-transparent to-blackContent"
+			/>
 		</div>
-		<div class="bg-blackContent p-[25px]">
-			<div class="flex justify-between">
-				<div
-					class="flex flex-col gap-[5px] items-center justify-center"
-				>
-					<span class="text-white text-xxl">
-						{{
-							user?.is_dj && flow !== 'user'
-								? `DJ ${user?.dj?.stage_name}`
-								: user?.name
-						}}
-					</span>
-					<span
-						v-if="user?.is_dj && flow !== 'user'"
-						class="text-[#FFFFFF4D] text-sm"
-					>
-						{{ user?.name }}
-					</span>
-				</div>
-				<div class="flex gap-[10px] justify-center items-center">
-					<a
-						class="w-[48px] h-[48px] flex items-center justify-center rounded-full bg-lightGrey"
-						:href="user?.dj?.website"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						<IconWorld
-							icon-color="white"
-							class="w-[18px] h-[18px]"
-						/>
-					</a>
-				</div>
-			</div>
+
+		<!-- Scrollable content -->
+		<div class="relative z-10 pt-[250px]">
+			<!-- Profile section -->
 			<div
-				v-if="user?.is_dj && flow !== 'user'"
-				class="mt-[12px] flex flex-col gap-[5px]"
+				class="bg-blackContent bg-opacity-70 backdrop-blur-md p-[25px] rounded-t-[20px]"
 			>
-				<VCard
-					v-for="track in djStore.tracks"
-					:key="track.id"
-					:title="track.name"
-					:text="`Добавлен: ${new Date(track.created_at).toLocaleDateString()}`"
-					:photo="'/cabinet_bg.png'"
-				/>
-			</div>
-			<div
-				v-if="user?.is_dj && flow !== 'user'"
-				class="text-white rounded-lg mt-[20px]"
-			>
+				<div class="flex justify-between items-center mb-[20px]">
+					<div
+						class="flex flex-col"
+						@click="goToDjProfile"
+					>
+						<span class="text-white text-2xl font-bold">
+							{{
+								user?.is_dj && flow !== 'user'
+									? `DJ ${user?.dj?.stage_name}`
+									: user?.name
+							}}
+						</span>
+						<span
+							v-if="user?.is_dj && flow !== 'user'"
+							class="text-[#FFFFFF80] text-sm"
+						>
+							{{ user?.name }}
+						</span>
+					</div>
+				</div>
+
+				<!-- DJ-specific content -->
 				<div v-if="user?.is_dj && flow !== 'user'">
-					<VButton
-						class="mt-[20px] m-[auto]"
-						:color="ButtonColors.Green"
-						@click="goToStatistics"
-					>
-						<span class="flex gap-[5px] items-center">
-							<IconStat icon-color="#131313" />
+					<div class="flex gap-[10px] mb-[20px]">
+						<VButton
+							:color="ButtonColors.Green"
+							@click="createQR"
+						>
+							<IconQr class="mr-[5px]" />
+							QR-код
+						</VButton>
+						<VButton
+							:color="ButtonColors.Green"
+							@click="copyLink"
+						>
+							Cсылка
+						</VButton>
+					</div>
+
+					<!-- Tracks list -->
+					<div class="space-y-[10px]">
+						<VCard
+							v-for="track in djStore.tracks"
+							:key="track.id"
+							:title="track.name"
+							:text="`Добавлен: ${new Date(track.created_at).toLocaleDateString()}`"
+							:photo="'/cabinet_bg.png'"
+						/>
+					</div>
+
+					<div class="mt-[20px] space-y-[10px]">
+						<VButton
+							:color="ButtonColors.Green"
+							@click="goToStatistics"
+						>
+							<IconStat
+								icon-color="#131313"
+								class="mr-[5px]"
+							/>
 							Смотреть статистику
-						</span>
+						</VButton>
+						<VButton
+							:color="ButtonColors.None"
+							@click="editDJProfile"
+						>
+							<IconEdit
+								icon-color="#FFFFFFB2"
+								class="mr-[5px]"
+							/>
+							Редактировать
+						</VButton>
+					</div>
+				</div>
+
+				<!-- User-specific content -->
+				<div v-else>
+					<VButton
+						v-if="flow === 'dj'"
+						:color="ButtonColors.Green"
+						class="w-full"
+						@click="becomeDJ"
+					>
+						<IconMusic
+							icon-color="#131313"
+							class="mr-[5px]"
+						/>
+						Стать Dj
 					</VButton>
 					<VButton
-						:color="ButtonColors.None"
-						class="mt-[20px] m-[auto]"
-						@click="editDJProfile"
+						v-else
+						:color="ButtonColors.Green"
+						class="w-full"
+						@click="scanQr"
 					>
-						<span class="flex gap-[5px] items-center">
-							<IconEdit icon-color="#FFFFFFB2" />
-							Редактировать
-						</span>
+						<IconQr
+							icon-color="#131313"
+							class="mr-[5px]"
+						/>
+						Сканировать QR
 					</VButton>
 				</div>
-			</div>
-			<div v-else>
-				<VButton
-					v-if="flow === 'dj'"
-					:color="ButtonColors.Green"
-					class="mt-[20px] m-[auto]"
-					@click="becomeDJ"
-				>
-					<span class="flex gap-[5px] items-center">
-						<IconMusic icon-color="#131313" />
-						Стать Dj
-					</span>
-				</VButton>
-				<VButton
-					v-else
-					:color="ButtonColors.Green"
-					class="mt-[20px] m-[auto]"
-					@click="scanQr"
-				>
-					<span class="flex gap-[5px] items-center">
-						<IconQr icon-color="#131313" />
-						Сканировать QR
-					</span>
-				</VButton>
 			</div>
 		</div>
 	</div>
@@ -132,7 +135,7 @@
 				class="bg-blackA9 data-[state=open]:animate-overlayShow fixed inset-0 z-30"
 			/>
 			<DialogContent
-				class="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] h-[50dvh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none z-[100]"
+				class="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] h-[auto] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none z-[100]"
 			>
 				<DialogTitle class="text-mauve12 m-0 text-[17px] font-semibold">
 					QR
@@ -173,8 +176,9 @@
 		DialogTitle
 		//   DialogTrigger,
 	} from 'radix-vue'
-import { twa } from '@/shared/lib/api'
-import VLoader from '@/shared/components/Loader/VLoader.vue'
+	import { twa } from '@/shared/lib/api'
+	import VLoader from '@/shared/components/Loader/VLoader.vue'
+
 	const router = useRouter()
 	const route = useRoute()
 	const sessionStore = useSessionStore()
@@ -192,6 +196,10 @@ import VLoader from '@/shared/components/Loader/VLoader.vue'
 	// flag to send only once
 	const qrCodeSent = ref(false)
 
+	const goToDjProfile = () => {
+		router.push({ name: 'dj-profile', params: { id: 1, flow: 'user' } })
+	}
+
 	const createQR = () => {
 		// Implement QR code generation
 		console.log('Generate QR code')
@@ -204,6 +212,13 @@ import VLoader from '@/shared/components/Loader/VLoader.vue'
 			modalOpen.value = true
 		}
 	}
+
+	const copyLink = () => {
+		if (user?.value?.dj?.id) {
+			const link = `https://t.me/DjConnect_bot/track?startapp=dj_${user.value.dj.id}`
+			navigator.clipboard.writeText(link)
+		}
+	}
 	// const checkDJ = () => {
 	//   router.push({ name: 'dj-profile', params: { id: 1 } })
 	// }
@@ -213,21 +228,27 @@ import VLoader from '@/shared/components/Loader/VLoader.vue'
 	}
 
 	const scanQr = () => {
-		twa?.showScanQrPopup({ text: 'Наведите на QR диджея' }, urlToRedirect => {
-			console.log('Scanned QR code', urlToRedirect)
-			//https://t.me/DjConnect_bot/track?startapp=dj_1
-			const startParam = urlToRedirect.split('startapp=')[1]
-			const getPrefix = startParam.split('_')[0]
-			const id = startParam.split('_')[1]
-			switch (getPrefix) {
-				case 'dj':
-					router.push({ name: 'dj-profile', params: { id, flow: 'user' } })
-					twa?.closeScanQrPopup()
-					break
-				default:
-					break
+		twa?.showScanQrPopup(
+			{ text: 'Наведите на QR диджея' },
+			urlToRedirect => {
+				console.log('Scanned QR code', urlToRedirect)
+				//https://t.me/DjConnect_bot/track?startapp=dj_1
+				const startParam = urlToRedirect.split('startapp=')[1]
+				const getPrefix = startParam.split('_')[0]
+				const id = startParam.split('_')[1]
+				switch (getPrefix) {
+					case 'dj':
+						router.push({
+							name: 'dj-profile',
+							params: { id, flow: 'user' }
+						})
+						twa?.closeScanQrPopup()
+						break
+					default:
+						break
+				}
 			}
-		})
+		)
 	}
 
 	const editDJProfile = () => {
@@ -245,7 +266,6 @@ import VLoader from '@/shared/components/Loader/VLoader.vue'
 		} else {
 			console.log('noDj', user.value)
 		}
-
 	})
 </script>
 

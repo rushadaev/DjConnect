@@ -1,18 +1,14 @@
 <template>
 	<div
-		v-if="djStore?.currentDJ?.price && orders.length && !stepSubmitted && !isLoading"
+		v-if="
+			djStore?.currentDJ?.price &&
+				orders.length &&
+				!stepSubmitted &&
+				!isLoading
+		"
 		class="px-6 pt-11 pb-4 overflow-y-auto"
 	>
-		<div class="relative h-[350px] overflow-hidden">
-			<img
-				src="/cabinet_bg.png"
-				alt=""
-				class="absolute inset-0 w-full h-full object-cover"
-			>
-		</div>
-		<div
-			class="flex justify-between pt-6 pb-3"
-		>
+		<div class="flex justify-between pt-6 pb-3">
 			<h1
 				v-if="user?.is_dj && flow !== 'user'"
 				class="text-2xl"
@@ -27,18 +23,16 @@
 			</h1>
 			<!-- container centralized for status vertical and horizontally -->
 			<div class="flex flex-col items-center justify-center">
-				<VStatus
-					:color="statusColor"
-				>
+				<VStatus :color="statusColor">
 					{{ statusText }}
 				</VStatus>
 			</div>
 		</div>
+
 		<OrderList
 			:title-full="true"
 			:items="orders"
 		/>
-
 		<div
 			v-if="orders[0]?.message.length > 0"
 			class="text-xs bg-lightGrey bg-opacity-50 p-3 italic rounded-md"
@@ -57,15 +51,18 @@
 			class="py-3"
 		/>
 		<VButton
-			v-if="orders.length && !djFlow && !orders[0].time_slot && orders[0].is_paid"
+			v-if="
+				orders.length &&
+					!djFlow &&
+					!orders[0].time_slot &&
+					orders[0].is_paid
+			"
 			type="button"
 			:color="ButtonColors.Blue"
 			class="mt-4 mb-4"
 			@click="updateTime"
 		>
-			<span class="flex gap-[5px] items-center">
-				Обновить время
-			</span>
+			<span class="flex gap-[5px] items-center"> Обновить время </span>
 		</VButton>
 
 		<CustomPriceInput
@@ -74,15 +71,19 @@
 			label="Стоимость за трек"
 			class="py-3"
 			:price-change-allowed="priceChangeAllowed"
-			:disabled="!priceChangeAllowed || !user?.is_dj && flow !== 'user' "
+			:disabled="!priceChangeAllowed || (!user?.is_dj && flow !== 'user')"
 			:min-price="djStore.currentDJ.price"
 		/>
 		<CustomTextInput
-			v-if="orders.length && (user?.is_dj && flow !== 'user' && djWantsToChangeMessage || (!user?.is_dj && flow !== 'user' && newMessage ))"
+			v-if="
+				orders.length &&
+					((user?.is_dj && flow !== 'user' && djWantsToChangeMessage) ||
+						(!user?.is_dj && flow !== 'user' && newMessage))
+			"
 			v-model:modelValue="newMessage"
 			label="Сообщение от диджея:"
 			class="pt-2"
-			:disabled="incorrectOrderState || !user?.is_dj && flow !== 'user'"
+			:disabled="incorrectOrderState || (!user?.is_dj && flow !== 'user')"
 		/>
 		<VButton
 			v-if="!djFlow && orders[0].is_paid"
@@ -91,20 +92,20 @@
 			class="mt-4 mb-4"
 			@click="goToOrderMusicPage"
 		>
-			<span class="flex gap-[5px] items-center">
-				Заказать еще
-			</span>
+			<span class="flex gap-[5px] items-center"> Заказать еще </span>
 		</VButton>
 		<VButton
-			v-if="!djFlow && !orders[0].is_paid && (orders[0]?.transactions?.length || order?.transactions.length)"
+			v-if="
+				!djFlow &&
+					!orders[0].is_paid &&
+					(orders[0]?.transactions?.length || order?.transactions.length)
+			"
 			type="button"
 			:color="ButtonColors.Blue"
 			class="mt-4 mb-4"
 			@click="payForOrder"
 		>
-			<span class="flex gap-[5px] items-center">
-				Оплатить
-			</span>
+			<span class="flex gap-[5px] items-center"> Оплатить </span>
 		</VButton>
 		<div
 			v-if="!incorrectOrderState"
@@ -135,7 +136,11 @@
 				</span>
 			</VButton>
 			<VButton
-				v-if="!djWantsToChangeMessage && !priceChangeAllowed && orders[0].status == 'pending'"
+				v-if="
+					!djWantsToChangeMessage &&
+						!priceChangeAllowed &&
+						orders[0].status == 'pending'
+				"
 				type="button"
 				:color="ButtonColors.Red"
 				class="mt-2 border-red-custom"
@@ -205,13 +210,18 @@
 </template>
 
 <script setup lang="ts">
-import {  IconChecked, IconLightningRing, IconClose, IconMessage } from 'shared/components/Icon'
-// import { VInput } from '@/shared/components/Input'
+	import {
+		IconChecked,
+		IconLightningRing,
+		IconClose,
+		IconMessage
+	} from 'shared/components/Icon'
+	// import { VInput } from '@/shared/components/Input'
 
-import { VButton, ButtonColors } from '@/shared/components/Button'
-import { VStatus } from '@/shared/components/Status'
-import { VLoader } from '@/shared/components/Loader'
-import { StatusVariable } from '@/shared/components/Status/config'
+	import { VButton, ButtonColors } from '@/shared/components/Button'
+	import { VStatus } from '@/shared/components/Status'
+	import { VLoader } from '@/shared/components/Loader'
+	import { StatusVariable } from '@/shared/components/Status/config'
 	// import MusicList from '@/widgets/music-list/MusicList.vue'
 	import OrderList from '@/features/order-music/ui/OrderList.vue'
 	import CustomPriceInput from '@/features/order-music/ui/CustomPriceInput.vue'
@@ -222,10 +232,11 @@ import { StatusVariable } from '@/shared/components/Status/config'
 	import { useSessionStore } from 'entities/session'
 	import { useOrdersStore } from 'features/order-music/model/use-orders-store'
 	import { storeToRefs } from 'pinia'
-import { getStatusText } from '@/shared/utils/helpers'
-import { Order } from '@/features/order-music/model'
-import { useSocket } from '@/shared/lib/sockets/useSocket'
-import VInput from '@/shared/components/Input/VInput.vue'
+	import { getStatusText } from '@/shared/utils/helpers'
+	import { Order } from '@/features/order-music/model'
+	import { useSocket } from '@/shared/lib/sockets/useSocket'
+	import VInput from '@/shared/components/Input/VInput.vue'
+
 	const ordersStore = useOrdersStore()
 	const route = useRoute()
 	const router = useRouter()
@@ -265,13 +276,19 @@ import VInput from '@/shared/components/Input/VInput.vue'
 	// 	}
 	// })
 	const djFlow = computed(() => user?.value?.is_dj && flow !== 'user')
+
 	async function increaseOrderPrice() {
 		// await ordersStore.increaseOrderPrice(+route.params.id)
 		priceChangeAllowed.value = true
 	}
+
 	const acceptOrder = async () => {
-		if(newPrice?.value) {
-			await ordersStore.acceptOrder(+route.params.id, +newPrice?.value, newMessage?.value)
+		if (newPrice?.value) {
+			await ordersStore.acceptOrder(
+				+route.params.id,
+				+newPrice?.value,
+				newMessage?.value
+			)
 			stepSubmitted.value = true
 		}
 	}
@@ -281,14 +298,17 @@ import VInput from '@/shared/components/Input/VInput.vue'
 		priceChangeAllowed.value = false
 	}
 	const cancelOrder = async () => {
-		if(djFlow.value){
-			await ordersStore.declineOrder(+route.params.id,)
+		if (djFlow.value) {
+			await ordersStore.declineOrder(+route.params.id)
 		} else {
 			await ordersStore.cancelOrder(+route.params.id)
 		}
 	}
 	const goToOrderMusicPage = () => {
-		router.push({ name: 'order', params: { id: order.value?.id, flow: flow } })
+		router.push({
+			name: 'order',
+			params: { id: order.value?.id, flow: flow }
+		})
 	}
 
 	const updateTime = async () => {
@@ -297,66 +317,67 @@ import VInput from '@/shared/components/Input/VInput.vue'
 
 	const payForOrder = () => {
 		let link = order.value?.transactions[0]?.payment_url
-		if(link){
+		if (link) {
 			window.open(link, '_blank')
 		}
 	}
 
-	const order = ref(ordersStore.orders.find(order => +order.id === +route.params.id))
+	const order = ref(
+		ordersStore.orders.find(order => +order.id === +route.params.id)
+	)
 	onMounted(async () => {
 		const order = await djStore.fetchOrder(+route.params.id)
 		//convert date to time
 		timeslot.value = order?.time_slot
 		const channelName = `order_update_${route.params.id}`
 		const { data } = useSocket(channelName)
-		watch(data, (newValue) => {
+		watch(data, newValue => {
 			if (newValue) {
 				updateOrder(newValue.data.order)
-
 			}
 		})
 		console.log('subscribed toALARM', channelName)
-		if(user.value?.is_dj && user.value.dj && flow !== 'user') {
+		if (user.value?.is_dj && user.value.dj && flow !== 'user') {
 			await djStore.fetchDJProfile(user?.value?.dj?.id)
 			newPrice.value = `${Number(djStore?.currentDJ?.price)}`
 
-			if(order){
+			if (order) {
 				updateOrder(order)
 			}
-
 		} else {
-			if(!djStore.currentDJ || +djStore.currentDJ.id !== +order?.dj_id){
+			if (!djStore.currentDJ || +djStore.currentDJ.id !== +order?.dj_id) {
 				await djStore.fetchDJProfile(order?.dj_id)
 			}
-			if(order){
+			if (order) {
 				updateOrder(order)
 			}
-
 		}
-
 	})
 
 	// const listenForOrderUpdates = () => {
-    //   const eventSource = new EventSource(`https://dj-connect.xyz/order-updates/${route.params.id}`)
+	//   const eventSource = new EventSource(`https://dj-connect.xyz/order-updates/${route.params.id}`)
 
-    //   eventSource.onmessage = (event) => {
+	//   eventSource.onmessage = (event) => {
 	// 	let order = JSON.parse(event.data)
 	// 	updateOrder(order)
-    //   }
-    // }
+	//   }
+	// }
 
 	const updateOrder = (orderUpdated: Order) => {
 		orders.value = []
 		orders.value.push({
-					id: orderUpdated.id,
-					photo: '/cabinet_bg.png?url',
-					title: orderUpdated.track?.name,
-					text: orderUpdated.dj.stage_name,
-					is_paid: orderUpdated.is_paid,
-					message: orderUpdated.message,
-					transactions: orderUpdated.transactions
-				})
-		const { statusText: text, statusColor: color } = getStatusText(orderUpdated.status, orderUpdated.is_paid)
+			id: orderUpdated.id,
+			photo: '/cabinet_bg.png?url',
+			title: orderUpdated.track?.name,
+			text: orderUpdated.dj.stage_name,
+			is_paid: orderUpdated.is_paid,
+			message: orderUpdated.message,
+			transactions: orderUpdated.transactions
+		})
+		const { statusText: text, statusColor: color } = getStatusText(
+			orderUpdated.status,
+			orderUpdated.is_paid
+		)
 		//...
 		incorrectOrderState.value = orderUpdated.status !== 'pending'
 		statusText.value = text
@@ -365,13 +386,12 @@ import VInput from '@/shared/components/Input/VInput.vue'
 		newPrice.value = `${Number(orderUpdated?.price)}`
 		order.value = orderUpdated
 	}
-
 </script>
 
 <style scoped>
-.border-red-custom {
-	border-color: rgba(255, 63, 63, 1);
-	border-width: 1px;
-	border-style: solid;
-}
+	.border-red-custom {
+		border-color: rgba(255, 63, 63, 1);
+		border-width: 1px;
+		border-style: solid;
+	}
 </style>
