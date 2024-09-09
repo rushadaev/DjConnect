@@ -19,7 +19,7 @@
 				class="flex flex-col items-center flex-1"
 				active-class="text-routerLime"
 			>
-				<span class="w-[23px] h-[27px] mb-[6px]">🔊</span>
+				<span class="w-[23px] h-[27px] mb-[6px]">💬</span>
 				<span class="text-xs">Поддержка</span>
 			</a>
 		</div>
@@ -46,10 +46,10 @@
 			onlyDJ?: boolean
 		}
 	> = [
-		{ name: 'main', icon: '⭐', label: 'Профиль' },
-		{ name: 'orders', icon: '📣', label: 'Заказы', onlyDJ: true },
-		{ name: 'story', icon: '⏳', label: 'История' },
-		{ name: 'finance', icon: '🛍️', label: 'Финансы', onlyDJ: true }
+		{ name: 'main', icon: '🫡', label: 'Профиль' },
+		{ name: 'orders', icon: '📈', label: 'Статистика', onlyDJ: true },
+		{ name: 'story', icon: '⏳', label: 'Заказы' },
+		{ name: 'finance', icon: '🤑', label: 'Финансы', onlyDJ: true }
 	]
 
 	watchEffect(() => {
