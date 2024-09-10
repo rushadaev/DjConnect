@@ -1,12 +1,29 @@
 <template>
 	<div class="relative">
+		<VTextarea
+			v-if="updateDescriptionOpen"
+			v-model="description"
+			:is-open="updateDescriptionOpen"
+			:focus-on-mount="true"
+			placeholder="Enter description"
+			@blur="updateDescription"
+		/>
 		<!-- Fixed background image -->
 		<div class="fixed top-0 left-0 w-full h-[350px] z-0">
 			<img
-				src="/cabinet_bg.png"
+				v-if="user?.is_dj && flow !== 'user'"
+				:src="user?.dj?.photo_url"
 				alt=""
 				class="w-full h-full object-cover"
 			>
+
+			<img
+				v-else
+				:src="user?.settings?.photo_url"
+				alt=""
+				class="w-full h-full object-cover"
+			>
+
 			<!-- Gradient overlay -->
 			<div
 				class="absolute inset-0 bg-gradient-to-b from-transparent to-blackContent"
@@ -15,61 +32,54 @@
 
 		<!-- Scrollable content -->
 		<div class="relative z-10 pt-[250px]">
+			<div class="flex justify-between items-center mb-[20px] px-[20px]">
+				<div class="flex flex-col font-['Unbounded']">
+					<VClipboard
+						v-if="user?.is_dj && flow !== 'user'"
+						:text-to-copy="getLink"
+					>
+						<span
+							class="text-white text-2xl font-bold font-['Unbounded']"
+						>
+							{{ `${user?.dj?.stage_name}` }}
+						</span>
+					</VClipboard>
+
+					<div v-else>
+						<span
+							class="text-white text-2xl font-bold font-['Unbounded']"
+							v-html="user?.settings?.title"
+						/>
+					</div>
+					<span
+						v-if="user?.is_dj && flow !== 'user'"
+						class="text-[#FFFFFF30] text-sm font-light"
+					>
+						Просмотров за месяц: более {{ user?.dj?.views }}
+					</span>
+					<span
+						v-else
+						class="text-[#FFFFFF30] text-sm font-light"
+					>
+						Более
+						{{ user?.settings?.settings?.views }} пользователей в
+						мес
+					</span>
+				</div>
+			</div>
 			<!-- Profile section -->
 			<div
 				class="bg-blackContent bg-opacity-70 backdrop-blur-md p-[25px] rounded-t-[20px]"
 			>
-				<div class="flex justify-between items-center mb-[20px]">
-					<div
-						class="flex flex-col"
-						@click="goToDjProfile"
-					>
-						<span class="text-white text-2xl font-bold">
-							{{
-								user?.is_dj && flow !== 'user'
-									? `DJ ${user?.dj?.stage_name}`
-									: user?.name
-							}}
-						</span>
-						<span
-							v-if="user?.is_dj && flow !== 'user'"
-							class="text-[#FFFFFF80] text-sm"
-						>
-							{{ user?.name }}
-						</span>
-					</div>
+				<div
+					v-if="!user?.is_dj || flow === 'user'"
+					class="text-xl font-light font-['Montserrat'] whitespace-break-spaces mb-10"
+				>
+					{{ user?.settings?.description }}
 				</div>
-
 				<!-- DJ-specific content -->
 				<div v-if="user?.is_dj && flow !== 'user'">
-					<div class="flex gap-[10px] mb-[20px]">
-						<VButton
-							:color="ButtonColors.Green"
-							@click="createQR"
-						>
-							<IconQr class="mr-[5px]" />
-							QR-код
-						</VButton>
-						<VButton
-							:color="ButtonColors.Green"
-							@click="copyLink"
-						>
-							Cсылка
-						</VButton>
-					</div>
-
-					<!-- Tracks list -->
-					<div class="space-y-[10px]">
-						<VCard
-							v-for="track in djStore.tracks"
-							:key="track.id"
-							:title="track.name"
-							:text="`Добавлен: ${new Date(track.created_at).toLocaleDateString()}`"
-							:photo="'/cabinet_bg.png'"
-						/>
-					</div>
-
-					<div class="mt-[20px] space-y-[10px]">
+					<div class="flex flex-col gap-[10px] mb-[20px]">
 						<VButton
 							:color="ButtonColors.Green"
 							@click="goToStatistics"
@@ -78,7 +88,14 @@
 								icon-color="#131313"
 								class="mr-[5px]"
 							/>
-							Смотреть статистику
+							статистика
+						</VButton>
+						<VButton
+							:color="ButtonColors.Green"
+							@click="createQR"
+						>
+							<IconQr class="mr-[5px]" />
+							мой qr-code
 						</VButton>
 						<VButton
 							:color="ButtonColors.None"
@@ -88,7 +105,42 @@
 								icon-color="#FFFFFFB2"
 								class="mr-[5px]"
 							/>
-							Редактировать
+							изменить профиль
+						</VButton>
+					</div>
+
+					<div class="mt-[40px] space-y-[10px] px-[30px]">
+						<!-- Add this input for file upload -->
+						<input
+							ref="fileInput"
+							type="file"
+							accept="image/*"
+							style="display: none"
+							@change="handleFileChange"
+						>
+
+						<VButton
+							:color="ButtonColors.None"
+							@click="editPhoto"
+						>
+							{{
+								user?.dj?.photo_url
+									? 'обновить фотографию'
+									: 'добавить фотографию'
+							}}
+						</VButton>
+
+						<!-- Add this input for description -->
+
+						<VButton
+							:color="ButtonColors.None"
+							@click="editDescription"
+						>
+							{{
+								user?.dj?.description
+									? 'изменить описание'
+									: 'добавить описание'
+							}}
 						</VButton>
 					</div>
 				</div>
@@ -127,7 +179,7 @@
 		v-if="isLoading"
 		:is-loading="isLoading"
 		bg="backdrop-blur-[5px]"
-		text="🎧 Загружаем треки"
+		:text="loadingText"
 	/>
 	<DialogRoot v-model:open="modalOpen">
 		<DialogPortal>
@@ -152,31 +204,29 @@
 </template>
 
 <script setup lang="ts">
-	import { onMounted, ref, computed } from 'vue'
-	import { useRouter, useRoute } from 'vue-router'
+	import { computed, onMounted, ref } from 'vue'
+	import { useRoute, useRouter } from 'vue-router'
 	import { useSessionStore } from '@/entities/session/model/session.store'
 	import { useDJStore } from '@/entities/dj/model/dj.store'
 	import { storeToRefs } from 'pinia'
 	import {
-		IconQr,
-		IconStat,
 		IconEdit,
-		IconMusic
+		IconMusic,
+		IconQr,
+		IconStat
 	} from 'shared/components/Icon'
-	import { VButton, ButtonColors } from 'shared/components/Button'
-	import { VCard } from 'shared/components/Card'
+	import { ButtonColors, VButton } from 'shared/components/Button'
 	import {
-		//   DialogClose,
 		DialogContent,
-		//   DialogDescription,
 		DialogOverlay,
 		DialogPortal,
 		DialogRoot,
 		DialogTitle
-		//   DialogTrigger,
 	} from 'radix-vue'
 	import { twa } from '@/shared/lib/api'
 	import VLoader from '@/shared/components/Loader/VLoader.vue'
+	import VClipboard from 'shared/components/Clipboard/VClipboard.vue'
+	import { VTextarea } from 'shared/components/Textarea'
 
 	const router = useRouter()
 	const route = useRoute()
@@ -184,6 +234,7 @@
 	const djStore = useDJStore()
 
 	const isLoading = computed(() => djStore.isLoading)
+	const loadingText = computed(() => djStore.loadingText)
 
 	const qrCodeRef = ref<string | undefined>(undefined)
 	const { user } = storeToRefs(sessionStore)
@@ -195,9 +246,53 @@
 	// flag to send only once
 	const qrCodeSent = ref(false)
 
-	const goToDjProfile = () => {
-		router.push({ name: 'dj-profile', params: { id: 1, flow: 'user' } })
+	const fileInput = ref<HTMLInputElement | null>(null)
+	const description = ref('')
+	const updateDescriptionOpen = ref(false)
+
+	const editPhoto = () => {
+		fileInput.value?.click()
 	}
+
+	const handleFileChange = async (event: Event) => {
+		const target = event.target as HTMLInputElement
+		const file = target.files?.[0]
+		if (file) {
+			const formData = new FormData()
+			formData.append('photo', file, file.name)
+
+			console.log('File selected:', file.name)
+			console.log('FormData:', formData)
+
+			try {
+				djStore.loadingText = 'Загрузка фотографии'
+				await djStore.updateDJProfile(formData)
+				console.log('File upload successful')
+			} catch (error) {
+				console.error('File upload failed:', error)
+			}
+		}
+	}
+
+	const editDescription = () => {
+		updateDescriptionOpen.value = true
+	}
+	const updateDescription = async () => {
+		try {
+			djStore.loadingText = 'Обновление описания'
+			updateDescriptionOpen.value = false
+			if (user?.value?.dj?.description === description.value) return
+			await djStore.updateDJProfile({ description: description.value })
+
+			// Handle success (e.g., show a success message)
+		} catch (error) {
+			// Handle error (e.g., show an error message)
+		}
+	}
+
+	// const goToDjProfile = () => {
+	// 	router.push({ name: 'dj-profile', params: { id: 1, flow: 'user' } })
+	// }
 
 	const createQR = () => {
 		// Implement QR code generation
@@ -212,15 +307,12 @@
 		}
 	}
 
-	const copyLink = () => {
+	const getLink = computed(() => {
 		if (user?.value?.dj?.id) {
-			const link = `https://t.me/DjConnect_bot/track?startapp=dj_${user.value.dj.id}`
-			navigator.clipboard.writeText(link)
+			return `https://t.me/DjConnect_bot/track?startapp=dj_${user.value.dj.id}`
 		}
-	}
-	// const checkDJ = () => {
-	//   router.push({ name: 'dj-profile', params: { id: 1 } })
-	// }
+		return ''
+	})
 
 	const becomeDJ = () => {
 		router.push({ name: 'dj-registration', params: { flow: 'dj' } })
@@ -261,7 +353,9 @@
 	onMounted(async () => {
 		if (user.value?.is_dj && user.value.dj && flow != 'user') {
 			console.log('DJ', user.value.dj)
-			await djStore.fetchTracks(user.value.dj.id)
+			djStore.loadingText = 'Загрузка профиля'
+			// await djStore.fetchTracks(user.value.dj.id)
+			description.value = user.value.dj.description
 		} else {
 			console.log('noDj', user.value)
 		}

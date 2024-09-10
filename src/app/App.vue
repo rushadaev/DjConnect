@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-black h-[100dvh]">
+	<div class="main-block bg-black h-[100dvh]">
 		<VLoader
 			v-if="isLoading"
 			:is-loading="isLoading"
@@ -101,10 +101,10 @@
 		}
 	})
 	export type PopupButton = {
-        id?: string;
-        type: 'default' | 'destructive';
-        text: string;
-    };
+		id?: string
+		type: 'default' | 'destructive'
+		text: string
+	}
 
 	const subscribeToSocket = () => {
 		if (flow.value === 'dj' && user.value?.dj) {
@@ -120,9 +120,7 @@
 			}
 			const { data, unmount: unMountDj } = useSocket(channelName)
 			activeSocketUnMount.value = unMountDj
-			console.log('djSubscribe')
 			watch(data, newData => {
-				console.log('newData', newData)
 				if (newData) {
 					const order = newData.data.order
 					twa?.showPopup(
@@ -213,7 +211,8 @@
 							}
 						)
 					} else {
-						let isCurrentRouteIsOrder = router.currentRoute.value.name === 'review-order'
+						let isCurrentRouteIsOrder =
+							router.currentRoute.value.name === 'review-order'
 						let buttons = []
 						if (isCurrentRouteIsOrder) {
 							buttons = [

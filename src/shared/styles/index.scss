@@ -5,6 +5,7 @@
 @import "reset";
 @import "transitions";
 
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital@0;1&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;1,500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,600;1,600&display=swap');
@@ -17,7 +18,7 @@ body {
 
 body * {
   font-family: 'Montserrat', sans-serif;
-  font-weight: 400;
+  font-weight: 600;
 }
 
 .layout {
@@ -39,6 +40,6 @@ body * {
 }
 
 .button-space {
-  margin-bottom: 75px!important;
+  margin-bottom: 75px !important;
 }
 

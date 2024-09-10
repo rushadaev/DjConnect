@@ -37,6 +37,10 @@ export function useApi<T>(method: ApiMethod, url: string, payload?: any) {
 		loading.value = true
 		error.value = null
 		try {
+			if (payload instanceof FormData) {
+				api.defaults.headers['Content-Type'] = 'multipart/form-data'
+			}
+
 			const response: AxiosResponse<T> = await api[method](
 				url,
 				method === 'get' ? { params: payload } : payload

@@ -40,3 +40,6 @@ export { default as IconWallet } from './IconWallet.vue'
 export { default as IconWorld } from './IconWorld.vue'
 export { default as IconQr } from './IconQr.vue'
 export { default as IconMusic } from './IconMusic.vue'
+
+export { default as IconCopy } from './IconCopy.vue'
+export { default as IconCheckmark } from './IconCheckmark.vue'

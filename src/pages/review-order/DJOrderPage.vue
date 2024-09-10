@@ -6,9 +6,9 @@
 				!stepSubmitted &&
 				!isLoading
 		"
-		class="px-6 pt-11 pb-4 overflow-y-auto"
+		class="px-6 relative z-10 pt-[20px]"
 	>
-		<div class="flex justify-between pt-6 pb-3">
+		<div class="flex justify-between pb-3">
 			<h1
 				v-if="user?.is_dj && flow !== 'user'"
 				class="text-2xl"

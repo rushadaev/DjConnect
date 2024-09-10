@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-black text-white min-h-screen p-4 flex flex-col">
+	<div class="text-white min-h-screen p-4 flex flex-col">
 		<form
 			class="space-y-4"
 			@submit.prevent="onSubmit"
@@ -42,7 +42,7 @@
 				<VInput
 					v-model="form.payment_details"
 					maxlength="16"
-					label="Номер карты на выплату"
+					label="Номер карты для выплаты"
 					required
 				/>
 				<VInput
@@ -92,14 +92,14 @@
 						Удалить
 					</VButton>
 				</div>
-				<VButton
-					type="button"
-					:color="ButtonColors.Green"
-					class="mt-2"
-					@click="addTrack"
-				>
-					Добавить трек
-				</VButton>
+				<!--				<VButton-->
+				<!--					type="button"-->
+				<!--					:color="ButtonColors.Green"-->
+				<!--					class="mt-2"-->
+				<!--					@click="addTrack"-->
+				<!--				>-->
+				<!--					Добавить трек-->
+				<!--				</VButton>-->
 			</div>
 
 			<p
@@ -113,47 +113,52 @@
 				:loading="isRegistering"
 				bottom-space
 			>
-				{{ isRegistering ? 'Регистрация...' : 'Зарегистрироваться как DJ' }}
+				{{
+					isRegistering
+						? 'Регистрация...'
+						: 'Зарегистрироваться как DJ'
+				}}
 			</VButton>
 		</form>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
-import { VInput } from '@/shared/components/Input'
-import { VButton, ButtonColors } from '@/shared/components/Button'
-import { useDJRegistration } from '../model/use-dj-registration'
-import { TabsMain, TabsList, TabsTrigger } from 'shared/components/ui/tabs'
+	import { reactive } from 'vue'
+	import { VInput } from '@/shared/components/Input'
+	import { VButton, ButtonColors } from '@/shared/components/Button'
+	import { useDJRegistration } from '../model/use-dj-registration'
+	import { TabsMain, TabsList, TabsTrigger } from 'shared/components/ui/tabs'
 
-const { register, isRegistering, error } = useDJRegistration()
+	const { register, isRegistering, error } = useDJRegistration()
 
-const form = reactive({
-  stage_name: '',
-  city: '',
-  payment_details: '',
-  sex: 'male',
-  phone: '',
-  email: '',
-  website: '',
-  price: 0,
-  tracks: [] as { name: string }[]
-})
+	const form = reactive({
+		stage_name: '',
+		city: '',
+		payment_details: '',
+		sex: 'male',
+		phone: '',
+		email: '',
+		website: '',
+		price: 0,
+		tracks: [] as { name: string }[]
+	})
 
-const addTrack = () => {
-  form.tracks.push({ name: '' })
-}
+	// const addTrack = () => {
+	// 	form.tracks.push({ name: '' })
+	// }
 
-const removeTrack = (index: number) => {
-  form.tracks.splice(index, 1)
-}
+	const removeTrack = (index: number) => {
+		form.tracks.splice(index, 1)
+	}
 
-const onSubmit = async () => {
-  const formData = {
-    ...form,
-    tracks: form.tracks.map(track => track.name).filter(name => name.trim() !== '')
-  }
-  console.log('data', formData)
-  await register(formData)
-}
+	const onSubmit = async () => {
+		const formData = {
+			...form,
+			tracks: form.tracks
+				.map(track => track.name)
+				.filter(name => name.trim() !== '')
+		}
+		await register(formData)
+	}
 </script>

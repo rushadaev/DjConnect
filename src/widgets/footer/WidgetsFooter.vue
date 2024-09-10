@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="fixed bottom-0 w-full bg-lightGrey text-white flex justify-between py-[20px] pb-[35px] px-[20px] z-20"
+		class="fixed bottom-0 w-full bg-black text-white rounded-t-[20px] flex justify-between py-[20px] pb-[35px] px-[20px] z-20"
 	>
 		<div class="flex justify-between w-full">
 			<router-link
@@ -10,8 +10,8 @@
 				class="flex flex-col items-center flex-1"
 				active-class="text-routerLime"
 			>
-				<span class="w-[23px] h-[27px] mb-[6px]">{{ rte.icon }}</span>
-				<span class="text-xs">{{ rte.label }}</span>
+				<span class="w-[23px] h-[27px] mb-[8px]">{{ rte.icon }}</span>
+				<span class="text-[10px]">{{ rte.label }}</span>
 			</router-link>
 			<a
 				key="support"
@@ -19,8 +19,8 @@
 				class="flex flex-col items-center flex-1"
 				active-class="text-routerLime"
 			>
-				<span class="w-[23px] h-[27px] mb-[6px]">💬</span>
-				<span class="text-xs">Поддержка</span>
+				<span class="w-[23px] h-[27px] mb-[8px]">💬</span>
+				<span class="text-[10px]">Поддержка</span>
 			</a>
 		</div>
 	</div>
@@ -46,10 +46,10 @@
 			onlyDJ?: boolean
 		}
 	> = [
-		{ name: 'main', icon: '🫡', label: 'Профиль' },
-		{ name: 'orders', icon: '📈', label: 'Статистика', onlyDJ: true },
-		{ name: 'story', icon: '⏳', label: 'Заказы' },
-		{ name: 'finance', icon: '🤑', label: 'Финансы', onlyDJ: true }
+		{ name: 'main', icon: '🫡', label: 'профиль' },
+		{ name: 'orders', icon: '📈', label: 'статистика', onlyDJ: true },
+		{ name: 'story', icon: '⏳', label: 'заказы' },
+		{ name: 'finance', icon: '🤑', label: 'финансы', onlyDJ: true }
 	]
 
 	watchEffect(() => {

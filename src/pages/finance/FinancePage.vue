@@ -1,11 +1,11 @@
 <template>
-	<div
-		class="px-6 pt-11 overflow-y-auto overflow-x-hidden"
-	>
+	<div class="px-6 relative z-10 pt-[20px] overflow-x-hidden">
 		<h1 class="text-2xl pb-4">
-			Финансы 🛍
+			Финансы
 		</h1>
-		<div class="w-full h-[118px] border-none bg-[#131313] rounded-md flex flex-col items-center justify-center">
+		<div
+			class="w-full h-[118px] border-none bg-[#131313] rounded-md flex flex-col items-center justify-center"
+		>
 			<span class="text-5xl text-white">{{ djStore?.availableBalance }} ₽</span>
 			<span class="text-sm text-[#FFFFFF4D] pt-2">Баланс</span>
 		</div>
@@ -24,9 +24,7 @@
 		<h1 class="text-xl py-4">
 			Выплаты
 		</h1>
-		<PaymentsList
-			:items="payoutList"
-		/>
+		<PaymentsList :items="payoutList" />
 	</div>
 	<VLoader
 		bg="backdrop-blur-[2px]"
@@ -48,6 +46,7 @@
 	import { storeToRefs } from 'pinia'
 	import { useRouter } from 'vue-router'
 	import VLoader from '@/shared/components/Loader/VLoader.vue'
+
 	const djStore = useDJStore()
 	const sessionStore = useSessionStore()
 	const { user } = storeToRefs(sessionStore)
@@ -64,11 +63,11 @@
 	const isLoading = computed(() => djStore.isLoading)
 
 	onMounted(async () => {
-		if(user.value?.is_dj && user.value.dj) {
+		if (user.value?.is_dj && user.value.dj) {
 			const payouts = await djStore.fetchDJPayouts(+user.value.dj.id)
 			// const tracks = await djStore.fetchTracks(+user.value.dj.id)
-			if(payouts) {
-				for(let payout of payouts.reverse()) {
+			if (payouts) {
+				for (let payout of payouts.reverse()) {
 					// const track = tracks.find(track => +track.id === +order.track_id)
 					payoutList.value.push({
 						id: +payout.id,
@@ -76,8 +75,18 @@
 						title: `-${payout.amount}₽`,
 						// format payout.processed_at
 						text: new Date(payout.created_at).toLocaleDateString(),
-						statusColor: payout.status === 'pending'? 'orange' as StatusVariable : payout.status === 'processed' ? 'green' as StatusVariable : 'red' as StatusVariable,
-						statusText: payout.status === 'pending' ? 'Ожидание' : payout.status === 'processed' ? 'Успешно' : 'Отклонено',
+						statusColor:
+							payout.status === 'pending'
+								? ('orange' as StatusVariable)
+								: payout.status === 'processed'
+									? ('green' as StatusVariable)
+									: ('red' as StatusVariable),
+						statusText:
+							payout.status === 'pending'
+								? 'Ожидание'
+								: payout.status === 'processed'
+									? 'Успешно'
+									: 'Отклонено'
 					})
 				}
 			}
@@ -85,6 +94,4 @@
 	})
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

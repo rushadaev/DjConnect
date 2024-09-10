@@ -11,11 +11,19 @@
 				v-bind="$attrs"
 				:value="modelValue"
 				inputmode="text"
-				class="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-3 border-custom"
+				:placeholder="placeholder"
+				class="focus:greenYellow focus:border-greenYellow block w-full sm:text-sm border-gray-300 font-medium rounded-md p-3 border-custom"
 				:class="[{ 'border-red-300': error }, customHeight]"
 				@keydown.enter="closeKeyboard"
-				@input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-				@change="$emit('change', ($event.target as HTMLInputElement).value)"
+				@input="
+					$emit(
+						'update:modelValue',
+						($event.target as HTMLInputElement).value
+					)
+				"
+				@change="
+					$emit('change', ($event.target as HTMLInputElement).value)
+				"
 			>
 		</div>
 		<p
@@ -28,33 +36,35 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+	import { onMounted, ref } from 'vue'
 
-const inputRef = ref<HTMLInputElement | null>(null)
-defineProps<{
-  modelValue: string
-  label: string
-  error?: string
-  id?: string
-  customHeight?: string
-}>()
+	const inputRef = ref<HTMLInputElement | null>(null)
+	defineProps<{
+		modelValue: string
+		label: string
+		error?: string
+		id?: string
+		customHeight?: string
+		placeholder?: string
+	}>()
 
-defineEmits<{
-  (e: 'update:modelValue', value: string): void
-  (e: 'change', value: string): void
-}>()
+	defineEmits<{
+		(e: 'update:modelValue', value: string): void
+		(e: 'change', value: string): void
+	}>()
 
-const closeKeyboard = () => {
-  if (inputRef.value) {
-	inputRef.value.blur()
-  }
-}
-onMounted(() => {
-  document.addEventListener('touchend', function() {
-    const input = document.activeElement as HTMLInputElement
-    if (input?.tagName === 'INPUT' || input?.tagName === 'TEXTAREA') {
-		input.blur()
-    }
-  })
-})
+	const closeKeyboard = () => {
+		if (inputRef.value) {
+			inputRef.value.blur()
+		}
+	}
+
+	onMounted(() => {
+		document.addEventListener('touchend', function () {
+			const input = document.activeElement as HTMLInputElement
+			if (input?.tagName === 'INPUT' || input?.tagName === 'TEXTAREA') {
+				input.blur()
+			}
+		})
+	})
 </script>
