@@ -88,7 +88,7 @@
 		v-if="isUpdating && !stepSubmitted"
 		:is-loading="isUpdating"
 		bg="backdrop-blur-[2px]"
-		text="🏦 Связываемся с банком"
+		text="связываемся с банком 🏦"
 	/>
 	<div v-if="stepSubmitted">
 		<p class="flex flex-col justify-center items-center py-[170px]">
@@ -103,10 +103,10 @@
 					<VButton
 						:color="ButtonColors.Green"
 						class="mx-auto mt-5"
-						@click="hideStepSubmitted"
+						@click="goToProfile"
 					>
 						<span class="flex gap-[5px] items-center">
-							Сделать еще одну выплату
+							вернутся в главный экран
 						</span>
 					</VButton>
 				</div>
@@ -126,6 +126,7 @@
 	import { IconWallet } from '@/shared/components/Icon'
 	import { IconAdd, IconMinus } from '@/shared/components/Icon'
 	import VLoader from '@/shared/components/Loader/VLoader.vue'
+	import { useRouter } from 'vue-router'
 
 	const djStore = useDJStore()
 	const sessionStore = useSessionStore()
@@ -134,6 +135,7 @@
 	const { availableBalance } = storeToRefs(djStore)
 	// const router = useRouter()
 
+	const router = useRouter()
 	const stepSubmitted = ref(false)
 
 	const selectedAmount = ref(0)
@@ -156,11 +158,12 @@
 	}
 	// const predefinedAmounts = [{ value: 1000, click: setAmount(amount)}, 5000, 10000, 15000]
 
-	const hideStepSubmitted = () => {
-		stepSubmitted.value = false
-		selectedAmount.value = 1500
+	const goToProfile = () => {
+		router.push({
+			name: 'main',
+			params: { flow: 'dj' }
+		})
 	}
-
 	const predefinedAmounts = [
 		{ value: 1000, click: setAmount(1000) },
 		{ value: 5000, click: setAmount(5000) },

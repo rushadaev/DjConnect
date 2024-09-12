@@ -28,7 +28,7 @@
 							{{ `${currentDJ?.stage_name}` }}
 						</span>
 					</VClipboard>
-					<span class="text-[#FFFFFF30] text-sm font-light">
+					<span class="text-[#FFFFFF30] text-sm font-light mt-2">
 						Просмотров за месяц: более
 						{{ currentDJ?.views }}
 					</span>
@@ -49,8 +49,7 @@
 						@click="orderTrack"
 					>
 						<span class="flex gap-[5px] items-center">
-							<IconMusic icon-color="#131313" />
-							Заказать трек
+							заказать трек
 						</span>
 					</VButton>
 				</div>
@@ -60,7 +59,7 @@
 			v-if="isLoading"
 			:is-loading="isLoading"
 			bg="bg-black"
-			text="Загрузка профиля"
+			text="загрузка профиля"
 		/>
 	</div>
 </template>
@@ -69,7 +68,6 @@
 	import { onMounted, computed } from 'vue'
 	import { useRouter, useRoute } from 'vue-router'
 	import { useDJStore } from '@/entities/dj/model/dj.store'
-	import { IconMusic } from 'shared/components/Icon'
 	import { VButton, ButtonColors } from 'shared/components/Button'
 	import { VLoader } from 'shared/components/Loader'
 	import VClipboard from 'shared/components/Clipboard/VClipboard.vue'

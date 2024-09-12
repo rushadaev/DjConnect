@@ -16,7 +16,7 @@
 				:aria-label="imageCover"
 			>
 				<img
-					:src="`/DjConnect/paycard/images/${Math.floor(Math.random() * 25 + 1)}.jpg`"
+					:src="`/DjConnect/paycard/images/3.jpg`"
 					class="card-item__bg"
 					alt="Background image"
 				>

@@ -7,7 +7,7 @@
 		<OrderList :items="orders" />
 	</div>
 	<VLoader
-		text="🥁 Собираем заказы"
+		text="собираем заказы 🥁"
 		:is-loading="isLoading"
 	/>
 </template>

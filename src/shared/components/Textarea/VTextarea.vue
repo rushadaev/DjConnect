@@ -5,7 +5,7 @@
 		@click="removeFocus"
 	>
 		<div
-			class="absolute top-20 left-0 w-full h-full opacity-20 text-white text-center text-2xl font-bold font-['Unbounded']"
+			class="absolute top-[20%] left-0 w-full h-full opacity-20 text-white text-center text-md font-bold font-['Unbounded']"
 		>
 			Нажмите, чтобы сохранить
 		</div>

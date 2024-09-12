@@ -41,7 +41,7 @@
 	</div>
 	<VLoader
 		:is-loading="isLoading"
-		text="💸 Считаем деньги"
+		text="считаем деньги 💸"
 		bg="backdrop-blur-[2px]"
 	/>
 </template>

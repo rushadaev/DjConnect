@@ -18,7 +18,7 @@
 			:is="layout"
 			v-else
 		>
-			<router-view />
+			<router-view :key="$route.fullPath" />
 		</component>
 	</div>
 </template>
@@ -85,9 +85,11 @@
 				default:
 					break
 			}
+
 			//remove prefix after redirect
 			twa.initDataUnsafe.start_param = ''
 		}
+
 		subscribeToSocket()
 	}
 
@@ -159,11 +161,11 @@
 			watch(orderData, newData => {
 				if (newData) {
 					const order = newData.data.order
-					if (order.is_paid) {
+					if (order.is_paid && !order.time_slot) {
 						twa?.showPopup(
 							{
 								title: '🎉 Заказ оплачен',
-								message: `Заказ на трек ${order.track.name} за ${order.price}₽ оплачен! Включите трек в течение 15 минут`,
+								message: `Заказ на трек ${order.track.name} за ${order.price}₽ оплачен! Ожидаем ввод времени от пользователя!`,
 								buttons: [
 									{
 										id: 'success',
@@ -175,6 +177,36 @@
 							buttonId => {
 								if (buttonId === 'success') {
 									console.log('success')
+								}
+							}
+						)
+					} else if (order.time_slot) {
+						twa?.showPopup(
+							{
+								title: '🎉 Время указано',
+								message: `Пользователь просит воспроизвести трек ${order.track.name} в ${order.time_slot.slice(11, 16)}`,
+								buttons: [
+									{
+										id: 'success',
+										text: 'Супер!',
+										type: 'default'
+									},
+									{
+										id: 'goToOrder',
+										text: 'Перейти к заказу',
+										type: 'default'
+									}
+								]
+							},
+							buttonId => {
+								if (buttonId === 'goToOrder') {
+									router.push({
+										name: 'review-order',
+										params: {
+											id: order.id,
+											flow: flow.value
+										}
+									})
 								}
 							}
 						)
@@ -194,8 +226,8 @@
 					if (order.is_paid && !order.time_slot) {
 						twa?.showPopup(
 							{
-								title: '🎉 Заказ оплачен',
-								message: `Вы оплатили заказ на трек ${order.track.name} за ${order.price}₽! Ожидайте включения трека`,
+								title: '⌚️Укажите время',
+								message: `Вы оплатили заказ на трек ${order.track.name}. Теперь укажите время воспроизведения!`,
 								buttons: [
 									{
 										id: 'success',

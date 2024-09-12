@@ -52,8 +52,9 @@
 					v-model="form.phone"
 					label="Телефон"
 					placeholder="Введите телефон"
+					maxlength="12"
 					type="tel"
-					inputmode="phone"
+					inputmode="tel"
 				/>
 				<VInput
 					v-model="form.email"
@@ -61,12 +62,6 @@
 					placeholder="Введите email"
 					type="email"
 					inputmode="email"
-				/>
-				<VInput
-					v-model="form.website"
-					label="Веб-сайт"
-					placeholder="Введите веб-сайт"
-					inputmode="url"
 				/>
 				<VInput
 					v-model="form.price"
@@ -78,36 +73,36 @@
 			</div>
 
 			<!-- Tracks section -->
-			<div class="mt-[20px]">
-				<label class="block text-sm font-medium mb-2">Треки</label>
-				<div
-					v-for="(track, index) in form.tracks"
-					:key="index"
-					class="flex items-center justify-center mb-2"
-				>
-					<VInput
-						v-model="track.name"
-						:label="`Трек ${index + 1}`"
-						class="flex-grow text-gray mr-2 w-[250px]"
-					/>
-					<VButton
-						type="button"
-						:color="ButtonColors.Red"
-						class="ml-2"
-						@click="removeTrack(index)"
-					>
-						Удалить
-					</VButton>
-				</div>
-				<!--				<VButton-->
-				<!--					type="button"-->
-				<!--					:color="ButtonColors.Green"-->
-				<!--					class="mt-2"-->
-				<!--					@click="addTrack"-->
-				<!--				>-->
-				<!--					Добавить трек-->
-				<!--				</VButton>-->
-			</div>
+			<!--			<div class="mt-[20px]">-->
+			<!--				<label class="block text-sm font-medium mb-2">Треки</label>-->
+			<!--				<div-->
+			<!--					v-for="(track, index) in form.tracks"-->
+			<!--					:key="index"-->
+			<!--					class="flex items-center justify-center mb-2"-->
+			<!--				>-->
+			<!--					<VInput-->
+			<!--						v-model="track.name"-->
+			<!--						:label="`Трек ${index + 1}`"-->
+			<!--						class="flex-grow text-gray mr-2 w-[250px]"-->
+			<!--					/>-->
+			<!--					<VButton-->
+			<!--						type="button"-->
+			<!--						:color="ButtonColors.Red"-->
+			<!--						class="ml-2"-->
+			<!--						@click="removeTrack(index)"-->
+			<!--					>-->
+			<!--						Удалить-->
+			<!--					</VButton>-->
+			<!--				</div>-->
+			<!--								<VButton-->
+			<!--									type="button"-->
+			<!--									:color="ButtonColors.Green"-->
+			<!--									class="mt-2"-->
+			<!--									@click="addTrack"-->
+			<!--								>-->
+			<!--									Добавить трек-->
+			<!--								</VButton>-->
+			<!--			</div>-->
 
 			<p
 				v-if="error"
@@ -122,8 +117,8 @@
 			>
 				{{
 					isRegistering
-						? 'Регистрация...'
-						: 'Зарегистрироваться как DJ'
+						? 'регистрация...'
+						: 'зарегистрироваться как DJ'
 				}}
 			</VButton>
 		</form>
@@ -133,7 +128,7 @@
 <script setup lang="ts">
 	import { reactive } from 'vue'
 	import { VInput } from '@/shared/components/Input'
-	import { VButton, ButtonColors } from '@/shared/components/Button'
+	import { VButton } from '@/shared/components/Button'
 	import { useDJRegistration } from '../model/use-dj-registration'
 	import { TabsMain, TabsList, TabsTrigger } from 'shared/components/ui/tabs'
 
@@ -155,9 +150,9 @@
 	// 	form.tracks.push({ name: '' })
 	// }
 
-	const removeTrack = (index: number) => {
-		form.tracks.splice(index, 1)
-	}
+	// const removeTrack = (index: number) => {
+	// 	form.tracks.splice(index, 1)
+	// }
 
 	const onSubmit = async () => {
 		const formData = {

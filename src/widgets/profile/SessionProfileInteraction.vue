@@ -9,7 +9,10 @@
 			@blur="updateDescription"
 		/>
 		<!-- Fixed background image -->
-		<div class="fixed top-0 left-0 w-full h-[350px] z-0">
+		<div
+			v-if="user?.dj?.photo_url || flow === 'user' || !user?.is_dj"
+			class="fixed top-0 left-0 w-full h-[350px] z-0"
+		>
 			<img
 				v-if="user?.is_dj && flow !== 'user'"
 				:src="user?.dj?.photo_url"
@@ -53,13 +56,14 @@
 					</div>
 					<span
 						v-if="user?.is_dj && flow !== 'user'"
-						class="text-[#FFFFFF30] text-sm font-light"
+						class="text-[#FFFFFF30] text-sm font-light mt-2"
+						@click="goToDjProfile"
 					>
 						Просмотров за месяц: более {{ user?.dj?.views }}
 					</span>
 					<span
 						v-else
-						class="text-[#FFFFFF30] text-sm font-light"
+						class="text-[#FFFFFF30] text-sm font-light mt-2"
 					>
 						Более
 						{{ user?.settings?.settings?.views }} пользователей в
@@ -69,7 +73,7 @@
 			</div>
 			<!-- Profile section -->
 			<div
-				class="bg-blackContent bg-opacity-70 backdrop-blur-md p-[25px] rounded-t-[20px]"
+				class="bg-blackContent bg-opacity-70 backdrop-blur-md p-[25px] rounded-t-[20px] min-h-[400px]"
 			>
 				<div
 					v-if="!user?.is_dj || flow === 'user'"
@@ -148,7 +152,19 @@
 				<!-- User-specific content -->
 				<div v-else>
 					<VButton
-						v-if="flow === 'dj'"
+						v-if="flow === 'user'"
+						:color="ButtonColors.Green"
+						class="w-full mb-5"
+						@click="scanQr"
+					>
+						<IconQr
+							icon-color="#131313"
+							class="mr-[5px]"
+						/>
+						сканировать куар код
+					</VButton>
+					<VButton
+						v-if="!user?.is_dj"
 						:color="ButtonColors.Green"
 						class="w-full"
 						@click="becomeDJ"
@@ -157,19 +173,19 @@
 							icon-color="#131313"
 							class="mr-[5px]"
 						/>
-						Стать Dj
+						стать Dj
 					</VButton>
 					<VButton
-						v-else
+						v-if="user?.is_dj"
 						:color="ButtonColors.Green"
 						class="w-full"
-						@click="scanQr"
+						@click="changeFlowToDj"
 					>
-						<IconQr
+						<IconMusic
 							icon-color="#131313"
 							class="mr-[5px]"
 						/>
-						Сканировать QR
+						перейти в профиль Dj
 					</VButton>
 				</div>
 			</div>
@@ -265,7 +281,7 @@
 			console.log('FormData:', formData)
 
 			try {
-				djStore.loadingText = 'Загрузка фотографии'
+				djStore.loadingText = 'загрузка фотографии'
 				await djStore.updateDJProfile(formData)
 				console.log('File upload successful')
 			} catch (error) {
@@ -279,7 +295,7 @@
 	}
 	const updateDescription = async () => {
 		try {
-			djStore.loadingText = 'Обновление описания'
+			djStore.loadingText = 'обновление описания'
 			updateDescriptionOpen.value = false
 			if (user?.value?.dj?.description === description.value) return
 			await djStore.updateDJProfile({ description: description.value })
@@ -290,9 +306,9 @@
 		}
 	}
 
-	// const goToDjProfile = () => {
-	// 	router.push({ name: 'dj-profile', params: { id: 1, flow: 'user' } })
-	// }
+	const goToDjProfile = () => {
+		router.push({ name: 'dj-profile', params: { id: 5, flow: 'user' } })
+	}
 
 	const createQR = () => {
 		// Implement QR code generation
@@ -316,6 +332,17 @@
 
 	const becomeDJ = () => {
 		router.push({ name: 'dj-registration', params: { flow: 'dj' } })
+	}
+	const changeFlowToDj = () => {
+		router
+			.push({
+				name: 'main',
+				params: { flow: 'dj' },
+				query: { dj: 'true' }
+			})
+			.then(() => {
+				router.go(0) // This forces a full page reload
+			})
 	}
 
 	const scanQr = () => {
@@ -353,7 +380,7 @@
 	onMounted(async () => {
 		if (user.value?.is_dj && user.value.dj && flow != 'user') {
 			console.log('DJ', user.value.dj)
-			djStore.loadingText = 'Загрузка профиля'
+			djStore.loadingText = 'загрузка профиля'
 			// await djStore.fetchTracks(user.value.dj.id)
 			description.value = user.value.dj.description
 		} else {

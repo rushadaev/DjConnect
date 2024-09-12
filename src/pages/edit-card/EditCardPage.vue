@@ -32,47 +32,46 @@
 		v-if="isUpdating"
 		:is-loading="isUpdating"
 		bg="backdrop-blur-[5px]"
-		text="🏦 Обновляем..."
+		text="обновляем... 🏦"
 	/>
 </template>
 
 <script setup lang="ts">
-import PaymentCard from 'features/edit-card/ui/PaymentCard.vue'
-import { ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useDJStore } from '@/entities/dj/model/dj.store'
-import { useSessionStore } from '@/entities/session/model/session.store'
-// import { VInput } from '@/shared/components/Input'
-// import { TabsMain, TabsList, TabsTrigger } from '@/shared/components/ui/tabs'
-import { VButton, ButtonColors } from '@/shared/components/Button'
-import { useRouter } from 'vue-router'
-import { IconWallet } from '@/shared/components/Icon'
-import VLoader from '@/shared/components/Loader/VLoader.vue'
+	import PaymentCard from 'features/edit-card/ui/PaymentCard.vue'
+	import { ref } from 'vue'
+	import { storeToRefs } from 'pinia'
+	import { useDJStore } from '@/entities/dj/model/dj.store'
+	import { useSessionStore } from '@/entities/session/model/session.store'
+	// import { VInput } from '@/shared/components/Input'
+	// import { TabsMain, TabsList, TabsTrigger } from '@/shared/components/ui/tabs'
+	import { VButton, ButtonColors } from '@/shared/components/Button'
+	import { useRouter } from 'vue-router'
+	import { IconWallet } from '@/shared/components/Icon'
+	import VLoader from '@/shared/components/Loader/VLoader.vue'
 
-const djStore = useDJStore()
-const sessionStore = useSessionStore()
-const { isLoading: isUpdating } = storeToRefs(djStore)
-const { user } = storeToRefs(sessionStore)
-const router = useRouter()
+	const djStore = useDJStore()
+	const sessionStore = useSessionStore()
+	const { isLoading: isUpdating } = storeToRefs(djStore)
+	const { user } = storeToRefs(sessionStore)
+	const router = useRouter()
 
-const lastInput = ref( '' )
-const touched = ref( false )
+	const lastInput = ref('')
+	const touched = ref(false)
 
-const onInputChange = ( val: string ) => {
-	console.log( val )
-	lastInput.value = val
-	touched.value = true
-}
+	const onInputChange = (val: string) => {
+		console.log(val)
+		lastInput.value = val
+		touched.value = true
+	}
 
-const onSubmit = async () => {
-  try {
-    await djStore.updateDJProfile({
-		payment_details: lastInput.value
-	})
-	router.push({ name: 'finance', params: { flow: 'dj' } })
-  }catch (error) {
-	console.error('Failed to update DJ profile:', error)
-  }
-}
-
+	const onSubmit = async () => {
+		try {
+			await djStore.updateDJProfile({
+				payment_details: lastInput.value
+			})
+			router.push({ name: 'finance', params: { flow: 'dj' } })
+		} catch (error) {
+			console.error('Failed to update DJ profile:', error)
+		}
+	}
 </script>

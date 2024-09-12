@@ -39,17 +39,37 @@
 		>
 			📨 {{ orders[0]?.message }}
 		</div>
-		<!--Timezone-->
-		<VInput
-			v-if="orders.length && orders[0].is_paid"
-			v-model:modelValue="timeslot"
-			type="datetime-local"
-			custom-height="h-[50px]"
-			placeholer="Выберите время"
-			label="Когда поставить трек"
-			:disabled="orders[0].time_slot"
-			class="py-3"
-		/>
+		<!--Timeslot-->
+		<n-config-provider :theme-overrides="themeOverrides">
+			<n-tag
+				v-if="djFlow && timeslot"
+				type="success"
+				class="mt-2"
+			>
+				Поставить трек в {{ timeslot }}
+			</n-tag>
+
+			<div
+				v-if="!djFlow && orders[0].is_paid"
+				class="mt-2"
+			>
+				<label class="block text-sm font-medium text-gray-700 mb-[5px]">
+					Когда поставить трек:
+				</label>
+				<n-time-picker
+					class="mt-2"
+					size="large"
+					value-format="HH:mm"
+					placeholder="Выберите время"
+					format="HH:mm"
+					:hours="hourOptions"
+					:minutes="minuteOptions"
+					:input-readonly="true"
+					:formatted-value="timeslot"
+					@update:formatted-value="timeslotUpdate"
+				/>
+			</div>
+		</n-config-provider>
 		<VButton
 			v-if="
 				orders.length &&
@@ -58,11 +78,11 @@
 					orders[0].is_paid
 			"
 			type="button"
-			:color="ButtonColors.Blue"
+			:color="ButtonColors.Green"
 			class="mt-4 mb-4"
 			@click="updateTime"
 		>
-			<span class="flex gap-[5px] items-center"> Обновить время </span>
+			<span class="flex gap-[5px] items-center"> обновить время </span>
 		</VButton>
 
 		<CustomPriceInput
@@ -92,7 +112,7 @@
 			class="mt-4 mb-4"
 			@click="goToOrderMusicPage"
 		>
-			<span class="flex gap-[5px] items-center"> Заказать еще </span>
+			<span class="flex gap-[5px] items-center"> заказать еще </span>
 		</VButton>
 		<VButton
 			v-if="
@@ -235,7 +255,8 @@
 	import { getStatusText } from '@/shared/utils/helpers'
 	import { Order } from '@/features/order-music/model'
 	import { useSocket } from '@/shared/lib/sockets/useSocket'
-	import VInput from '@/shared/components/Input/VInput.vue'
+	import { NTimePicker, NConfigProvider, NTag } from 'naive-ui'
+	import { getMinutes, getHours } from 'date-fns'
 
 	const ordersStore = useOrdersStore()
 	const route = useRoute()
@@ -247,7 +268,8 @@
 
 	const { user } = storeToRefs(sessionStore)
 	const newPrice = ref(`${Number(djStore?.currentDJ?.price)}`)
-	const timeslot = ref('')
+	const timeslot = ref<string | null>(null)
+
 	const newMessage = ref('')
 	const djWantsToChangeMessage = ref(false)
 	const startWritingMessage = () => {
@@ -263,6 +285,19 @@
 	// 		djWantsToChangeMessage.value = true
 	// 	}
 	// })
+	const themeOverrides = {
+		primaryColor: '#1CD760',
+		Input: {
+			color: 'transparent',
+			colorFocus: 'transparent',
+			colorDisabled: 'transparent',
+			textColor: 'white',
+			heightLarge: '50px',
+			borderRadius: '5px',
+
+			border: '1px solid rgba(255, 255, 255, 0.1)'
+		}
+	}
 
 	const statusColor = ref('green' as StatusVariable)
 	const statusText = ref('')
@@ -280,6 +315,26 @@
 	async function increaseOrderPrice() {
 		// await ordersStore.increaseOrderPrice(+route.params.id)
 		priceChangeAllowed.value = true
+	}
+
+	// Get the current time
+	const currentTime = new Date()
+
+	// Get the current hour and minute
+	const currentHour = getHours(currentTime)
+	const currentMinute = getMinutes(currentTime)
+
+	// Generate hour options starting from the current hour (up to the next few hours if needed)
+	const hourOptions = [currentHour, currentHour + 1, currentHour + 2]
+
+	// Calculate minute options (5, 10, 15 minutes from now)
+	const minuteOptions = [
+		currentMinute + 5,
+		currentMinute + 10,
+		currentMinute + 15
+	]
+	const timeslotUpdate = (value: string | null) => {
+		timeslot.value = value ?? ''
 	}
 
 	const acceptOrder = async () => {
@@ -312,7 +367,11 @@
 	}
 
 	const updateTime = async () => {
-		await ordersStore.updateTime(+route.params.id, timeslot.value)
+		if (timeslot.value)
+			await ordersStore.updateTime(
+				+route.params.id,
+				timeslot.value as string
+			)
 	}
 
 	const payForOrder = () => {
@@ -328,7 +387,7 @@
 	onMounted(async () => {
 		const order = await djStore.fetchOrder(+route.params.id)
 		//convert date to time
-		timeslot.value = order?.time_slot
+		timeslot.value = order?.time_slot?.slice(11, 16)
 		const channelName = `order_update_${route.params.id}`
 		const { data } = useSocket(channelName)
 		watch(data, newValue => {
