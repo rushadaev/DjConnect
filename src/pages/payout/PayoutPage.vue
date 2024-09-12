@@ -22,7 +22,7 @@
 					class="w-[72px] flex flex-start justify-between items-center"
 				>
 					<button
-						class="cursor-pointer"
+						class="cursor-pointer hover:opacity-70"
 						@click="plus"
 					>
 						<IconAdd
@@ -31,7 +31,7 @@
 						/>
 					</button>
 					<button
-						class="cursor-pointer"
+						class="cursor-pointer hover:opacity-70"
 						@click="minus"
 					>
 						<IconMinus
@@ -49,7 +49,7 @@
           <span class="text-white text-md">1500₽</span>
         </button> -->
 				<button
-					v-for="amount in predefinedAmounts"
+					v-for="amount in filteredPredefinedAmounts"
 					:key="amount.value"
 					class="w-[64px] h-[33px] bg-[#0A0A0A] flex items-center justify-center rounded-md mr-1 cursor-pointer"
 					@click="amount.click"
@@ -141,6 +141,8 @@
 	const selectedAmount = ref(0)
 
 	const plus = () => {
+		//if available balance is less than selected amount, then return but keep in mind that we want to increase the amount by 500
+		if (selectedAmount.value + 500 > availableBalance.value) return
 		selectedAmount.value += 500
 	}
 	const minus = () => {
@@ -149,10 +151,14 @@
 		}
 	}
 	const setAmount = (amount: number) => () => {
+		if (amount > availableBalance.value) return
+		if (amount < 500) return
 		selectedAmount.value = amount
 	}
 
 	const setCustomAmount = (amount: number) => {
+		if (amount < 500) return
+		if (amount > availableBalance.value) return
 		amount = amount - (amount % 500)
 		selectedAmount.value = amount
 	}
@@ -173,6 +179,13 @@
 		},
 		{ value: 15000, click: setAmount(15000) }
 	]
+
+	//predefined amount should be less then available balance
+	const filteredPredefinedAmounts = computed(() => {
+		return predefinedAmounts.filter(
+			amount => amount.value <= availableBalance.value
+		)
+	})
 
 	const onSubmit = async () => {
 		if (user?.value?.dj && user?.value?.dj?.payment_details) {
