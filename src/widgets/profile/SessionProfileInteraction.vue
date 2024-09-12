@@ -57,7 +57,6 @@
 					<span
 						v-if="user?.is_dj && flow !== 'user'"
 						class="text-[#FFFFFF30] text-sm font-light mt-2"
-						@click="goToDjProfile"
 					>
 						Просмотров за месяц: более {{ user?.dj?.views }}
 					</span>
@@ -306,9 +305,9 @@
 		}
 	}
 
-	const goToDjProfile = () => {
-		router.push({ name: 'dj-profile', params: { id: 5, flow: 'user' } })
-	}
+	// const goToDjProfile = () => {
+	// 	router.push({ name: 'dj-profile', params: { id: 5, flow: 'user' } })
+	// }
 
 	const createQR = () => {
 		// Implement QR code generation
@@ -325,7 +324,7 @@
 
 	const getLink = computed(() => {
 		if (user?.value?.dj?.id) {
-			return `https://t.me/DjConnect_bot/track?startapp=dj_${user.value.dj.id}`
+			return `https://t.me/orderme_client_bot/app?startapp=dj_${user.value.dj.id}`
 		}
 		return ''
 	})

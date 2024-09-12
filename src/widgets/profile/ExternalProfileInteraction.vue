@@ -97,7 +97,7 @@
 
 	const getLink = computed(() => {
 		if (route.params.id) {
-			return `https://t.me/DjConnect_bot/track?startapp=dj_${route.params.id}`
+			return `https://t.me/orderme_client_bot/app?startapp=dj_${route.params.id}`
 		}
 		return ''
 	})
