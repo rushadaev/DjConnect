@@ -32,39 +32,46 @@
 				<VInput
 					v-model="form.stage_name"
 					label="Псевдоним"
+					placeholder="Введите псевдоним"
 					required
 				/>
 				<VInput
 					v-model="form.city"
 					label="Город"
+					placeholder="Введите город"
 					required
 				/>
 				<VInput
 					v-model="form.payment_details"
 					maxlength="16"
+					placeholder="0000 0000 0000 0000"
 					label="Номер карты для выплаты"
 					required
 				/>
 				<VInput
 					v-model="form.phone"
 					label="Телефон"
+					placeholder="Введите телефон"
 					type="tel"
 					inputmode="phone"
 				/>
 				<VInput
 					v-model="form.email"
 					label="Email"
+					placeholder="Введите email"
 					type="email"
 					inputmode="email"
 				/>
 				<VInput
 					v-model="form.website"
 					label="Веб-сайт"
+					placeholder="Введите веб-сайт"
 					inputmode="url"
 				/>
 				<VInput
 					v-model="form.price"
 					label="Базовая стоимость"
+					placeholder="Введите базовую стоимость"
 					type="number"
 					step="0.01"
 				/>

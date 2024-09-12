@@ -7,9 +7,9 @@ export default [
 		component: () => import('pages/main/MainPage.vue'),
 		path: '/:flow(user|dj)?',
 		meta: {
-			title: 'DjConnect',
+			title: 'order me',
 			layout: MainLayout,
 			meta: { requiresAuth: true }
 		}
-	},
+	}
 ] as RouteRecordRaw[]

@@ -16,8 +16,7 @@
 				:aria-label="imageCover"
 			>
 				<img
-					v-if="currentCardBackground"
-					:src="currentCardBackground"
+					:src="`/paycard/images/${Math.floor(Math.random() * 25 + 1)}.jpg`"
 					class="card-item__bg"
 					alt="Background image"
 				>
