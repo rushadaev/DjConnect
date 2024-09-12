@@ -12,7 +12,7 @@
 			<span class="text-lg text-[#FFFFFF4D] pb-5">Сумма вывода</span>
 			<span
 				class="text-sm absolute right-[10px] hover:opacity-70 font-sans text-greenYellow pb-5"
-				@click="setCustomAmount(availableBalance)"
+				@click="setCustomAmount(availableBalance || 0)"
 			>{{ availableBalance }}₽</span>
 			<div
 				class="flex flex-start justify-between items-center w-full pb-5"

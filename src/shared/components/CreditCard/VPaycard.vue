@@ -47,38 +47,10 @@
 					aria-label="Card number"
 					class="card-item__number"
 				>
-					<span
-						v-for="(n, $index) in currentPlaceholder"
-						:key="$index"
-					>
-						<transition name="slide-fade-up">
-							<div
-								v-if="getIsNumberMasked($index, n)"
-								class="card-item__numberItem"
-							>
-								*
-							</div>
-							<div
-								v-else-if="
-									valueFields.cardNumber.length > $index
-								"
-								:key="currentPlaceholder"
-								:class="{ '-active': n.trim() === '' }"
-								class="card-item__numberItem"
-							>
-								{{ valueFields.cardNumber[$index] }}
-							</div>
-							<div
-								v-else
-								:key="currentPlaceholder + 1"
-								:class="{ '-active': n.trim() === '' }"
-								style="opacity: 0.4"
-								class="card-item__numberItem"
-							>
-								{{ n }}
-							</div>
-						</transition>
-					</span>
+					<span v-if="placeholder && !valueFields.cardNumber">{{
+						placeholder
+					}}</span>
+					<span v-else> {{ valueFields.cardNumber }} </span>
 				</label>
 				<div class="card-item__content">
 					<label
@@ -86,38 +58,7 @@
 						:for="inputFields.cardName"
 						aria-label="Card name"
 						class="card-item__info"
-					>
-						<div class="card-item__holder">
-							{{ labels.cardHolder || 'Card Holder' }}
-						</div>
-						<transition name="slide-fade-up">
-							<div
-								v-if="valueFields.cardName.length"
-								key="1"
-								class="card-item__name"
-							>
-								<transition-group name="slide-fade-right">
-									<span
-										v-for="(
-											n, key
-										) in valueFields.cardName.replace(
-											/\s\s+/g,
-											' '
-										)"
-										:key="key + 1"
-										class="card-item__nameItem"
-									>{{ n }}</span>
-								</transition-group>
-							</div>
-							<div
-								v-else
-								key="2"
-								class="card-item__name"
-							>
-								{{ labels.cardName || 'Full Name' }}
-							</div>
-						</transition>
-					</label>
+					/>
 					<div
 						v-if="labels.cardExpires"
 						ref="cardDate"
