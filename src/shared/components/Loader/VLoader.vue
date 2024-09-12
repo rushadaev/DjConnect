@@ -9,7 +9,7 @@
 				class="flex flex-col justify-center items-center py-[170px] text-7xl"
 			>
 				<span class="animationBounceSpin">💿</span>
-				<h1 class="text-2xl pt-4">
+				<h1 class="text-2xl pt-4 font-['Unbounded']">
 					{{ text }}
 				</h1>
 			</div>

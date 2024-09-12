@@ -4,7 +4,7 @@
 			v-if="isLoading"
 			:is-loading="isLoading"
 			bg="bg-black"
-			text="DJ Connect"
+			text="order me"
 		/>
 		<div
 			v-else-if="error"

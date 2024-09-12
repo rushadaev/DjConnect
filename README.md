@@ -1,4 +1,4 @@
-# DJ Connect
+# Order Me
 
 Stack: Vue 3 + TypeScript + Vite
 
@@ -10,7 +10,8 @@ PROD: npm run build
 
 Настроены GitHub action, пуш в мастер -> запускает action и разворачивает на https://rushadaev.github.io/DjConnect/
 
-В vite.config.ts прописывается base: '/DjConnect/', чтобы правильно работал vue router на GitHub Pages https://rushadaev.github.io/DjConnect/
+В vite.config.ts прописывается base: '/DjConnect/', чтобы правильно работал vue router на GitHub
+Pages https://rushadaev.github.io/DjConnect/
 
 ### QR-code
 
@@ -21,6 +22,7 @@ QR код ведет на ссылку https://t.me/DjConnect_bot/track?startapp
 Этот параметр следует обрабатывать с помощью TWA.initDataUnsafe.start_param
 
 **Например:**
+
 ```
 const startParam = TWA.initDataUnsafe.start_param
 
