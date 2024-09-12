@@ -142,7 +142,7 @@
 
 	const plus = () => {
 		//if available balance is less than selected amount, then return but keep in mind that we want to increase the amount by 500
-		if (selectedAmount.value + 500 > availableBalance.value) return
+		if (selectedAmount.value + 500 > (availableBalance?.value ?? 0)) return
 		selectedAmount.value += 500
 	}
 	const minus = () => {
@@ -151,14 +151,14 @@
 		}
 	}
 	const setAmount = (amount: number) => () => {
-		if (amount > availableBalance.value) return
+		if (amount > (availableBalance?.value ?? 0)) return
 		if (amount < 500) return
 		selectedAmount.value = amount
 	}
 
 	const setCustomAmount = (amount: number) => {
 		if (amount < 500) return
-		if (amount > availableBalance.value) return
+		if (amount > (availableBalance?.value ?? 0)) return
 		amount = amount - (amount % 500)
 		selectedAmount.value = amount
 	}
@@ -183,7 +183,7 @@
 	//predefined amount should be less then available balance
 	const filteredPredefinedAmounts = computed(() => {
 		return predefinedAmounts.filter(
-			amount => amount.value <= availableBalance.value
+			amount => amount.value <= (availableBalance?.value ?? 0)
 		)
 	})
 
