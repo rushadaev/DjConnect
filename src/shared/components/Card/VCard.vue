@@ -1,7 +1,7 @@
 <template>
 	<div
 		style="border-bottom: 1px solid #ffffff10"
-		class="flex w-full justify-between items-center p-[10px] h-[66px] border-b-2 border-white max-w-[22rem] cursor-pointer hover:opacity-70"
+		class="flex w-full justify-between items-center p-[10px] h-[66px] border-b-2 border-white cursor-pointer hover:opacity-70"
 		@click="goto"
 	>
 		<div class="flex gap-[10px]">

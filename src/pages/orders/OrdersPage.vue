@@ -1,5 +1,5 @@
 <template>
-	<div class="px-6 relative z-10 pt-[20px] overflow-x-hidden">
+	<div class="px-6 relative z-10 pt-[20px] w-full overflow-x-hidden">
 		<h1 class="text-2xl pb-4">
 			Статистика
 		</h1>
@@ -35,6 +35,7 @@
 			Больше всего заказывают
 		</h1>
 		<OrderList
+			class="w-full"
 			:items="orders"
 			text-color="green"
 		/>

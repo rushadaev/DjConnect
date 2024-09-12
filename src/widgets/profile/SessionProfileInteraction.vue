@@ -160,7 +160,7 @@
 							icon-color="#131313"
 							class="mr-[5px]"
 						/>
-						сканировать куар код
+						сканировать qr-code
 					</VButton>
 					<VButton
 						v-if="!user?.is_dj"
@@ -172,7 +172,7 @@
 							icon-color="#131313"
 							class="mr-[5px]"
 						/>
-						стать Dj
+						стать dj
 					</VButton>
 					<VButton
 						v-if="user?.is_dj"
@@ -180,11 +180,7 @@
 						class="w-full"
 						@click="changeFlowToDj"
 					>
-						<IconMusic
-							icon-color="#131313"
-							class="mr-[5px]"
-						/>
-						перейти в профиль Dj
+						перейти в профиль dj
 					</VButton>
 				</div>
 			</div>

@@ -43,7 +43,7 @@
 			/>
 			<VInput
 				v-model="form.payment_details"
-				maxlength="16"
+				maxlength="19"
 				placeholder="0000 0000 0000 0000"
 				label="Номер карты для выплаты"
 				inputmode="numeric"
@@ -137,7 +137,7 @@
 </template>
 
 <script setup lang="ts">
-	import { reactive, onMounted, ref } from 'vue'
+	import { reactive, onMounted, ref, computed, watch } from 'vue'
 	import { storeToRefs } from 'pinia'
 	import { useDJStore } from '@/entities/dj/model/dj.store'
 	import { useSessionStore } from '@/entities/session/model/session.store'
@@ -169,6 +169,16 @@
 		price: 0,
 		tracks: [] as { name: string; id?: number }[]
 	})
+
+	//watch change of payment details and correct
+	watch(
+		() => form.payment_details,
+		newVal => {
+			if (newVal) {
+				form.payment_details = newVal.replace(/\d{4}(?=\d)/g, '$& ')
+			}
+		}
+	)
 
 	onMounted(async () => {
 		if (user.value?.dj) {

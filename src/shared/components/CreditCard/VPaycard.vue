@@ -49,7 +49,7 @@
 					<span v-if="placeholder && !valueFields.cardNumber">{{
 						placeholder
 					}}</span>
-					<span v-else> {{ valueFields.cardNumber }} </span>
+					<span v-else> {{ formatCardNumber }} </span>
 				</label>
 				<div class="card-item__content">
 					<label
@@ -216,6 +216,11 @@
 			}
 		},
 		computed: {
+			formatCardNumber() {
+				const cardNumber = this.valueFields.cardNumber
+				if (!cardNumber) return ''
+				return cardNumber.replace(/\d{4}(?=\d)/g, '$& ')
+			},
 			jcbCardPlaceholder() {
 				const number = this.valueFields.cardNumber.replace(/\s+/g, '')
 

@@ -65,9 +65,7 @@
 			<div
 				class="w-full h-[42px] bg-[#0A0A0A] flex items-center justify-start rounded-md pl-4"
 			>
-				<span class="text-white text-sm">{{
-					user?.dj?.payment_details
-				}}</span>
+				<span class="text-white text-sm">{{ formatCardNumber }}</span>
 			</div>
 		</div>
 		<VButton
@@ -116,7 +114,7 @@
 </template>
 
 <script setup lang="ts">
-	import { ref } from 'vue'
+	import { computed, ref } from 'vue'
 	import { storeToRefs } from 'pinia'
 	import { useDJStore } from '@/entities/dj/model/dj.store'
 	import { useSessionStore } from '@/entities/session/model/session.store'
@@ -134,6 +132,12 @@
 	const { user } = storeToRefs(sessionStore)
 	const { availableBalance } = storeToRefs(djStore)
 	// const router = useRouter()
+
+	const formatCardNumber = computed(() => {
+		const cardNumber = user?.value?.dj?.payment_details
+		if (!cardNumber) return ''
+		return cardNumber.replace(/\d{4}(?=\d)/g, '$& ')
+	})
 
 	const router = useRouter()
 	const stepSubmitted = ref(false)

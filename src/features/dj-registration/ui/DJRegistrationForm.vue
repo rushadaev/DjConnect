@@ -43,7 +43,7 @@
 				/>
 				<VInput
 					v-model="form.payment_details"
-					maxlength="16"
+					maxlength="19"
 					placeholder="0000 0000 0000 0000"
 					label="Номер карты для выплаты"
 					required
@@ -126,7 +126,7 @@
 </template>
 
 <script setup lang="ts">
-	import { reactive } from 'vue'
+	import { reactive, watch } from 'vue'
 	import { VInput } from '@/shared/components/Input'
 	import { VButton } from '@/shared/components/Button'
 	import { useDJRegistration } from '../model/use-dj-registration'
@@ -145,6 +145,16 @@
 		price: 0,
 		tracks: [] as { name: string }[]
 	})
+
+	//watch change of payment details and correct
+	watch(
+		() => form.payment_details,
+		newVal => {
+			if (newVal) {
+				form.payment_details = newVal.replace(/\d{4}(?=\d)/g, '$& ')
+			}
+		}
+	)
 
 	// const addTrack = () => {
 	// 	form.tracks.push({ name: '' })
