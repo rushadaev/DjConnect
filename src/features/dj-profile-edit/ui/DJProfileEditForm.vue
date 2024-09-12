@@ -137,7 +137,7 @@
 </template>
 
 <script setup lang="ts">
-	import { reactive, onMounted, ref, computed, watch } from 'vue'
+	import { reactive, onMounted, ref, watch } from 'vue'
 	import { storeToRefs } from 'pinia'
 	import { useDJStore } from '@/entities/dj/model/dj.store'
 	import { useSessionStore } from '@/entities/session/model/session.store'

@@ -76,10 +76,7 @@
 			:disabled="selectedAmount == 0"
 			@click="onSubmit"
 		>
-			<span class="flex gap-[5px] items-center">
-				<IconWallet icon-color="#131313" />
-				Вывести
-			</span>
+			<span class="flex gap-[5px] items-center"> вывести </span>
 		</VButton>
 	</div>
 	<VLoader
@@ -121,7 +118,6 @@
 
 	import { VButton, ButtonColors } from '@/shared/components/Button'
 	// import { useRouter } from 'vue-router'
-	import { IconWallet } from '@/shared/components/Icon'
 	import { IconAdd, IconMinus } from '@/shared/components/Icon'
 	import VLoader from '@/shared/components/Loader/VLoader.vue'
 	import { useRouter } from 'vue-router'
