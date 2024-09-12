@@ -11,8 +11,8 @@
 		>
 			<span class="text-lg text-[#FFFFFF4D] pb-5">Сумма вывода</span>
 			<span
-				class="text-sm absolute right-[10px] font-sans text-greenYellow pb-5"
-				@click="setAmount(availableBalance || 0)"
+				class="text-sm absolute right-[10px] hover:opacity-70 font-sans text-greenYellow pb-5"
+				@click="setCustomAmount(availableBalance)"
 			>{{ availableBalance }}₽</span>
 			<div
 				class="flex flex-start justify-between items-center w-full pb-5"
@@ -75,6 +75,7 @@
 			type="button"
 			:color="ButtonColors.Green"
 			class="mt-4"
+			:disabled="selectedAmount == 0"
 			@click="onSubmit"
 		>
 			<span class="flex gap-[5px] items-center">
@@ -135,7 +136,7 @@
 
 	const stepSubmitted = ref(false)
 
-	const selectedAmount = ref(1500)
+	const selectedAmount = ref(0)
 
 	const plus = () => {
 		selectedAmount.value += 500
@@ -146,6 +147,11 @@
 		}
 	}
 	const setAmount = (amount: number) => () => {
+		selectedAmount.value = amount
+	}
+
+	const setCustomAmount = (amount: number) => {
+		amount = amount - (amount % 500)
 		selectedAmount.value = amount
 	}
 	// const predefinedAmounts = [{ value: 1000, click: setAmount(amount)}, 5000, 10000, 15000]
